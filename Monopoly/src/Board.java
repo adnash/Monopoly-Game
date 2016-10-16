@@ -1,6 +1,15 @@
+// CS414e
+// Conor Cox, Dan Wood, Alex Arbuckle, Alan Nash
+// A4
+// Board.java
 
 public class Board {
-	public static void main(String[] args) {
-		System.out.println("hi");
+	
+	// global variables
+	Square squares[];
+	
+	public Square getSquare(int squareID){
+		return null;
 	}
+	
 }
