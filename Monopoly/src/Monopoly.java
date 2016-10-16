@@ -10,8 +10,12 @@ public class Monopoly {
 	// global variables
 	int numPlayers;
 	int duration;
-	Time timeStarted;
+	Time timeLeft;
 	
+	public Time getTimeLeft() {
+		return timeLeft;
+	}
+
 	public static void main(String[] args) {
 		System.out.println("hi");
 	}
