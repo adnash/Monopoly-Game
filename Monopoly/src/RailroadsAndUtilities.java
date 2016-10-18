@@ -3,13 +3,11 @@ public class RailroadsAndUtilities extends Square {
 
 	int ownerID;
 	int price;
-	int mortgagePrice;
 	
-	public RailroadsAndUtilities(int ID, String name, int price, int mortgagePrice) {
+	public RailroadsAndUtilities(int ID, String name, int price) {
 		super(ID, name);
 		ownerID = -1;
 		this.price = price;
-		this.mortgagePrice = mortgagePrice;
 	}
 	
 	void mortgage(){
@@ -37,7 +35,7 @@ public class RailroadsAndUtilities extends Square {
 	}
 
 	public int getMortgagePrice() {
-		return mortgagePrice;
+		return price/2;
 	}
 
 	

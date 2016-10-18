@@ -2,21 +2,21 @@
 public class RealEstate extends Square {
 
 	int ownerID;
-	int price;
+	int buyPrice;
 	int buildingPrice;
 	int numBuildings;
 	boolean isMortgaged;
 	int baseRent;
 	int group;
 	
-	public RealEstate(int ID, String name, int price, int bPrice, int bRent, int group) {
+	public RealEstate(int ID, String name, int buyPrice, int buildingPrice, int baseRent, int group) {
 		super(ID, name);
 		ownerID = -1;
-		this.buildingPrice = price;
-		this.buildingPrice = bPrice;
+		this.buyPrice = buyPrice;
+		this.buildingPrice = buildingPrice;
 		numBuildings = 0;
 		isMortgaged = false;
-		this.baseRent = bRent;
+		this.baseRent = baseRent;
 		this.group = group;
 	}
 	
@@ -57,7 +57,7 @@ public class RealEstate extends Square {
 	}
 
 	public int getPrice() {
-		return price;
+		return buyPrice;
 	}
 
 	public int getBuildingPrice() {
