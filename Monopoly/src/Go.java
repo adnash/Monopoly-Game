@@ -6,8 +6,9 @@ public class Go extends Square {
 		
 	}
 	
+	//Give the player $200.
 	void give(Player p){
-		
+		p.setBalance(p.getBalance() + 200);
 	}
 
 }

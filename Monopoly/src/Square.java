@@ -1,8 +1,8 @@
 
 public class Square {
 
-	private int ID;
-	private String name;
+	protected int ID;
+	protected String name;
 	
 	public Square(int ID, String name){
 		this.ID = ID;
