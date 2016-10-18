@@ -1,51 +1,83 @@
+// CS414e
+// Conor Cox, Dan Wood, Alex Arbuckle, Alan Nash
+// A4
+// RealEstate.java
+
+
 
 public class RealEstate extends Square {
 
-	int ownerID;
-	int buyPrice;
-	int buildingPrice;
-	int numBuildings;
-	boolean isMortgaged;
-	int baseRent;
+	private int ownerID;
+	private int buyPrice;
+	private int buildingPrice;
+	private int numBuildings;
+	private boolean isMortgaged;
+	private int rentArray[];
+	
+
 	int group;
 	
-	public RealEstate(int ID, String name, int buyPrice, int buildingPrice, int baseRent, int group) {
+	
+	public RealEstate(int ID, String name, int buyPrice, int buildingPrice, int[] rentArray, int group) {
 		super(ID, name);
-		ownerID = -1;
+		this.ownerID = -1;
 		this.buyPrice = buyPrice;
 		this.buildingPrice = buildingPrice;
-		numBuildings = 0;
-		isMortgaged = false;
-		this.baseRent = baseRent;
+		this.numBuildings = 0;
+		this.rentArray = rentArray;
+		this.isMortgaged = false;
 		this.group = group;
 	}
 	
-	int calcrent(){
+	public int calcRent(){
 		return -1;
 	}
 	
-	void build(){
+	public void build(Player p){
+		numBuildings++;
+		p.setBalance(p.getBalance() - buildingPrice);
+	}
+	
+	public void sell(){
 		
 	}
 	
-	void sell(){
-		
+	public boolean canBuild(Player p){
+		if(ownerID == p.getPlayerID() && !isMortgaged && (p.getBalance() >= buildingPrice) && (numBuildings < 5)){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
-	boolean canBuild(){
+	public boolean canSell(){
 		return false;
 	}
 	
-	boolean canSell(){
-		return false;
+	public void mortgage(){
+		
+		isMortgaged = true;
 	}
 	
-	void mortgage(){
+	public void canMortgage(){
 		
+		
+		isMortgaged = false;
 	}
 	
-	void canMortgage(){
-		
+	public boolean unMortgage(Player p){
+		// unmortgaging allows you get get a balance of $0
+		if(getOwnerID() == p.getPlayerID()){
+			if(p.getBalance() >= (getMortgagePrice() * 1.1)){
+				p.setBalance((int) (p.getBalance() - (getMortgagePrice() * 1.1)));
+				isMortgaged = false;
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
 	}
 
 	public int getOwnerID() {
@@ -69,11 +101,15 @@ public class RealEstate extends Square {
 	}
 
 	public int getBaseRent() {
-		return baseRent;
+		return rentArray[0];
 	}
 
 	public int getGroup() {
 		return group;
+	}
+	
+	public int getMortgagePrice() {
+		return buyPrice/2;
 	}
 
 }

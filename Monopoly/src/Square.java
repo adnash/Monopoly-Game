@@ -1,3 +1,9 @@
+// CS414e
+// Conor Cox, Dan Wood, Alex Arbuckle, Alan Nash
+// A4
+// Square.java
+
+
 
 public class Square {
 
@@ -9,11 +15,11 @@ public class Square {
 		this.name = name;
 	}
 	
-	String getName(){
+	public String getName(){
 		return name;
 	}
 	
-	int getID(){
+	public int getID(){
 		return ID;
 	}
 }

@@ -1,24 +1,50 @@
+// CS414e
+// Conor Cox, Dan Wood, Alex Arbuckle, Alan Nash
+// A4
+// RailroadsAndUtilities.java
+
+
 
 public class RailroadsAndUtilities extends Square {
 
-	int ownerID;
-	int price;
+	private int ownerID;
+	private int price;
+	private boolean isMortgaged;
 	
 	public RailroadsAndUtilities(int ID, String name, int price) {
 		super(ID, name);
 		ownerID = -1;
 		this.price = price;
+		this.isMortgaged = false;
 	}
 	
-	void mortgage(){
+	public boolean mortgage(Player p){
+		if(getOwnerID() == p.getPlayerID()){
+			p.setBalance(p.getBalance() + getMortgagePrice());
+			isMortgaged = true;
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public boolean unmortgage(Player p){
+		// unmortgaging allows you get get a balance of $0
+		if(getOwnerID() == p.getPlayerID()){
+			if(p.getBalance() >= (getMortgagePrice() * 1.1)){
+				p.setBalance((int) (p.getBalance() - (getMortgagePrice() * 1.1)));
+				isMortgaged = false;
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}		
+	}
+	
+	public int calculateRent(){
 		
-	}
-	
-	void unmortgage(){
-		
-	}
-	
-	int calculateRent(){
 		return -1;
 	}
 

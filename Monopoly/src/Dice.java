@@ -3,6 +3,8 @@
 // A4
 // Dice.java
 
+import java.util.Random;
+
 public class Dice {
 	
 	// global variables
@@ -11,7 +13,17 @@ public class Dice {
 	private int numberOfDoublesRolled;
 	
 	public void Roll(){
+		Random rand = new Random();
+
+		face1 = rand.nextInt(6) + 1;
+		face2 = rand.nextInt(6) + 1;
 		
+		// prepares the number of doubles rolled for next turn
+		if(!isDouble()){
+			numberOfDoublesRolled = 0;
+		}else{
+			numberOfDoublesRolled++;
+		}
 	}
 	
 	public int getSum(){
@@ -20,7 +32,6 @@ public class Dice {
 	
 	private boolean isDouble(){
 		if(face1 == face2){
-			numberOfDoublesRolled++;
 			return true;
 		}
 		return false;

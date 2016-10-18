@@ -3,6 +3,8 @@
 // A4
 // Player.java
 
+import java.util.ArrayList;
+
 public class Player {
 
 	// global variables
@@ -10,15 +12,23 @@ public class Player {
 	private String name;
 	private int playerID;
 	
-	private int propertiesOwned[];
+	private ArrayList<Integer> propertiesOwned;
 	private int currentSquare;
 	
+	public Player(int playerID, String name, int balance, int currentSquare){
+		this.playerID = playerID;
+		this.name = name;
+		
+		// These take in a balance and currentSquare even tho they will be fixed for testing purposes
+		this.balance = balance;
+		this.currentSquare = currentSquare;
+	}
 	
-	public int[] getPropertiesOwned() {
+	public ArrayList<Integer> getPropertiesOwned() {
 		return propertiesOwned;
 	}
-	public void setPropertiesOwned(int[] propertiesOwned) {
-		this.propertiesOwned = propertiesOwned;
+	public void addProperty(int propertyID) {
+		this.propertiesOwned.add(propertyID);
 	}
 	public int getBalance() {
 		return balance;
@@ -29,14 +39,8 @@ public class Player {
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	public int getPlayerID() {
 		return playerID;
-	}
-	public void setPlayerID(int playerID) {
-		this.playerID = playerID;
 	}
 	public int getCurrentSquare() {
 		return currentSquare;
