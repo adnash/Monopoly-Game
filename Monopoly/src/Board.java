@@ -30,7 +30,7 @@ public class Board {
 		Square Just_Visiting = new Square(10, "Just Visiting");
 		RealEstate St_Charles_Place = new RealEstate(11, "St. Charles Place", 140, 100, new int []{10,20,50,150,450,625,750}, 3);
 		RailroadsAndUtilities Electric_Company = new RailroadsAndUtilities(12, "Electric Company", 150);
-		RealEstate St_Charles_Place = new RealEstate(13, "States Avenue", 140, 100, new int []{10,20,50,150,450,625,750}, 3);
+		RealEstate States_Avenue = new RealEstate(13, "States Avenue", 140, 100, new int []{10,20,50,150,450,625,750}, 3);
 		RealEstate Virginia_Avenue = new RealEstate(14, "Virginia Avenue", 160, 100, new int []{12,24,60,180,500,700,900}, 3);
 		RailroadsAndUtilities Pennsylvania_Railroad = new RailroadsAndUtilities(15, "Pennsylvania Railroad", 200);
 		RealEstate St_James_Place = new RealEstate(16, "St. James Place", 180, 100, new int []{14,28,70,200,550,750,950}, 4);
