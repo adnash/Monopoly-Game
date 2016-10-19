@@ -12,6 +12,10 @@ public class Dice {
 	private int face2;
 	private int numberOfDoublesRolled;
 	
+	public void Dice(){
+		numberOfDoublesRolled = 0;
+	}
+	
 	public void Roll(){
 		Random rand = new Random();
 

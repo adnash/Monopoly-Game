@@ -36,6 +36,12 @@ public class Player {
 	public void setBalance(int balance) {
 		this.balance = balance;
 	}
+	public void increaseBalance(int balance) {
+		this.balance += balance;
+	}
+	public void decreaseBalance(int balance) {
+		this.balance -= balance;
+	}
 	public String getName() {
 		return name;
 	}

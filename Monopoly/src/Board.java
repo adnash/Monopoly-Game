@@ -9,7 +9,8 @@ public class Board {
 	
 	// global variables
 	private Square squares[] = new Square[41];
-	
+	private Player players[] = new Player[];
+	private Dice dice = new Dice();
 	public Square getSquare(int squareID){
 		return null;
 	}
@@ -57,6 +58,47 @@ public class Board {
 		Tax Luxury_Tax = new Tax(38, "Luxury Tax");
 		RealEstate Boardwalk = new RealEstate(39, "Boardwalk", 400, 200, new int []{50,100,200,600,1400,1700,2000}, 8);
 		
+		//Need to Add Jail Spot
+		
+		//Add Squares to the array
+		
+		//Add players to the array
+		
+		//Start timmer call gamePlay to initiate play
 	}
+	
+	//Iterate through players for turns. After Each Player check timer.
+	private void gamePlay(){
+		int player_turn = 0;
+		while(true){
+			//checktime();
+			playerTurnProcess(player[player_turn]);
+			player_turn = (player_turn+1)%players.length;
+		}
+	}
+	
+	//This turn process will be for non Jailed players. Jailed players have a different process. 
+	private void playerTurnProcess(Player Curr_Play){
+		//Do once then only repeat for doubles.
+		do{
+			dice.Roll();
+			//Check for 3 doubles. If 3 go to jail and end turn.
+			if(dice.getNumberOfDoublesRolled() == 3){
+				setCurrentSquare(-1);
+				break;
+			}
+			int oldSquare = Curr_Play.getCurrentSquare();
+			int newSquare = oldSquare + dice.getSum();
+			if(newSquare>=40){
+				Curr_Play.increaseBalance(200);
+				newSquare = newSquare%40;
+			}
+			Curr_Play.setCurrentSquare(newSquare);
+			//ResolveSquare(); -- Unbuilt Method to determine what happens to the player i.e. pay,buy,auction.
+			//Now buy/sell houses or trade properties. 
+		}while(isDouble())
+	}
+	
+	
 	
 }
