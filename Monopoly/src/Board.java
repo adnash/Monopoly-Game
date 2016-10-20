@@ -4,6 +4,7 @@
 // Board.java
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Board {
 	
@@ -97,11 +98,12 @@ public class Board {
 		squares[38] = Luxury_Tax;
 		RealEstate Boardwalk = new RealEstate(39, "Boardwalk", 400, 200, new int []{50,100,200,600,1400,1700,2000}, 8);
 		squares[39] = Boardwalk;
-		//Need to Add Jail Spot
 		Jail jail = new Jail(40, "Jail");
 		squares[40] = jail;
 		//Add players to the array
 		//Start timer call gamePlay to initiate play
+		
+		
 	}
 	
 	//Iterate through players for turns. After Each Player check timer.
@@ -118,35 +120,62 @@ public class Board {
 	}
 	
 	//This turn process will be for non Jailed players. Jailed players have a different process. 
-	private void playerTurnProcess(Player Curr_Play){
+	private void playerTurnProcess(Player Curr_Play) {
 		//Do once then only repeat for doubles.
-		do{
+		do {
 			dice.Roll();
 			//Check for 3 doubles. If 3 go to jail and end turn.
-			if(dice.getNumberOfDoublesRolled() == 3){
+			//TODO We will want to keep track of doubles in Player objects, and reset after every turn
+			if (dice.getNumberOfDoublesRolled() == 3) {
 				Curr_Play.setCurrentSquare(-1);
 				break;
 			}
+			
+			//TODO We should move this to a helper method called "calculateMove" since we need this logic for rolling doubles in Jail too
 			int oldSquare = Curr_Play.getCurrentSquare();
 			int newSquare = oldSquare + dice.getSum();
-			if(newSquare>=40){
+			if (newSquare >= 40) {
 				Curr_Play.increaseBalance(200);
 				newSquare = newSquare%40;
 			}
 			Curr_Play.setCurrentSquare(newSquare);
+			//
+			
 			//ResolveSquare(); -- Unbuilt Method to determine what happens to the player i.e. pay,buy,auction.
 			//Now buy/sell houses or trade properties. 
-		}while(dice.isDouble());
+		} while(dice.isDouble());
 	}
 	
 	//The turn a player takes if they are in jail
 	private void playerJailTurnProcess(Player Curr_Play){
 		//Give option to pay 50 dollars
-		//if pay then call player turn process. 
-		//else roll.
-		//if roll is double take turn do not roll again. 
-		//if not double check if third turn
-		//if third turn by 50 and move.
+		//TODO This is currently implemented using the console and system IO. We will need to implement it using the JFrame window later
+		Scanner input = new Scanner(System.in);
+		System.out.println("Pay $50 to get out of jail? (y/n)");
+		char answer = input.next().substring(0,1).toCharArray()[1];
+
+		switch (answer) {
+			case 'y':	// debit player $50 and call player turn process
+				if (Curr_Play.getBalance() >= 50) {
+					Curr_Play.decreaseBalance(50);
+					playerTurnProcess(Curr_Play);
+				}
+			case 'n':	// let player roll for doubles
+				dice.Roll();
+				if (dice.getNumberOfDoublesRolled() > 0) {
+					// Move player by dice amount and end turn
+					int oldSquare = Curr_Play.getCurrentSquare();
+					int newSquare = oldSquare + dice.getSum();
+					if (newSquare >= 40) {
+						Curr_Play.increaseBalance(200);
+						newSquare = (newSquare % 40);
+					}
+					Curr_Play.setCurrentSquare(newSquare);
+				} 
+				//TODO Add third turn in Jail logic
+				//else if (inJailForThirdTurn)
+			default:	System.out.println("Invalid answer. Try again.");
+		}
 		//if not third turn end turn.
 	}
 	
