@@ -139,10 +139,9 @@ public class Board {
 				newSquare = newSquare%40;
 			}
 			Curr_Play.setCurrentSquare(newSquare);
-			//
 			
 			//ResolveSquare(); -- Unbuilt Method to determine what happens to the player i.e. pay,buy,auction.
-			//Now buy/sell houses or trade properties. 
+			//TODO Now buy/sell houses or trade properties methods 
 		} while(dice.isDouble());
 	}
 	
@@ -182,15 +181,64 @@ public class Board {
 	//when a player lands on a square this method will resolve all actions.
 	private void resolveSquare(Player Curr_Player, int squareID){
 		Square Curr_Square = getSquare(squareID);
-		//How do we tell what each square is?
-		//If RealEstate
-			//is owned? - pay rent
-				//square resolved
-			//unowned - Do you want to buy?
-				//If bought change owner square resolved
-			//If unbought - auction sequence
-		//if go to jail then update player location to jail and end turn
-		//if tax pay tax.
+		if(Curr_Square instanceof RealEstate){
+			RealEstate Curr_Estate =(RealEstate) Curr_Square; 
+			if((Curr_Estate.getOwnerID())!=-1 && (Curr_Estate.getOwnerID()) != Curr_Player.getPlayerID()){
+				payRent_RealEstate(Curr_Estate, Curr_Player);
+				return;
+			}else{
+				Scanner input = new Scanner(System.in);
+				System.out.println("Would you like to buy "+Curr_Estate.getName() +" (y/n)");
+				char answer = input.next().substring(0,1).toCharArray()[1];
+
+				switch (answer) {
+					case 'y':	
+						purchaseProperty(squareID, Curr_Player);
+					case 'n':	// let player roll for doubles
+						//TODO implement auction of unpurchased Realestate.
+					default:	System.out.println("Invalid answer. Try again.");
+				}
+				input.close();
+			}
+		}
+		//TODO implement what happens when land on jail
+		//TODO implement what happens if tax square
+		//TODO implement what happens if properties is a utility or railroad.
+	}
+	
+	private void purchaseProperty(int squareID, Player Curr_Player){
+		Square Curr_Square = getSquare(squareID);
+		if(Curr_Square instanceof RealEstate){
+			RealEstate Curr_Estate =(RealEstate) Curr_Square;
+			if(Curr_Player.getBalance()>=Curr_Estate.getPrice()){
+				Curr_Player.decreaseBalance(Curr_Estate.getPrice());
+				Curr_Estate.setOwnerID(Curr_Player.getPlayerID());
+			}else{
+				System.out.println("Can not afford " + Curr_Estate.getName());
+			}
+		}else if(Curr_Square instanceof RailroadsAndUtilities){
+			RailroadsAndUtilities Curr_Rail_Utility =(RailroadsAndUtilities) Curr_Square;
+			if(Curr_Player.getBalance()>=Curr_Rail_Utility.getPrice()){
+				Curr_Player.decreaseBalance(Curr_Rail_Utility.getPrice());
+				Curr_Rail_Utility.setOwnerID(Curr_Player.getPlayerID());
+			}else{
+				System.out.println("Can not afford " + Curr_Rail_Utility.getName());
+			}
+		}else{
+			System.out.println("Not an ownable Square");
+		}
+	}
+	
+	private void payRent_RealEstate(RealEstate Curr_Estate, Player Curr_Player){
+		int rent = Curr_Estate.calcRent();
+		players[(Curr_Estate.getOwnerID())].increaseBalance(rent);
+		Curr_Player.decreaseBalance(rent);
+	}
+	
+	private void payRent_Utilities_RailRoads(RailroadsAndUtilities Curr_Property, Player Curr_Player){
+		int rent = Curr_Property.calculateRent();
+		players[(Curr_Property.getOwnerID())].increaseBalance(rent);
+		Curr_Player.decreaseBalance(rent);
 	}
 	
 	//TODO Need to implement by interacting with timer in Monopoly class
