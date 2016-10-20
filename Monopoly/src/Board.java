@@ -75,8 +75,8 @@ public class Board {
 		squares[27] = Ventnor_Avenue;
 		RailroadsAndUtilities Water_Works = new RailroadsAndUtilities(28, "Water Works", 150);
 		squares[28] = Water_Works;
-		RealEstate Marvin_Avenue = new RealEstate(29, "Marvin Avenue", 280, 150, new int []{24,48,120,360,850,1025,1200}, 6);
-		squares[29] = Marvin_Avenue;
+		RealEstate Marvin_Gardens = new RealEstate(29, "Marvin Gardens", 280, 150, new int []{24,48,120,360,850,1025,1200}, 6);
+		squares[29] = Marvin_Gardens;
 		Square goToJail = new Square(30, "Go To Jail");
 		squares[30] = goToJail;
 		RealEstate Pacific_Avenue = new RealEstate(31, "Pacific Avenue", 300, 200, new int []{26,52,130,390,900,1100,1275}, 7);
