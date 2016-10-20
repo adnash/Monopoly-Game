@@ -98,11 +98,10 @@ public class Board {
 		RealEstate Boardwalk = new RealEstate(39, "Boardwalk", 400, 200, new int []{50,100,200,600,1400,1700,2000}, 8);
 		squares[39] = Boardwalk;
 		//Need to Add Jail Spot
-		
-		
+		Jail jail = new Jail(40, "Jail");
+		squares[40] = jail;
 		//Add players to the array
-		
-		//Start timmer call gamePlay to initiate play
+		//Start timer call gamePlay to initiate play
 	}
 	
 	//Iterate through players for turns. After Each Player check timer.
