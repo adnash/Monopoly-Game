@@ -9,7 +9,7 @@ public class Board {
 	
 	// global variables
 	private Square squares[] = new Square[41];
-	private Player players[] = new Player[];
+	private Player players[] = new Player[4];
 	private Dice dice = new Dice();
 	public Square getSquare(int squareID){
 		return squares[squareID];
@@ -65,7 +65,7 @@ public class Board {
 		squares[22] = chance2;
 		RealEstate Indiana_Avenue = new RealEstate(23, "Indiana Avenue", 220, 150, new int []{18,36,90,250,700,875,1050}, 5);
 		squares[23] = Indiana_Avenue;
-		RealEstate Illinois_Avenue = new RealEstate(24, "Illinois Avenue", 240, 150, 20new int []{20,40,100,300,750,925,1100}, 5);
+		RealEstate Illinois_Avenue = new RealEstate(24, "Illinois Avenue", 240, 150, new int []{20,40,100,300,750,925,1100}, 5);
 		squares[24] = Illinois_Avenue;
 		RailroadsAndUtilities B_O_Railroad = new RailroadsAndUtilities(25, "B. & O. Railroad", 200);
 		squares[25] = B_O_Railroad;
@@ -113,7 +113,7 @@ public class Board {
 			//check if in jail
 			//if not run turn process.
 			//if so run jail process.
-			playerTurnProcess(player[player_turn]);
+			playerTurnProcess(players[player_turn]);
 			player_turn = (player_turn+1)%players.length;
 		}
 	}
@@ -137,7 +137,7 @@ public class Board {
 			Curr_Play.setCurrentSquare(newSquare);
 			//ResolveSquare(); -- Unbuilt Method to determine what happens to the player i.e. pay,buy,auction.
 			//Now buy/sell houses or trade properties. 
-		}while(isDouble())
+		}while(dice.isDouble());
 	}
 	
 	//The turn a player takes if they are in jail

@@ -3,8 +3,6 @@
 // A4
 // RailroadsAndUtilities.java
 
-
-
 public class RailroadsAndUtilities extends Square {
 
 	private int ownerID;
