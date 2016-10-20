@@ -107,9 +107,9 @@ public class Board {
 	}
 	
 	//Iterate through players for turns. After Each Player check timer.
-	private void gamePlay(){
+	private void gamePlay() {
 		int player_turn = 0;
-		while(true){
+		while(true) {
 			//checktime();
 			//check if in jail
 			//if not run turn process.
@@ -193,6 +193,9 @@ public class Board {
 		//if tax pay tax.
 	}
 	
-	
+	//TODO Need to implement by interacting with timer in Monopoly class
+	private int checkTime() {
+		return 0;
+	}
 	
 }
