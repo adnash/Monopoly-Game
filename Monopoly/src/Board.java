@@ -140,7 +140,7 @@ public class Board {
 			}
 			Curr_Play.setCurrentSquare(newSquare);
 			
-			//ResolveSquare(); -- Unbuilt Method to determine what happens to the player i.e. pay,buy,auction.
+			resolveSquare(Curr_Play, newSquare);
 			//TODO Now buy/sell houses or trade properties methods 
 		} while(dice.isDouble());
 	}
@@ -179,13 +179,14 @@ public class Board {
 	}
 	
 	//when a player lands on a square this method will resolve all actions.
-	private void resolveSquare(Player Curr_Player, int squareID){
+	//return false if player goes to jail.
+	private boolean resolveSquare(Player Curr_Player, int squareID){
 		Square Curr_Square = getSquare(squareID);
 		if(Curr_Square instanceof RealEstate){
 			RealEstate Curr_Estate =(RealEstate) Curr_Square; 
 			if((Curr_Estate.getOwnerID())!=-1 && (Curr_Estate.getOwnerID()) != Curr_Player.getPlayerID()){
 				payRent_RealEstate(Curr_Estate, Curr_Player);
-				return;
+				return true;
 			}else{
 				Scanner input = new Scanner(System.in);
 				System.out.println("Would you like to buy "+Curr_Estate.getName() +" (y/n)");
@@ -194,12 +195,18 @@ public class Board {
 				switch (answer) {
 					case 'y':	
 						purchaseProperty(squareID, Curr_Player);
+						input.close();
+						return true;
 					case 'n':	// let player roll for doubles
 						//TODO implement auction of unpurchased Realestate.
 					default:	System.out.println("Invalid answer. Try again.");
 				}
 				input.close();
 			}
+		}else if(Curr_Square instanceof Jail){
+			Jail jail =(Jail) Curr_Square;
+			//TODO update location to jail and add to jail class.
+			
 		}
 		//TODO implement what happens when land on jail
 		//TODO implement what happens if tax square
