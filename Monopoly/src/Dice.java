@@ -40,6 +40,10 @@ public class Dice {
 		}
 		return false;
 	}
+	
+	public void resetDoubles(){
+		numberOfDoublesRolled = 0;
+	}
 
 	public int getNumberOfDoublesRolled() {
 		return numberOfDoublesRolled;

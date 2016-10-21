@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Board {
-	
+
 	// Global variables
 	private Square[] squares = new Square[41];
 	private Player[] players;
 	private Dice dice = new Dice();	
-	
+
 	// Board constructor called once and only once by Monopoly class to initialize certain variables
 	public Board(int numPlayers) {		
 		players = new Player[numPlayers];
 	}
-	
+
 	// Setting up squares	
 	private void setupBoard() {
 		Square go = new Square(0, "Go");
@@ -102,28 +102,30 @@ public class Board {
 		squares[39] = Boardwalk;
 		Jail jail = new Jail(40, "Jail");
 		squares[40] = jail;
-		
+
 		// TODO Start game timer here?
-		
+
 	}
-	
+
 	public Square getSquare(int squareID){
 		return squares[squareID];
 	}
-	
+
 	// Iterate through players for turns. After Each Player check timer.
 	private void gamePlay() {
 		int player_turn = 0;
+		Jail jail = (Jail) getSquare(41);
 		while(true) {
-			//checktime();
-			//check if in jail
-			//if not run turn process.
-			//if so run jail process.
-			playerTurnProcess(players[player_turn]);
+			checkTime();
+			if(jail.isPlayerJailed(players[player_turn])){
+				playerJailTurnProcess(players[player_turn]);
+			}else{
+				playerTurnProcess(players[player_turn]);
+			}
 			player_turn = (player_turn+1)%players.length;
 		}
 	}
-	
+
 	//This turn process will be for non Jailed players. Jailed players have a different process. 
 	private void playerTurnProcess(Player Curr_Play) {
 		//Do once then only repeat for doubles.
@@ -132,10 +134,11 @@ public class Board {
 			//Check for 3 doubles. If 3 go to jail and end turn.
 			//TODO We will want to keep track of doubles in Player objects, and reset after every turn
 			if (dice.getNumberOfDoublesRolled() == 3) {
+				dice.resetDoubles();
 				Curr_Play.setCurrentSquare(-1);
-				break;
+				return;
 			}
-			
+
 			//TODO We should move this to a helper method called "calculateMove" since we need this logic for rolling doubles in Jail too
 			int oldSquare = Curr_Play.getCurrentSquare();
 			int newSquare = oldSquare + dice.getSum();
@@ -144,12 +147,16 @@ public class Board {
 				newSquare = newSquare%40;
 			}
 			Curr_Play.setCurrentSquare(newSquare);
-			
-			resolveSquare(Curr_Play, newSquare);
+			//Returned false so player goes to jail. need to reset double count.
+			if(!resolveSquare(Curr_Play, newSquare)){
+				dice.resetDoubles();
+				Curr_Play.setCurrentSquare(-1);
+				return;
+			}
 			//TODO Now buy/sell houses or trade properties methods 
 		} while(dice.isDouble());
 	}
-	
+
 	//The turn a player takes if they are in jail
 	private void playerJailTurnProcess(Player Curr_Play){
 		//Give option to pay 50 dollars
@@ -159,30 +166,30 @@ public class Board {
 		char answer = input.next().substring(0,1).toCharArray()[1];
 
 		switch (answer) {
-			case 'y':	// debit player $50 and call player turn process
-				if (Curr_Play.getBalance() >= 50) {
-					Curr_Play.decreaseBalance(50);
-					playerTurnProcess(Curr_Play);
+		case 'y':	// debit player $50 and call player turn process
+			if (Curr_Play.getBalance() >= 50) {
+				Curr_Play.decreaseBalance(50);
+				playerTurnProcess(Curr_Play);
+			}
+		case 'n':	// let player roll for doubles
+			dice.Roll();
+			if (dice.getNumberOfDoublesRolled() > 0) {
+				// Move player by dice amount and end turn
+				int oldSquare = Curr_Play.getCurrentSquare();
+				int newSquare = oldSquare + dice.getSum();
+				if (newSquare >= 40) {
+					Curr_Play.increaseBalance(200);
+					newSquare = (newSquare % 40);
 				}
-			case 'n':	// let player roll for doubles
-				dice.Roll();
-				if (dice.getNumberOfDoublesRolled() > 0) {
-					// Move player by dice amount and end turn
-					int oldSquare = Curr_Play.getCurrentSquare();
-					int newSquare = oldSquare + dice.getSum();
-					if (newSquare >= 40) {
-						Curr_Play.increaseBalance(200);
-						newSquare = (newSquare % 40);
-					}
-					Curr_Play.setCurrentSquare(newSquare);
-				} 
-				//TODO Add third turn in Jail logic
-				//else if (inJailForThirdTurn)
-			default:	System.out.println("Invalid answer. Try again.");
+				Curr_Play.setCurrentSquare(newSquare);
+			} 
+			//TODO Add third turn in Jail logic
+			//else if (inJailForThirdTurn)
+		default:	System.out.println("Invalid answer. Try again.");
 		}
 		//if not third turn end turn.
 	}
-	
+
 	//when a player lands on a square this method will resolve all actions.
 	//return false if player goes to jail.
 	private boolean resolveSquare(Player Curr_Player, int squareID){
@@ -198,26 +205,61 @@ public class Board {
 				char answer = input.next().substring(0,1).toCharArray()[1];
 
 				switch (answer) {
-					case 'y':	
-						purchaseProperty(squareID, Curr_Player);
-						input.close();
-						return true;
-					case 'n':	// let player roll for doubles
-						//TODO implement auction of unpurchased Realestate.
-					default:	System.out.println("Invalid answer. Try again.");
+				case 'y':	
+					purchaseProperty(squareID, Curr_Player);
+					input.close();
+					return true;
+				case 'n':	// let player roll for doubles
+					input.close();
+					return true;
+					//TODO implement auction of unpurchased Realestate.
+				default:	
+					System.out.println("Invalid answer. Try again.");
+					input.close();			
+					return true;
 				}
-				input.close();
 			}
 		}else if(Curr_Square instanceof Jail){
 			Jail jail =(Jail) Curr_Square;
+			jail.addPlayer(Curr_Player);
 			//TODO update location to jail and add to jail class.
-			
+			return false;
+		}else if(Curr_Square instanceof Tax){
+			Tax tax = (Tax) Curr_Square;
+			tax.payTax(Curr_Player);
+			return true;
+		}else if(Curr_Square instanceof RailroadsAndUtilities){
+			RailroadsAndUtilities Curr_RU =(RailroadsAndUtilities) Curr_Square; 
+			if((Curr_RU.getOwnerID())!=-1 && (Curr_RU.getOwnerID()) != Curr_Player.getPlayerID()){
+				payRent_Utilities_RailRoads(Curr_RU, Curr_Player);
+				return true;
+			}else{
+				Scanner input = new Scanner(System.in);
+				System.out.println("Would you like to buy "+Curr_RU.getName() +" (y/n)");
+				char answer = input.next().substring(0,1).toCharArray()[1];
+
+				switch (answer) {
+				case 'y':	
+					purchaseProperty(squareID, Curr_Player);
+					input.close();
+					return true;
+				case 'n':	// let player roll for doubles
+					input.close();
+					return true;
+					//TODO implement auction of unpurchased Realestate.
+				default:	
+					System.out.println("Invalid answer. Try again.");
+					input.close();			
+					return true;
+				}
+			}
 		}
-		//TODO implement what happens when land on jail
-		//TODO implement what happens if tax square
-		//TODO implement what happens if properties is a utility or railroad.
+		else{
+			return true;
+		}
 	}
-	
+
+	//TODO - if player trys to buy but can't afford need to relay information back and go to an auction.
 	private void purchaseProperty(int squareID, Player Curr_Player){
 		Square Curr_Square = getSquare(squareID);
 		if(Curr_Square instanceof RealEstate){
@@ -240,22 +282,22 @@ public class Board {
 			System.out.println("Not an ownable Square");
 		}
 	}
-	
+
 	private void payRent_RealEstate(RealEstate Curr_Estate, Player Curr_Player){
 		int rent = Curr_Estate.calcRent();
 		players[(Curr_Estate.getOwnerID())].increaseBalance(rent);
 		Curr_Player.decreaseBalance(rent);
 	}
-	
+
 	private void payRent_Utilities_RailRoads(RailroadsAndUtilities Curr_Property, Player Curr_Player){
 		int rent = Curr_Property.calculateRent();
 		players[(Curr_Property.getOwnerID())].increaseBalance(rent);
 		Curr_Player.decreaseBalance(rent);
 	}
-	
+
 	//TODO Need to implement by interacting with timer in Monopoly class, (or we may want to move timer into this class)
 	private boolean checkTime() {
 		return Monopoly.getTimeUp();
 	}
-	
+
 }
