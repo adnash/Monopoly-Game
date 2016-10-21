@@ -189,7 +189,7 @@ public class Board {
 		}
 		//if not third turn end turn.
 	}
-	
+
 	//random change for commit
 
 	//when a player lands on a square this method will resolve all actions.
@@ -295,6 +295,141 @@ public class Board {
 		int rent = Curr_Property.calculateRent();
 		players[(Curr_Property.getOwnerID())].increaseBalance(rent);
 		Curr_Player.decreaseBalance(rent);
+	}
+
+	private void auction(int squareID){
+		Square Curr_Square = getSquare(squareID);
+		ArrayList<Player> temp = new ArrayList<Player>();
+		ArrayList<Player> loop = new ArrayList<Player>();
+		for(int i = 0; i < players.length; i++){
+			temp.add(players[i]);
+		}
+		loop = temp;
+		Player winner = null;
+		int currentBid = 0;
+		int tempBid = 0;
+		//When there is only one player left in the list, they are the winner
+		while(loop.size() > 1){
+			//Ask each player if they want to bid, and for how much
+			for(int i = 0; i < loop.size(); i++){
+				Scanner input = new Scanner(System.in);
+				System.out.println(loop.get(i) + ", would you like to place a bid on" + Curr_Square.getName() + "?" +" (y/n)");
+
+				char answer = input.next().substring(0,1).toCharArray()[1];
+
+				switch (answer) {
+				case 'y':
+					System.out.println("Enter an amount to bid. You have $" + loop.get(i).getBalance());
+					System.out.println("The current bid is $" + currentBid);
+					tempBid = input.nextInt();
+					if(tempBid > loop.get(i).getBalance()){
+						System.out.println("You don't have enough money!");
+						System.out.println("You have been removed from the bidding.");
+						temp.remove(loop.get(i));
+					}
+					else if(tempBid <= currentBid){
+						System.out.println("Too bad! Your bid is too low.");
+						System.out.println("You have been removed from the bidding.");
+						temp.remove(loop.get(i));
+					}
+					else{
+						currentBid = tempBid;
+						winner = loop.get(i);
+					}
+					break;
+				case 'n':
+				default:
+					System.out.println("You have been removed from the bidding.");
+					temp.remove(loop.get(i));
+				}
+				loop = temp;
+				input.close();
+			}
+		}
+		//Auction ends
+		if(winner == null){
+			System.out.println("Nobody bought the property.");
+		}
+		else{
+			System.out.println(winner.getName() + " is the winner of the auction!");
+			//Gets type of square
+			//Affordability is calculated in the auction
+			if(Curr_Square instanceof RealEstate){
+				RealEstate Final_Square =(RealEstate) Curr_Square;
+				winner.decreaseBalance(Final_Square.getPrice());
+				Final_Square.setOwnerID(winner.getPlayerID());
+			}
+			else{
+				RailroadsAndUtilities Final_Square = (RailroadsAndUtilities) Curr_Square;
+				winner.decreaseBalance(Final_Square.getPrice());
+				Final_Square.setOwnerID(winner.getPlayerID());
+			}
+		}
+	}
+
+	public void trade(Player p){
+		//Player has no properties to sell.
+		if(p.getPropertiesOwned().size() == 0){
+			System.out.println("You have no properties to sell.");
+			return;
+		}
+
+		//Player has properties to sell.
+		System.out.println("You own:");
+		Square sq = new Square(1, "blah");
+		for(int i = 0; i < p.getPropertiesOwned().size(); i++){
+			sq = getSquare(p.getPropertiesOwned().get(i));
+			System.out.println(sq.getID() + ": " + sq.getName());
+		}
+		Scanner input = new Scanner(System.in);
+		System.out.println("Enter the number next to the property you wish to sell.");
+		System.out.println("Enter anything else to cancel the trade.");
+		int property = input.nextInt();
+		//The player entered a property to sell
+		if(p.getPropertiesOwned().contains(property)){
+			sq = getSquare(property);
+			System.out.println("Enter the number of the player you would like to sell it to.");
+			Player target = new Player(777, "blah", 0, 0);
+			for(int i = 0; i < players.length; i++){
+				target = players[i];
+				//Make sure you're only selling to other players
+				if(target.getPlayerID() != p.getPlayerID()){
+					System.out.println(target.getPlayerID() + ": " + target.getName());
+				}
+			}
+			int otherPlayer = input.nextInt();
+			System.out.println("Enter the amount you wish to sell the property for.");
+			int price = input.nextInt();
+			Player temp;
+			//Get the other player
+			for(int i = 0; i < players.length; i++){
+				temp = players[i];
+				if(otherPlayer == temp.getPlayerID()){
+					target = temp;
+				}
+			}
+			//See if the other player agrees to the trade
+			System.out.println(target.getName() + ", would you like to buy " + sq.getName() + " for " + price + "? (y/n");
+			char answer = input.next().substring(0,1).toCharArray()[1];
+			switch (answer) {
+			case 'y':
+				System.out.println("The trade has been accepted!");
+				if(target.getBalance() <= price){
+					System.out.println("But " + target.getName() + " does not have enough money...");
+					return;
+				}
+				target.decreaseBalance(price);
+				p.increaseBalance(price);
+				p.removeProperty(sq.getID());
+				target.addProperty(sq.getID());
+			case 'n':
+			default:
+				System.out.println("The trade has been declined.");
+			}
+		}
+		else{
+			System.out.println("Trade cancelled.");
+		}
 	}
 
 	//TODO Need to implement by interacting with timer in Monopoly class, (or we may want to move timer into this class)
