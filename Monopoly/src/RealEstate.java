@@ -34,6 +34,8 @@ public class RealEstate extends Square {
 		return true;
 
 	}
+	
+	//random change note
 
 	public int calcRent(){
 		if(isMonopoly()){

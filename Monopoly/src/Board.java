@@ -189,6 +189,8 @@ public class Board {
 		}
 		//if not third turn end turn.
 	}
+	
+	//random change for commit
 
 	//when a player lands on a square this method will resolve all actions.
 	//return false if player goes to jail.
