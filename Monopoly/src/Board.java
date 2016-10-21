@@ -8,16 +8,18 @@ import java.util.Scanner;
 
 public class Board {
 	
-	// global variables
-	private Square squares[] = new Square[41];
-	private Player players[] = new Player[4];
-	private Dice dice = new Dice();
-	public Square getSquare(int squareID){
-		return squares[squareID];
+	// Global variables
+	private Square[] squares = new Square[41];
+	private Player[] players;
+	private Dice dice = new Dice();	
+	
+	// Board constructor called once and only once by Monopoly class to initialize certain variables
+	public Board(int numPlayers) {		
+		players = new Player[numPlayers];
 	}
 	
-	private void setupBoard(){
-		// Setting up squares	
+	// Setting up squares	
+	private void setupBoard() {
 		Square go = new Square(0, "Go");
 		squares[0] = go;
 		RealEstate Mediterranean_Avenue = new RealEstate(1, "Mediterranean Avenue", 60, 50, new int []{2,4,10,30,90,160,250}, 1);
@@ -100,13 +102,16 @@ public class Board {
 		squares[39] = Boardwalk;
 		Jail jail = new Jail(40, "Jail");
 		squares[40] = jail;
-		//Add players to the array
-		//Start timer call gamePlay to initiate play
 		
+		// TODO Start game timer here?
 		
 	}
 	
-	//Iterate through players for turns. After Each Player check timer.
+	public Square getSquare(int squareID){
+		return squares[squareID];
+	}
+	
+	// Iterate through players for turns. After Each Player check timer.
 	private void gamePlay() {
 		int player_turn = 0;
 		while(true) {
@@ -241,9 +246,9 @@ public class Board {
 		Curr_Player.decreaseBalance(rent);
 	}
 	
-	//TODO Need to implement by interacting with timer in Monopoly class
-	private int checkTime() {
-		return 0;
+	//TODO Need to implement by interacting with timer in Monopoly class, (or we may want to move timer into this class)
+	private boolean checkTime() {
+		return Monopoly.getTimeUp();
 	}
 	
 }

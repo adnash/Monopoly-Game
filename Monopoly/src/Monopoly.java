@@ -3,37 +3,49 @@
 // A4
 // Monopoly.java
 
-import java.sql.Time;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Monopoly {
 	
-	// global variables
-	int numPlayers;
-	static int duration;
-	static Timer timer = new Timer();
-	Time timeLeft;
-
-	static boolean timeUp = false;
+	// Global variables
+	private static int numPlayers;
+	private static String[] playerNames;
+	private static int duration;
+	private static Timer timer = new Timer();
+	private static boolean timeUp = false;
+	//private static int timeLeft;
 	
-	public Time getTimeLeft() {
-		return timeLeft;
-	}
-
 	public static void main(String[] args) {
+		// TODO Create instance of UI
+		// TODO Get duration, numPlayers and playerNames from UI events from Monopoly start window instead of hard-coding them in
 		duration = 60;
-		System.out.println("hi");
+		numPlayers = 4;
+		playerNames = new String[] {"Alan", "Conor", "Dan", "Alex"};
 		
+		// TODO Depending on what GRASP says, we may want to move the timer into the Board class...
+		// This timer will set "timeUp" flag to "true" after the duration (in minutes) has passed
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				timeUp = true;
 			}
 		}, duration*60*1000);
+		
+		// Call start() method that will create Board and pass it all the relevant details
+		start();
 	}
 	
-	private void start(){
-		
+	private static void start() {
+		Board board = new Board(numPlayers);
 	}
+	
+	public static boolean getTimeUp() {
+		return timeUp;
+	}
+	
+/*	public int getTimeLeft() {
+		return timeLeft;
+	}*/
+	
 }
