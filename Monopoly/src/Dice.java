@@ -34,11 +34,15 @@ public class Dice {
 		return face1 + face2;
 	}
 	
-	private boolean isDouble(){
+	public boolean isDouble(){
 		if(face1 == face2){
 			return true;
 		}
 		return false;
+	}
+	
+	public void resetDoubles(){
+		numberOfDoublesRolled = 0;
 	}
 
 	public int getNumberOfDoublesRolled() {

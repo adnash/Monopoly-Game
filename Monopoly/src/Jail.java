@@ -20,23 +20,47 @@ public class Jail extends Square {
 		Arrays.fill(turnsLeft, 0);
 	}
 
-	//Reduce the amount of turns each player has left in jail.
-	//If the value reaches 0, free the player from jail.
-	public void reduceJailTurns(){
-		for(int i = 0; i < turnsLeft.length; i++){
-			if(turnsLeft[i] > 0){
-				turnsLeft[i]--;
-			}
-			if(turnsLeft[i] == 0){
-				freePlayer(players[i]);
-				players[i] = null;
+	//Reduce the amount of turns a player has left in jail.
+	public void reduceJailTurns(Player p){
+		for(int i = 0; i < players.length; i++){
+			if(players[i].getPlayerID() == p.getPlayerID()){
+				turnsLeft[i] -= 1;
+				return;
 			}
 		}
 	}
+	
+	public boolean isPlayerJailed(Player p){
+		for(int i = 0; i < players.length; i++){
+			if(players[i].getPlayerID() == p.getPlayerID()){
+				return true;
+			}
+		}
+		return false;
+	}
 
+	
+	public int checkTurnsLeft(Player p){
+		for(int i = 0; i < players.length; i++){
+			if(players[i].getPlayerID() == p.getPlayerID()){
+				return turnsLeft[i];
+			}
+		}
+		return -1;
+	}
+
+	
+	
 	//Set the player's currentSquare to the visiting space.
 	private void freePlayer(Player p){
 		p.setCurrentSquare(10);
+		for(int i = 0; i < players.length; i++){
+			if(players[i].getPlayerID() == p.getPlayerID()){
+				players[i] = null;
+				turnsLeft[i] = 0;
+				return;
+			}
+		}
 	}
 
 	//Spaces with value null in players[i] means it is an open space for jail.

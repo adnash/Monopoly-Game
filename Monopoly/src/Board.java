@@ -4,19 +4,22 @@
 // Board.java
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Board {
-	
-	// global variables
-	private Square squares[] = new Square[41];
-	private Player players[] = new Player[];
-	private Dice dice = new Dice();
-	public Square getSquare(int squareID){
-		return squares[squareID];
+
+	// Global variables
+	private Square[] squares = new Square[41];
+	private Player[] players;
+	private Dice dice = new Dice();	
+
+	// Board constructor called once and only once by Monopoly class to initialize certain variables
+	public Board(int numPlayers) {		
+		players = new Player[numPlayers];
 	}
-	
-	private void setupBoard(){
-		// Setting up squares	
+
+	// Setting up squares	
+	private void setupBoard() {
 		Square go = new Square(0, "Go");
 		squares[0] = go;
 		RealEstate Mediterranean_Avenue = new RealEstate(1, "Mediterranean Avenue", 60, 50, new int []{2,4,10,30,90,160,250}, 1);
@@ -65,7 +68,7 @@ public class Board {
 		squares[22] = chance2;
 		RealEstate Indiana_Avenue = new RealEstate(23, "Indiana Avenue", 220, 150, new int []{18,36,90,250,700,875,1050}, 5);
 		squares[23] = Indiana_Avenue;
-		RealEstate Illinois_Avenue = new RealEstate(24, "Illinois Avenue", 240, 150, 20new int []{20,40,100,300,750,925,1100}, 5);
+		RealEstate Illinois_Avenue = new RealEstate(24, "Illinois Avenue", 240, 150, new int []{20,40,100,300,750,925,1100}, 5);
 		squares[24] = Illinois_Avenue;
 		RailroadsAndUtilities B_O_Railroad = new RailroadsAndUtilities(25, "B. & O. Railroad", 200);
 		squares[25] = B_O_Railroad;
@@ -75,8 +78,8 @@ public class Board {
 		squares[27] = Ventnor_Avenue;
 		RailroadsAndUtilities Water_Works = new RailroadsAndUtilities(28, "Water Works", 150);
 		squares[28] = Water_Works;
-		RealEstate Marvin_Avenue = new RealEstate(29, "Marvin Avenue", 280, 150, new int []{24,48,120,360,850,1025,1200}, 6);
-		squares[29] = Marvin_Avenue;
+		RealEstate Marvin_Gardens = new RealEstate(29, "Marvin Gardens", 280, 150, new int []{24,48,120,360,850,1025,1200}, 6);
+		squares[29] = Marvin_Gardens;
 		Square goToJail = new Square(30, "Go To Jail");
 		squares[30] = goToJail;
 		RealEstate Pacific_Avenue = new RealEstate(31, "Pacific Avenue", 300, 200, new int []{26,52,130,390,900,1100,1275}, 7);
@@ -97,74 +100,206 @@ public class Board {
 		squares[38] = Luxury_Tax;
 		RealEstate Boardwalk = new RealEstate(39, "Boardwalk", 400, 200, new int []{50,100,200,600,1400,1700,2000}, 8);
 		squares[39] = Boardwalk;
-		//Need to Add Jail Spot
-		
-		
-		//Add players to the array
-		
-		//Start timmer call gamePlay to initiate play
+		Jail jail = new Jail(40, "Jail");
+		squares[40] = jail;
+
+		// TODO Start game timer here?
+
 	}
-	
-	//Iterate through players for turns. After Each Player check timer.
-	private void gamePlay(){
+
+	public Square getSquare(int squareID){
+		return squares[squareID];
+	}
+
+	// Iterate through players for turns. After Each Player check timer.
+	private void gamePlay() {
 		int player_turn = 0;
-		while(true){
-			//checktime();
-			//check if in jail
-			//if not run turn process.
-			//if so run jail process.
-			playerTurnProcess(player[player_turn]);
+		Jail jail = (Jail) getSquare(41);
+		while(true) {
+			checkTime();
+			if(jail.isPlayerJailed(players[player_turn])){
+				playerJailTurnProcess(players[player_turn]);
+			}else{
+				playerTurnProcess(players[player_turn]);
+			}
 			player_turn = (player_turn+1)%players.length;
 		}
 	}
-	
+
 	//This turn process will be for non Jailed players. Jailed players have a different process. 
-	private void playerTurnProcess(Player Curr_Play){
+	private void playerTurnProcess(Player Curr_Play) {
 		//Do once then only repeat for doubles.
-		do{
+		do {
 			dice.Roll();
 			//Check for 3 doubles. If 3 go to jail and end turn.
-			if(dice.getNumberOfDoublesRolled() == 3){
+			//TODO We will want to keep track of doubles in Player objects, and reset after every turn
+			if (dice.getNumberOfDoublesRolled() == 3) {
+				dice.resetDoubles();
 				Curr_Play.setCurrentSquare(-1);
-				break;
+				return;
 			}
+
+			//TODO We should move this to a helper method called "calculateMove" since we need this logic for rolling doubles in Jail too
 			int oldSquare = Curr_Play.getCurrentSquare();
 			int newSquare = oldSquare + dice.getSum();
-			if(newSquare>=40){
+			if (newSquare >= 40) {
 				Curr_Play.increaseBalance(200);
 				newSquare = newSquare%40;
 			}
 			Curr_Play.setCurrentSquare(newSquare);
-			//ResolveSquare(); -- Unbuilt Method to determine what happens to the player i.e. pay,buy,auction.
-			//Now buy/sell houses or trade properties. 
-		}while(isDouble())
+			//Returned false so player goes to jail. need to reset double count.
+			if(!resolveSquare(Curr_Play, newSquare)){
+				dice.resetDoubles();
+				Curr_Play.setCurrentSquare(-1);
+				return;
+			}
+			//TODO Now buy/sell houses or trade properties methods 
+		} while(dice.isDouble());
 	}
-	
+
 	//The turn a player takes if they are in jail
 	private void playerJailTurnProcess(Player Curr_Play){
 		//Give option to pay 50 dollars
-		//if pay then call player turn process. 
-		//else roll.
-		//if roll is double take turn do not roll again. 
-		//if not double check if third turn
-		//if third turn by 50 and move.
+		//TODO This is currently implemented using the console and system IO. We will need to implement it using the JFrame window later
+		Scanner input = new Scanner(System.in);
+		System.out.println("Pay $50 to get out of jail? (y/n)");
+		char answer = input.next().substring(0,1).toCharArray()[1];
+
+		switch (answer) {
+		case 'y':	// debit player $50 and call player turn process
+			if (Curr_Play.getBalance() >= 50) {
+				Curr_Play.decreaseBalance(50);
+				playerTurnProcess(Curr_Play);
+			}
+		case 'n':	// let player roll for doubles
+			dice.Roll();
+			if (dice.getNumberOfDoublesRolled() > 0) {
+				// Move player by dice amount and end turn
+				int oldSquare = Curr_Play.getCurrentSquare();
+				int newSquare = oldSquare + dice.getSum();
+				if (newSquare >= 40) {
+					Curr_Play.increaseBalance(200);
+					newSquare = (newSquare % 40);
+				}
+				Curr_Play.setCurrentSquare(newSquare);
+			} 
+			//TODO Add third turn in Jail logic
+			//else if (inJailForThirdTurn)
+		default:	System.out.println("Invalid answer. Try again.");
+		}
 		//if not third turn end turn.
 	}
 	
+	//random change for commit
+
 	//when a player lands on a square this method will resolve all actions.
-	private void resolveSquare(Player Curr_Player, int squareID){
+	//return false if player goes to jail.
+	private boolean resolveSquare(Player Curr_Player, int squareID){
 		Square Curr_Square = getSquare(squareID);
-		//How do we tell what each square is?
-		//If RealEstate
-			//is owned? - pay rent
-				//square resolved
-			//unowned - Do you want to buy?
-				//If bought change owner square resolved
-			//If unbought - auction sequence
-		//if go to jail then update player location to jail and end turn
-		//if tax pay tax.
+		if(Curr_Square instanceof RealEstate){
+			RealEstate Curr_Estate =(RealEstate) Curr_Square; 
+			if((Curr_Estate.getOwnerID())!=-1 && (Curr_Estate.getOwnerID()) != Curr_Player.getPlayerID()){
+				payRent_RealEstate(Curr_Estate, Curr_Player);
+				return true;
+			}else{
+				Scanner input = new Scanner(System.in);
+				System.out.println("Would you like to buy "+Curr_Estate.getName() +" (y/n)");
+				char answer = input.next().substring(0,1).toCharArray()[1];
+
+				switch (answer) {
+				case 'y':	
+					purchaseProperty(squareID, Curr_Player);
+					input.close();
+					return true;
+				case 'n':	// let player roll for doubles
+					input.close();
+					return true;
+					//TODO implement auction of unpurchased Realestate.
+				default:	
+					System.out.println("Invalid answer. Try again.");
+					input.close();			
+					return true;
+				}
+			}
+		}else if(Curr_Square instanceof Jail){
+			Jail jail =(Jail) Curr_Square;
+			jail.addPlayer(Curr_Player);
+			//TODO update location to jail and add to jail class.
+			return false;
+		}else if(Curr_Square instanceof Tax){
+			Tax tax = (Tax) Curr_Square;
+			tax.payTax(Curr_Player);
+			return true;
+		}else if(Curr_Square instanceof RailroadsAndUtilities){
+			RailroadsAndUtilities Curr_RU =(RailroadsAndUtilities) Curr_Square; 
+			if((Curr_RU.getOwnerID())!=-1 && (Curr_RU.getOwnerID()) != Curr_Player.getPlayerID()){
+				payRent_Utilities_RailRoads(Curr_RU, Curr_Player);
+				return true;
+			}else{
+				Scanner input = new Scanner(System.in);
+				System.out.println("Would you like to buy "+Curr_RU.getName() +" (y/n)");
+				char answer = input.next().substring(0,1).toCharArray()[1];
+
+				switch (answer) {
+				case 'y':	
+					purchaseProperty(squareID, Curr_Player);
+					input.close();
+					return true;
+				case 'n':	// let player roll for doubles
+					input.close();
+					return true;
+					//TODO implement auction of unpurchased Realestate.
+				default:	
+					System.out.println("Invalid answer. Try again.");
+					input.close();			
+					return true;
+				}
+			}
+		}
+		else{
+			return true;
+		}
 	}
-	
-	
-	
+
+	//TODO - if player trys to buy but can't afford need to relay information back and go to an auction.
+	private void purchaseProperty(int squareID, Player Curr_Player){
+		Square Curr_Square = getSquare(squareID);
+		if(Curr_Square instanceof RealEstate){
+			RealEstate Curr_Estate =(RealEstate) Curr_Square;
+			if(Curr_Player.getBalance()>=Curr_Estate.getPrice()){
+				Curr_Player.decreaseBalance(Curr_Estate.getPrice());
+				Curr_Estate.setOwnerID(Curr_Player.getPlayerID());
+			}else{
+				System.out.println("Can not afford " + Curr_Estate.getName());
+			}
+		}else if(Curr_Square instanceof RailroadsAndUtilities){
+			RailroadsAndUtilities Curr_Rail_Utility =(RailroadsAndUtilities) Curr_Square;
+			if(Curr_Player.getBalance()>=Curr_Rail_Utility.getPrice()){
+				Curr_Player.decreaseBalance(Curr_Rail_Utility.getPrice());
+				Curr_Rail_Utility.setOwnerID(Curr_Player.getPlayerID());
+			}else{
+				System.out.println("Can not afford " + Curr_Rail_Utility.getName());
+			}
+		}else{
+			System.out.println("Not an ownable Square");
+		}
+	}
+
+	private void payRent_RealEstate(RealEstate Curr_Estate, Player Curr_Player){
+		int rent = Curr_Estate.calcRent();
+		players[(Curr_Estate.getOwnerID())].increaseBalance(rent);
+		Curr_Player.decreaseBalance(rent);
+	}
+
+	private void payRent_Utilities_RailRoads(RailroadsAndUtilities Curr_Property, Player Curr_Player){
+		int rent = Curr_Property.calculateRent();
+		players[(Curr_Property.getOwnerID())].increaseBalance(rent);
+		Curr_Player.decreaseBalance(rent);
+	}
+
+	//TODO Need to implement by interacting with timer in Monopoly class, (or we may want to move timer into this class)
+	private boolean checkTime() {
+		return Monopoly.getTimeUp();
+	}
+
 }

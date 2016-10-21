@@ -1,3 +1,9 @@
+// CS414e
+// Conor Cox, Dan Wood, Alex Arbuckle, Alan Nash
+// A4
+// Tax.java
+
+
 
 public class Tax extends Square {
 

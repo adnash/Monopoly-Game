@@ -13,11 +13,11 @@ public class RealEstate extends Square {
 	private int numBuildings;
 	private boolean isMortgaged;
 	private int rentArray[];
-	
+
 
 	int group;
-	
-	
+
+
 	public RealEstate(int ID, String name, int buyPrice, int buildingPrice, int[] rentArray, int group) {
 		super(ID, name);
 		this.ownerID = -1;
@@ -28,20 +28,49 @@ public class RealEstate extends Square {
 		this.isMortgaged = false;
 		this.group = group;
 	}
-	
-	public int calcRent(){
-		return -1;
+
+	//TODO implement how to find monopoly
+	public boolean isMonopoly(){
+		return true;
+
 	}
 	
+	//random change note
+
+	public int calcRent(){
+		if(isMonopoly()){
+			if(numBuildings == 0){
+				return rentArray[1];
+			}else if(numBuildings == 1){
+				return rentArray[2];
+			}else if(numBuildings == 2){
+				return rentArray[3];
+			}else if(numBuildings == 3){
+				return rentArray[4];
+			}else if(numBuildings == 4){
+				return rentArray[5];
+			}else if(numBuildings == 5){
+				return rentArray[6];
+			}else{
+				return 0;
+			}
+		}else{
+			return rentArray[0];
+		}
+	}
+
 	public void build(Player p){
 		numBuildings++;
 		p.setBalance(p.getBalance() - buildingPrice);
 	}
+
 	
+	//TODO SELL
 	public void sell(){
-		
+
 	}
-	
+
+	//TODO need to add monopoly check to can build
 	public boolean canBuild(Player p){
 		if(ownerID == p.getPlayerID() && !isMortgaged && (p.getBalance() >= buildingPrice) && (numBuildings < 5)){
 			return true;
@@ -49,25 +78,36 @@ public class RealEstate extends Square {
 			return false;
 		}
 	}
-	
-	public boolean canSell(){
-		return false;
+
+	public boolean canSell(Player p){
+		if(numBuildings == 0 && !isMortgaged && ownerID == p.getPlayerID()){
+			return true;
+		}else{
+			return false;
+		}
 	}
-	
-	public void mortgage(){
-		
-		isMortgaged = true;
+
+	public boolean mortgage(Player p){
+		if(getOwnerID() == p.getPlayerID() && !isMortgaged){
+			p.setBalance((int) (p.getBalance() + (getMortgagePrice())));
+			isMortgaged = true;
+			return true;
+		}else{
+			return false;
+		}
 	}
-	
-	public void canMortgage(){
-		
-		
-		isMortgaged = false;
+
+	public boolean canMortgage(Player p){
+		if(numBuildings == 0 && !isMortgaged && ownerID == p.getPlayerID()){
+			return true;
+		}else{
+			return false;
+		}
 	}
-	
+
 	public boolean unMortgage(Player p){
 		// unmortgaging allows you get get a balance of $0
-		if(getOwnerID() == p.getPlayerID()){
+		if(getOwnerID() == p.getPlayerID() && isMortgaged){
 			if(p.getBalance() >= (getMortgagePrice() * 1.1)){
 				p.setBalance((int) (p.getBalance() - (getMortgagePrice() * 1.1)));
 				isMortgaged = false;
@@ -83,7 +123,7 @@ public class RealEstate extends Square {
 	public int getOwnerID() {
 		return ownerID;
 	}
-	
+
 	public void setOwnerID(int ID) {
 		ownerID = ID;
 	}
@@ -107,7 +147,7 @@ public class RealEstate extends Square {
 	public int getGroup() {
 		return group;
 	}
-	
+
 	public int getMortgagePrice() {
 		return buyPrice/2;
 	}
