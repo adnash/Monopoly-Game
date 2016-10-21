@@ -30,6 +30,9 @@ public class Player {
 	public void addProperty(int propertyID) {
 		this.propertiesOwned.add(propertyID);
 	}
+	public void removeProperty(int propertyID) {
+		this.propertiesOwned.remove(propertyID);
+	}
 	public int getBalance() {
 		return balance;
 	}

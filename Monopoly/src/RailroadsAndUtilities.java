@@ -17,7 +17,7 @@ public class RailroadsAndUtilities extends Square {
 	}
 	
 	public boolean mortgage(Player p){
-		if(getOwnerID() == p.getPlayerID()){
+		if(getOwnerID() == p.getPlayerID() && !isMortgaged){
 			p.setBalance(p.getBalance() + getMortgagePrice());
 			isMortgaged = true;
 			return true;
@@ -28,7 +28,7 @@ public class RailroadsAndUtilities extends Square {
 	
 	public boolean unmortgage(Player p){
 		// unmortgaging allows you get get a balance of $0
-		if(getOwnerID() == p.getPlayerID()){
+		if(getOwnerID() == p.getPlayerID() && isMortgaged){
 			if(p.getBalance() >= (getMortgagePrice() * 1.1)){
 				p.setBalance((int) (p.getBalance() - (getMortgagePrice() * 1.1)));
 				isMortgaged = false;
@@ -39,6 +39,11 @@ public class RailroadsAndUtilities extends Square {
 		}else{
 			return false;
 		}		
+	}
+	
+	//TODO implement monopoly tracking.
+	public boolean isMonopoly(){
+		return true;
 	}
 	
 	public int calculateRent(){
