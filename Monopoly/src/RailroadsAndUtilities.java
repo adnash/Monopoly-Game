@@ -48,6 +48,8 @@ public class RailroadsAndUtilities extends Square {
 		return true;
 	}
 	
+	
+	
 	public int calculateRent(){
 		
 		return -1;
