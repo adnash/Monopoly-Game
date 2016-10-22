@@ -52,7 +52,7 @@ public class Jail extends Square {
 	
 	
 	//Set the player's currentSquare to the visiting space.
-	private void freePlayer(Player p){
+	public void freePlayer(Player p){
 		p.setCurrentSquare(10);
 		for(int i = 0; i < players.length; i++){
 			if(players[i].getPlayerID() == p.getPlayerID()){

@@ -36,6 +36,7 @@ public class Monopoly {
 		start();
 	}
 	
+	
 	private static void start() {
 		Board board = new Board(numPlayers);
 	}

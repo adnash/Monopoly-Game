@@ -13,33 +13,35 @@ public class RealEstate extends Square {
 	private int numBuildings;
 	private boolean isMortgaged;
 	private int rentArray[];
+	private int monopoly[];
 
 
 	int group;
 
 
-	public RealEstate(int ID, String name, int buyPrice, int buildingPrice, int[] rentArray, int group) {
+	public RealEstate(int ID, String name, int buyPrice, int buildingPrice, int[] rentArray, int[] monopoly) {
 		super(ID, name);
 		this.ownerID = -1;
 		this.buyPrice = buyPrice;
 		this.buildingPrice = buildingPrice;
 		this.numBuildings = 0;
 		this.rentArray = rentArray;
+		this.monopoly = monopoly;
 		this.isMortgaged = false;
-		this.group = group;
+		
 	}
 
 	//TODO implement how to find monopoly
-	public boolean isMonopoly(){
-		return true;
+	public int[] getMonopoly(){
+		return monopoly;
 
 	}
 	
 	//random change note
 
 	//pass boolean that says is monopoly
-	public int calcRent(){
-		if(isMonopoly()){
+	public int calcRent(boolean isMonopoly){
+		if(isMonopoly){
 			if(numBuildings == 0){
 				return rentArray[1];
 			}else if(numBuildings == 1){
