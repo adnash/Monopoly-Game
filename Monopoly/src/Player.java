@@ -7,54 +7,70 @@ import java.util.ArrayList;
 
 public class Player {
 
-	// global variables
-	private int balance;
-	private String name;
+	// Global variables
 	private int playerID;
-	
-	private ArrayList<Integer> propertiesOwned;
+	private String name;
+	private int balance;
 	private int currentSquare;
-	
-	public Player(int playerID, String name, int balance, int currentSquare){
+	private ArrayList<Integer> propertiesOwned;
+
+	public Player(int playerID, String name) {
 		this.playerID = playerID;
 		this.name = name;
-		
-		// These take in a balance and currentSquare even tho they will be fixed for testing purposes
-		this.balance = balance;
-		this.currentSquare = currentSquare;
+		// Every player starts with $1500
+		balance = 1500;
+		// Every player starts on "Go" square with ID "0"
+		currentSquare = 0;
+		// No player starts with property
+		propertiesOwned = null;
 	}
-	
-	public ArrayList<Integer> getPropertiesOwned() {
-		return propertiesOwned;
-	}
-	public void addProperty(int propertyID) {
-		this.propertiesOwned.add(propertyID);
-	}
-	public void removeProperty(int propertyID) {
-		this.propertiesOwned.remove(propertyID);
-	}
-	public int getBalance() {
-		return balance;
-	}
-	public void setBalance(int balance) {
-		this.balance = balance;
-	}
-	public void increaseBalance(int balance) {
-		this.balance += balance;
-	}
-	public void decreaseBalance(int balance) {
-		this.balance -= balance;
-	}
-	public String getName() {
-		return name;
-	}
+
 	public int getPlayerID() {
 		return playerID;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getBalance() {
+		return balance;
+	}
+
+	public void setBalance(int balance) {
+		this.balance = balance;
+	}
+
+	public void increaseBalance(int balance) {
+		this.balance += balance;
+	}
+
+	public void decreaseBalance(int balance) {
+		this.balance -= balance;
+
+		// TODO Need to check the rules, but pretty sure you can't have a negative balance. Maybe you have to borrow from the bank?
+		// I think this also might be a game over/loss scenario for a player. Bankruptcy? I guess they could still have property...
+		if (this.balance < 0)
+			this.balance = 0;
+	}
+
 	public int getCurrentSquare() {
 		return currentSquare;
 	}
+
 	public void setCurrentSquare(int currentSquare) {
 		this.currentSquare = currentSquare;
+	}
+
+	public ArrayList<Integer> getPropertiesOwned() {
+		return propertiesOwned;
+	}
+
+	public void addProperty(int propertyID) {
+		this.propertiesOwned.add(propertyID);
+	}
+
+	public void removeProperty(int propertyID) {
+		this.propertiesOwned.remove(propertyID);
 	}
 }

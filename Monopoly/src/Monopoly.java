@@ -9,7 +9,7 @@ import java.util.TimerTask;
 public class Monopoly {
 	
 	// Global variables
-	private static int numPlayers;
+	//private static int numPlayers;
 	private static String[] playerNames;
 	private static int duration;
 	private static Timer timer = new Timer();
@@ -20,11 +20,12 @@ public class Monopoly {
 		// TODO Create instance of UI
 		// TODO Get duration, numPlayers and playerNames from UI events from Monopoly start window instead of hard-coding them in
 		duration = 60;
-		numPlayers = 4;
+		//numPlayers = 4;
 		playerNames = new String[] {"Alan", "Conor", "Dan", "Alex"};
 		
 		// TODO Depending on what GRASP says, we may want to move the timer into the Board class...
 		// This timer will set "timeUp" flag to "true" after the duration (in minutes) has passed
+		// We will want to check timeUp after every player turn to see if the game has ended.
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -32,13 +33,14 @@ public class Monopoly {
 			}
 		}, duration*60*1000);
 		
+		
 		// Call start() method that will create Board and pass it all the relevant details
-		start();
+		startGame();
 	}
 	
 	
-	private static void start() {
-		Board board = new Board(numPlayers);
+	private static void startGame() {
+		Board board = new Board(playerNames);
 	}
 	
 	public static boolean getTimeUp() {
