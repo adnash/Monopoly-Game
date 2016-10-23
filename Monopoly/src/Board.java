@@ -467,8 +467,8 @@ public class Board {
 		Square Curr_Square = getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
 			RealEstate Curr_Estate =(RealEstate) Curr_Square;
-			if (Curr_Player.getBalance()>=Curr_Estate.getPrice()) {
-				Curr_Player.decreaseBalance(Curr_Estate.getPrice());
+			if (Curr_Player.getBalance()>=Curr_Estate.getBuyPrice()) {
+				Curr_Player.decreaseBalance(Curr_Estate.getBuyPrice());
 				Curr_Estate.setOwnerID(Curr_Player.getPlayerID());
 				return true;
 			} else {
@@ -564,7 +564,7 @@ public class Board {
 			//Affordability is calculated in the auction
 			if (Curr_Square instanceof RealEstate) {
 				RealEstate Final_Square =(RealEstate) Curr_Square;
-				winner.decreaseBalance(Final_Square.getPrice());
+				winner.decreaseBalance(Final_Square.getBuyPrice());
 				Final_Square.setOwnerID(winner.getPlayerID());
 			} else {
 				RailroadsAndUtilities Final_Square = (RailroadsAndUtilities) Curr_Square;
