@@ -69,7 +69,9 @@ public class RealEstate extends Square {
 
 	
 	//TODO SELL
-	public void sell(){
+	public void sell(Player p){
+		numBuildings--;
+		p.setBalance(p.getBalance() + buildingPrice/2);
 
 	}
 
