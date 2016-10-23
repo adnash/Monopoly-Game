@@ -10,30 +10,27 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
-import javax.swing.JDialog;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.awt.Color;
+import java.awt.Font;
 
 public class InitialGUI extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtUsername;
-	private JTextField txtHost;
-	private JTextField txtPort;
-	private JPasswordField pwdPassword;
-	private JButton btnGo;
+	private int numPlayers;
+
+	private JButton twoPlayers;
+	private JButton threePlayers;
+	private JButton fourPlayers;
 	
-	private String username;
-	private String password;
-	private String host;
-	private int port;
+	private PlayerEntryGUI players;
 
 	
 	/**
@@ -43,13 +40,9 @@ public class InitialGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					InitialGUI frame = new InitialGUI();
-					try{
-						frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("monopoly.png")))));
-					}catch(IOException e){
-						e.printStackTrace();
-					}
-					frame.pack();
+					BufferedImage logoImage = ImageIO.read(new File("monopoly-logo.png"));
+					InitialGUI frame = new InitialGUI(logoImage);
+
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,94 +54,53 @@ public class InitialGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public InitialGUI() {
+	public InitialGUI(BufferedImage logoImage) {
 		
-		JFrame.setDefaultLookAndFeelDecorated(true);
-		this.setTitle("Welcome to DLC Chat!");
+		this.setTitle("Welcome to Monopoly!");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 500, 500);
+		setBounds(0, 0, 500, 300);
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout());
 		
-		// Creates the username field
-		txtUsername = new JTextField();
-		txtUsername.setText("UserName");
-		contentPane.add(txtUsername, BorderLayout.NORTH);
-		txtUsername.setColumns(10);
+		JLabel logo = new JLabel(new ImageIcon(logoImage));
+		contentPane.add(logo, BorderLayout.NORTH);
 		
-		// Creates the Host field
-		txtHost = new JTextField();
-		txtHost.setText("localhost");
-		contentPane.add(txtHost, BorderLayout.WEST);
-		txtHost.setColumns(10);
-		
-		// Creates the Port Field
-		txtPort = new JTextField();
-		txtPort.setText("5555");
-		contentPane.add(txtPort, BorderLayout.EAST);
-		txtPort.setColumns(10);
-		
-		// Creates the password field
-		pwdPassword = new JPasswordField();
-		pwdPassword.setText("Password");
-		contentPane.add(pwdPassword, BorderLayout.SOUTH);
-		
-		// creates the go button
-		btnGo = new JButton("GO!");
-		btnGo.addActionListener(new ActionListener() {
-			int once = 1;
+		twoPlayers = new JButton("2 Players");
+		twoPlayers.setForeground(Color.BLACK);
+		twoPlayers.setFont(new Font("PT Sans", Font.BOLD, 20));
+		twoPlayers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Getting all of the fields when the GO button is pressed
-				
-				
-				setUsername(txtUsername.getText());
-				setPassword(new String(pwdPassword.getPassword()));
-				setPort(Integer.parseInt(txtPort.getText()));
-				setHost(txtHost.getText());
-				
-				//TODO check if the username and password are valid. If they are then a ClientGUI needs to be called
-				if(once == 1){
-					//ClientGUI gui = new ClientGUI();
-					//gui.setVisible(true);
-					once--;
-				}
+				players = new PlayerEntryGUI(2);
 			}
 		});
-		contentPane.add(btnGo, BorderLayout.CENTER);
+		contentPane.add(twoPlayers, BorderLayout.WEST);
+		
+		threePlayers = new JButton("3 Players");
+		threePlayers.setForeground(Color.BLACK);
+		threePlayers.setFont(new Font("PT Sans", Font.BOLD, 20));
+		threePlayers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				players = new PlayerEntryGUI(3);
+			}
+		});
+		contentPane.add(threePlayers, BorderLayout.CENTER);
+		
+		fourPlayers = new JButton("4 Players");
+		fourPlayers.setForeground(Color.BLACK);
+		fourPlayers.setFont(new Font("PT Sans", Font.BOLD, 20));
+		fourPlayers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				players = new PlayerEntryGUI(4);
+			}
+		});
+		contentPane.add(fourPlayers, BorderLayout.EAST);
+		PlayerEntryGUI frame = new PlayerEntryGUI(3);
 	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getHost() {
-		return host;
-	}
-
-	public void setHost(String host) {
-		this.host = host;
-	}
-
-	public int getPort() {
-		return port;
-	}
-
-	public void setPort(int port) {
-		this.port = port;
+	
+	public int getNumPlayers(){
+		return numPlayers;
 	}
 }
