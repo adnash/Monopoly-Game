@@ -11,47 +11,43 @@ public class RailroadsAndUtilities extends Square {
 	
 	public RailroadsAndUtilities(int ID, String name, int price) {
 		super(ID, name);
-		ownerID = -1;
+		ownerID = -1;	// This is to initialize ownerID when there is no owner
 		this.price = price;
-		this.isMortgaged = false;
+		isMortgaged = false;
 	}
 	
-	public boolean mortgage(Player p){
-		if(getOwnerID() == p.getPlayerID() && !isMortgaged){
-			p.setBalance(p.getBalance() + getMortgagePrice());
+	public boolean mortgage(Player player){
+		if (getOwnerID() == player.getPlayerID() && !isMortgaged) {
+			player.setBalance(player.getBalance() + getMortgagePrice());
 			isMortgaged = true;
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
 	
-	//random change for commit
-	
-	public boolean unmortgage(Player p){
-		// unmortgaging allows you get get a balance of $0
-		if(getOwnerID() == p.getPlayerID() && isMortgaged){
-			if(p.getBalance() >= (getMortgagePrice() * 1.1)){
-				p.setBalance((int) (p.getBalance() - (getMortgagePrice() * 1.1)));
+	public boolean unmortgage(Player player) {
+		// Unmortgaging allows you get a balance of $0
+		if (getOwnerID() == player.getPlayerID() && isMortgaged) {
+			if (player.getBalance() >= (getMortgagePrice() * 1.1)) {
+				player.setBalance((int) (player.getBalance() - (getMortgagePrice() * 1.1)));
 				isMortgaged = false;
 				return true;
-			}else{
+			} else {
 				return false;
 			}
-		}else{
+		} else {
 			return false;
 		}		
 	}
 	
-	//TODO implement monopoly tracking.
-	public boolean isMonopoly(){
+	// TODO Implement Monopoly tracking
+	public boolean isMonopoly() {
 		return true;
 	}
 	
-	
-	
-	public int calculateRent(){
-		
+	// TODO Implement
+	public int calculateRent() {
 		return -1;
 	}
 
@@ -67,9 +63,8 @@ public class RailroadsAndUtilities extends Square {
 		return price;
 	}
 
+	// TODO Is this really how a mortgage price is calculated? Always?
 	public int getMortgagePrice() {
 		return price/2;
 	}
-
-	
 }

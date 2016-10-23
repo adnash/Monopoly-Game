@@ -12,7 +12,7 @@ public class Board {
 	private Square[] squares = new Square[41];
 	private Player[] players;
 	private Dice dice = new Dice();	
-	private int numPlayers = 0;
+	private int numPlayers;
 
 	// Board constructor called once and only once by Monopoly class to initialize certain variables and objects
 	public Board(String[] playerNames) {
