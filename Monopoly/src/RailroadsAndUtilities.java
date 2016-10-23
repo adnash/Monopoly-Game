@@ -16,7 +16,7 @@ public class RailroadsAndUtilities extends Square {
 		isMortgaged = false;
 	}
 	
-	public boolean mortgage(Player player){
+	public boolean mortgage(Player player) {
 		if (getOwnerID() == player.getPlayerID() && !isMortgaged) {
 			player.setBalance(player.getBalance() + getMortgagePrice());
 			isMortgaged = true;
@@ -25,9 +25,10 @@ public class RailroadsAndUtilities extends Square {
 			return false;
 		}
 	}
-	
+
+	// TODO I want to check the game rules to make sure this is working as intended
+	// Unmortgaging allows you get a balance of $0
 	public boolean unmortgage(Player player) {
-		// Unmortgaging allows you get a balance of $0
 		if (getOwnerID() == player.getPlayerID() && isMortgaged) {
 			if (player.getBalance() >= (getMortgagePrice() * 1.1)) {
 				player.setBalance((int) (player.getBalance() - (getMortgagePrice() * 1.1)));
@@ -65,6 +66,6 @@ public class RailroadsAndUtilities extends Square {
 
 	// TODO Is this really how a mortgage price is calculated? Always?
 	public int getMortgagePrice() {
-		return price/2;
+		return (price/2);
 	}
 }

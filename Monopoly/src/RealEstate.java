@@ -4,7 +4,6 @@
 // RealEstate.java
 
 
-
 public class RealEstate extends Square {
 
 	private int ownerID;
@@ -14,10 +13,8 @@ public class RealEstate extends Square {
 	private boolean isMortgaged;
 	private int rentArray[];
 	private int monopoly[];
-
-
+	// TODO Implement or remove group as it is currently not used
 	int group;
-
 
 	public RealEstate(int ID, String name, int buyPrice, int buildingPrice, int[] rentArray, int[] monopoly) {
 		super(ID, name);
@@ -25,102 +22,101 @@ public class RealEstate extends Square {
 		this.buyPrice = buyPrice;
 		this.buildingPrice = buildingPrice;
 		this.numBuildings = 0;
+		this.isMortgaged = false;
 		this.rentArray = rentArray;
 		this.monopoly = monopoly;
-		this.isMortgaged = false;
-		
 	}
 
-	//TODO implement how to find monopoly
-	public int[] getMonopoly(){
+	//TODO implement how to find Monopoly
+	public int[] getMonopoly() {
 		return monopoly;
-
 	}
-	
-	//random change note
 
-	//pass boolean that says is monopoly
-	public int calcRent(boolean isMonopoly){
-		if(isMonopoly){
-			if(numBuildings == 0){
+	// Pass boolean that says is monopoly
+	public int calcRent(boolean isMonopoly) {
+		if (isMonopoly) {
+			if (numBuildings == 0) {
 				return rentArray[1];
-			}else if(numBuildings == 1){
+			} else if (numBuildings == 1) {
 				return rentArray[2];
-			}else if(numBuildings == 2){
+			} else if (numBuildings == 2) {
 				return rentArray[3];
-			}else if(numBuildings == 3){
+			} else if (numBuildings == 3) {
 				return rentArray[4];
-			}else if(numBuildings == 4){
+			} else if (numBuildings == 4) {
 				return rentArray[5];
-			}else if(numBuildings == 5){
+			} else if (numBuildings == 5) {
 				return rentArray[6];
-			}else{
+			}
+			// TODO Not sure if this else statement make sense here. Could result in a bug.
+			else {
 				return 0;
 			}
-		}else{
+		} else {
 			return rentArray[0];
 		}
 	}
 
-	public void build(Player p){
+	public void build(Player player) {
 		numBuildings++;
-		p.setBalance(p.getBalance() - buildingPrice);
+		// TODO Should use decreaseBalance() method
+		player.setBalance(player.getBalance() - buildingPrice);
 	}
 
-	
-	//TODO SELL
-	public void sell(Player p){
+	public void sell(Player player) {
 		numBuildings--;
-		p.setBalance(p.getBalance() + buildingPrice/2);
-
+		// TODO Should use decreaseBalance() method
+		player.setBalance(player.getBalance() + (buildingPrice/2));
 	}
 
-	//TODO need to add monopoly check to can build
-	public boolean canBuild(Player p){
-		if(ownerID == p.getPlayerID() && !isMortgaged && (p.getBalance() >= buildingPrice) && (numBuildings < 5)){
+	// TODO Need to add Monopoly check to see if possible to build
+	public boolean canBuild(Player player) {
+		if (ownerID == player.getPlayerID() && !isMortgaged && (player.getBalance() >= buildingPrice) && (numBuildings < 5)) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
 
-	public boolean canSell(Player p){
-		if(numBuildings == 0 && !isMortgaged && ownerID == p.getPlayerID()){
+	public boolean canSell(Player player){
+		if (numBuildings == 0 && !isMortgaged && ownerID == player.getPlayerID()) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
 
-	public boolean mortgage(Player p){
-		if(getOwnerID() == p.getPlayerID() && !isMortgaged){
-			p.setBalance((int) (p.getBalance() + (getMortgagePrice())));
+	public boolean mortgage(Player player){
+		if (getOwnerID() == player.getPlayerID() && !isMortgaged) {
+			// TODO Could use increaseBalance() method here. Should check to see if casting float to int gives correcnt amount
+			player.setBalance((int) (player.getBalance() + getMortgagePrice()));
 			isMortgaged = true;
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
 
-	public boolean canMortgage(Player p){
-		if(numBuildings == 0 && !isMortgaged && ownerID == p.getPlayerID()){
+	public boolean canMortgage(Player player){
+		if (numBuildings == 0 && !isMortgaged && ownerID == player.getPlayerID()) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
 
-	public boolean unMortgage(Player p){
-		// unmortgaging allows you get get a balance of $0
-		if(getOwnerID() == p.getPlayerID() && isMortgaged){
-			if(p.getBalance() >= (getMortgagePrice() * 1.1)){
-				p.setBalance((int) (p.getBalance() - (getMortgagePrice() * 1.1)));
+	public boolean unMortgage(Player player) {
+		// Unmortgaging allows you get get a balance of $0
+		if (getOwnerID() == player.getPlayerID() && isMortgaged) {
+			// TODO Double-check if this is really unmortgaging is handled
+			if (player.getBalance() >= (getMortgagePrice() * 1.1)) {
+				player.setBalance((int) (player.getBalance() - (getMortgagePrice() * 1.1)));
 				isMortgaged = false;
 				return true;
-			}else{
+			} else {
 				return false;
 			}
-		}else{
+		} else {
 			return false;
 		}
 	}
@@ -133,7 +129,7 @@ public class RealEstate extends Square {
 		ownerID = ID;
 	}
 
-	public int getPrice() {
+	public int getBuyPrice() {
 		return buyPrice;
 	}
 
@@ -148,13 +144,13 @@ public class RealEstate extends Square {
 	public int getBaseRent() {
 		return rentArray[0];
 	}
-
+	
 	public int getGroup() {
 		return group;
 	}
-
+	
+	// TODO Double-check that this is actually the value of all mortgages
 	public int getMortgagePrice() {
-		return buyPrice/2;
+		return (buyPrice/2);
 	}
-
 }

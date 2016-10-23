@@ -154,16 +154,16 @@ public class Board {
 				Curr_Play.increaseBalance(200);
 				newSquare = newSquare%40;
 			}
-			
+
 			Curr_Play.setCurrentSquare(newSquare);
-			
+
 			//Returned false so player goes to jail. need to reset double count.
 			if(!resolveSquare(Curr_Play, newSquare)) {
 				dice.resetDoubles();
 				Curr_Play.setCurrentSquare(41);
 				return;
 			}
-			
+
 			//TODO Now buy/sell houses or trade properties methods 
 		} while(dice.isDouble());
 	}
@@ -206,7 +206,7 @@ public class Board {
 			} else {
 				Jail jail = (Jail) getSquare(40);
 				jail.reduceJailTurns(Curr_Play);
-				
+
 				if (jail.checkTurnsLeft(Curr_Play) == 0){
 					jail.freePlayer(Curr_Play);
 					int oldSquare = Curr_Play.getCurrentSquare();
@@ -215,7 +215,7 @@ public class Board {
 						Curr_Play.increaseBalance(200);
 						newSquare = (newSquare % 40);
 					}
-					
+
 					Curr_Play.setCurrentSquare(newSquare);
 					if (!resolveSquare(Curr_Play, newSquare)) {
 						dice.resetDoubles();
@@ -507,11 +507,11 @@ public class Board {
 		Square Curr_Square = getSquare(squareID);
 		ArrayList<Player> temp = new ArrayList<Player>();
 		ArrayList<Player> loop = new ArrayList<Player>();
-		
+
 		for (int i = 0; i < players.length; i++) {
 			temp.add(players[i]);
 		}
-		
+
 		loop = temp;
 		Player winner = null;
 		int currentBid = 0;
@@ -584,12 +584,12 @@ public class Board {
 		//Player has properties to sell.
 		System.out.println("You own:");
 		Square sq = new Square(1, "blah");
-		
+
 		for (int i = 0; i < p.getPropertiesOwned().size(); i++) {
 			sq = getSquare(p.getPropertiesOwned().get(i));
 			System.out.println(sq.getID() + ": " + sq.getName());
 		}
-		
+
 		Scanner input = new Scanner(System.in);
 		System.out.println("Enter the number next to the property you wish to sell.");
 		System.out.println("Enter anything else to cancel the trade.");

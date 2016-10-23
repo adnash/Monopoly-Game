@@ -4,22 +4,21 @@
 // Square.java
 
 
-
 public class Square {
 
 	protected int ID;
 	protected String name;
 	
-	public Square(int ID, String name){
+	public Square(int ID, String name) {
 		this.ID = ID;
 		this.name = name;
 	}
 	
-	public String getName(){
-		return name;
+	public int getID() {
+		return ID;
 	}
 	
-	public int getID(){
-		return ID;
+	public String getName() {
+		return name;
 	}
 }
