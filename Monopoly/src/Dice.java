@@ -13,6 +13,8 @@ public class Dice {
 	private int numberOfDoublesRolled;
 
 	public void Dice() {
+		face1 = 0;
+		face2 = 0;
 		numberOfDoublesRolled = 0;
 	}
 

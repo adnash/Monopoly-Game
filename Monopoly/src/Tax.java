@@ -16,8 +16,7 @@ public class Tax extends Square {
 	public int payTax(Player player) {
 		if (name.equals("Income Tax")) {
 			if (player.getBalance() > 2000) {
-				// TODO We should use the decreaseBalance() method here as it will account for if the balance becomes negative
-				player.setBalance(player.getBalance() - 200);
+				player.decreaseBalance(200);
 				// Returning their new balance(not the shoes) --- Hah!
 				return player.getBalance();
 			} else {
@@ -28,11 +27,9 @@ public class Tax extends Square {
 			}
 		}
 		
-		// TODO We might want to specifically check for the square's name instead of leaving it to an else statement. Could prevent a weird bug.
 		//Luxury Tax
 		else {
-			// TODO Should probably use decreaseBalance() method
-			player.setBalance(player.getBalance() - 100);
+			player.decreaseBalance(100);
 			return player.getBalance();
 		}
 	}
