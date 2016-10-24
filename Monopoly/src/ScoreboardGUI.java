@@ -44,7 +44,7 @@ public class ScoreboardGUI extends JFrame {
 	public ScoreboardGUI(Board board) {
 		int num = 3;
 		this.setVisible(true);
-		JFrame.setDefaultLookAndFeelDecorated(true);
+		this.setDefaultLookAndFeelDecorated(true);
 		this.setTitle("Scoreboard");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 700, 500);

@@ -30,6 +30,14 @@ public class Dice {
 		}
 	}
 
+	public int getFace1() {
+		return face1;
+	}
+
+	public int getFace2() {
+		return face2;
+	}
+
 	public int getSum() {
 		return (face1 + face2);
 	}

@@ -103,7 +103,7 @@ public class PlayerEntryGUI extends JFrame {
 		GridBagLayout.setConstraints(text4, c);
 		
 		
-		String[] iconList = new String[]{"Battleship","Cat","Race Car","Scottie Dog","Shoe","Thimble","Top Hat","Wheelbarrow"};
+		String[] iconList = new String[]{"Battleship","Cat","Race-Car","Scottie-Dog","Shoe","Thimble","Top-Hat","Wheelbarrow"};
 		
 		// Creates the icon fields
 		player1icon = new JComboBox(iconList);

@@ -6,6 +6,10 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 public class Board {
 
 	// Global variables
@@ -13,6 +17,7 @@ public class Board {
 	private Player[] players;
 	private Dice dice = new Dice();	
 	private int numPlayers;
+	private JPanel contentPane;
 
 	// Board constructor called once and only once by Monopoly class to initialize certain variables and objects
 	public Board(String[] playerNames, String[] playericons) {
@@ -23,9 +28,11 @@ public class Board {
 			players[i] = new Player(i, playerNames[i], playericons[i]);
 		}
 		
+		System.out.print("Players: ");
 		for(int i = 0; i < players.length; i++){
-			System.out.println(players[i].getName());
+			System.out.print(players[i].getName() + ", ");
 		}
+		System.out.println();
 
 		setupBoard();
 	}
@@ -126,17 +133,13 @@ public class Board {
 	}
 
 	// Iterate through players for turns. After Each Player check timer.
-	private void gamePlay() {
-		int player_turn = 0;
-		Jail jail = (Jail) getSquare(41);
-		while(true) {
-			checkTime();
-			if (jail.isPlayerJailed(players[player_turn])) {
-				playerJailTurnProcess(players[player_turn]);
-			} else {
-				playerTurnProcess(players[player_turn]);
-			}
-			player_turn = (player_turn+1)%players.length;
+	public void gamePlay(int player_turn) {
+		Jail jail = (Jail) getSquare(40);
+		checkTime();
+		if (jail.isPlayerJailed(players[player_turn])) {
+			playerJailTurnProcess(players[player_turn]);
+		} else {
+			playerTurnProcess(players[player_turn]);
 		}
 	}
 
@@ -243,6 +246,7 @@ public class Board {
 	//when a player lands on a square this method will resolve all actions.
 	//return false if player goes to jail.
 	private boolean resolveSquare(Player Curr_Player, int squareID) {
+		System.out.println(Curr_Player.getName() + " just landed on square " + squareID + " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
 		Square Curr_Square = getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
 			RealEstate Curr_Estate =(RealEstate) Curr_Square; 
@@ -250,22 +254,18 @@ public class Board {
 				payRent_RealEstate(Curr_Estate, Curr_Player);
 				return true;
 			} else {
-				Scanner input = new Scanner(System.in);
-				System.out.println("Would you like to buy "+Curr_Estate.getName() +" (y/n)");
-				char answer = input.next().substring(0,1).toCharArray()[1];
+				int answer = JOptionPane.showConfirmDialog(contentPane,"Would you like to buy " + Curr_Estate.getName(), "Buy?", JOptionPane.YES_NO_OPTION);
+				System.out.println(answer);
 
 				switch (answer) {
-				case 'y':	
+				case 0:	
 					purchaseProperty(squareID, Curr_Player);
-					input.close();
 					return true;
-				case 'n':
-					input.close();
+				case 1:
 					auction(squareID);
 					return true;
 				default:	
 					System.out.println("Invalid answer. Try again.");
-					input.close();			
 					return true;
 				}
 			}
@@ -284,22 +284,18 @@ public class Board {
 				payRent_Utilities_RailRoads(Curr_RU, Curr_Player);
 				return true;
 			} else {
-				Scanner input = new Scanner(System.in);
-				System.out.println("Would you like to buy "+Curr_RU.getName() +" (y/n)");
-				char answer = input.next().substring(0,1).toCharArray()[1];
+				int answer = JOptionPane.showConfirmDialog(contentPane,"Would you like to buy "+Curr_RU.getName(), "Buy?", JOptionPane.YES_NO_OPTION);
+				System.out.println(answer);
 
 				switch (answer) {
-				case 'y':	
+				case 0:	
 					purchaseProperty(squareID, Curr_Player);
-					input.close();
 					return true;
-				case 'n':
+				case 1:
 					auction(squareID);
-					input.close();
 					return true;
 				default:	
 					System.out.println("Invalid answer. Try again.");
-					input.close();			
 					return true;
 				}
 			}
