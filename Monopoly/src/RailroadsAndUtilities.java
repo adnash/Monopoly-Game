@@ -18,7 +18,7 @@ public class RailroadsAndUtilities extends Square {
 	
 	public boolean mortgage(Player player) {
 		if (getOwnerID() == player.getPlayerID() && !isMortgaged) {
-			player.setBalance(player.getBalance() + getMortgagePrice());
+			player.increaseBalance(getMortgagePrice());
 			isMortgaged = true;
 			return true;
 		} else {
@@ -31,7 +31,7 @@ public class RailroadsAndUtilities extends Square {
 	public boolean unmortgage(Player player) {
 		if (getOwnerID() == player.getPlayerID() && isMortgaged) {
 			if (player.getBalance() >= (getMortgagePrice() * 1.1)) {
-				player.setBalance((int) (player.getBalance() - (getMortgagePrice() * 1.1)));
+				player.decreaseBalance((int)Math.floor(getMortgagePrice() * 1.1));
 				isMortgaged = false;
 				return true;
 			} else {
@@ -64,8 +64,11 @@ public class RailroadsAndUtilities extends Square {
 		return price;
 	}
 
-	// TODO Is this really how a mortgage price is calculated? Always?
 	public int getMortgagePrice() {
 		return (price/2);
+	}
+	
+	public boolean isMortgaged(){
+		return isMortgaged;
 	}
 }
