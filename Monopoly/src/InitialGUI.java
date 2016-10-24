@@ -4,6 +4,7 @@
 // InitialGUI.java
 
 import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -11,12 +12,14 @@ import javax.swing.border.EmptyBorder;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
 
 public class InitialGUI extends JFrame {
@@ -29,6 +32,19 @@ public class InitialGUI extends JFrame {
 	private JButton fourPlayers;
 	
 	private PlayerEntryGUI players;
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					InitialGUI frame = new InitialGUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the frame.
