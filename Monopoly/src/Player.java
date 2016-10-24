@@ -60,10 +60,11 @@ public class Player {
 	public void decreaseBalance(int balance) {
 		this.balance -= balance;
 
-		// TODO Need to check the rules, but pretty sure you can't have a negative balance. Maybe you have to borrow from the bank?
+		// TODO Need to check the rules, but pretty sure you can't have a negative balance. Maybe you have to borrow from the bank? Maybe you have to sell property?
 		// I think this also might be a game over/loss scenario for a player. Bankruptcy? I guess they could still have property...
-		if (this.balance < 0)
+		if (this.balance < 0) {
 			this.balance = 0;
+		}
 	}
 
 	public int getCurrentSquare() {
