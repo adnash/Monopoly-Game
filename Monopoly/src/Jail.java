@@ -9,18 +9,17 @@ public class Jail extends Square {
 
 	private Player[] players;
 	private int[] turnsLeft;
-	
+
 	public Jail(int ID, String name) {
 		super(ID, name);
-		
-		// TODO do we want to initialize this with the actual number of players playing?
+
 		// 4 because that's the max players Monopoly can have
-		Player[] players = new Player[4];
-		int[] turnsLeft = new int[4];
+		players = new Player[4];
+		turnsLeft = new int[4];
 		Arrays.fill(players, null);
 		Arrays.fill(turnsLeft, 0);
 	}
-	
+
 	// Spaces with value null in players[i] means it is an open space for jail.
 	// Players sent to jail will replace the null values.
 	// The turnsLeft array tells how many turns they have left in jail.
@@ -44,16 +43,18 @@ public class Jail extends Square {
 			}
 		}
 	}
-	
+
 	public boolean isPlayerJailed(Player player) {
 		for (int i = 0; i < players.length; i++)  {
-			if (players[i].getPlayerID() == player.getPlayerID()) {
-				return true;
+			if(players[i] != null){
+				if (players[i].getPlayerID() == player.getPlayerID()) {
+					return true;
+				}
 			}
 		}
 		return false;
 	}
-	
+
 	public int checkTurnsLeft(Player player) {
 		for (int i = 0; i < players.length; i++) {
 			if (players[i].getPlayerID() == player.getPlayerID()) {
@@ -63,7 +64,7 @@ public class Jail extends Square {
 		// Player isn't in jail!
 		return -1;
 	}
-	
+
 	// Removes the player from "Jail" and sets the player's currentSquare to "Just_Visiting"
 	public void freePlayer(Player player) {
 		for (int i = 0; i < players.length; i++) {
@@ -74,5 +75,10 @@ public class Jail extends Square {
 				return;
 			}
 		}
+	}
+	
+	//This method has been added for testing
+	public Player[] getPlayers(){
+		return players;
 	}
 }
