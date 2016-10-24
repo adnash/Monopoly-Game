@@ -10,7 +10,6 @@ public class Monopoly {
 	
 	// Global variables
 	//private static int numPlayers;
-	private static String[] playerNames;
 	private static int duration;
 	private static Timer timer = new Timer();
 	private static boolean timeUp = false;
@@ -20,8 +19,6 @@ public class Monopoly {
 		// TODO Create instance of UI
 		// TODO Get duration, numPlayers and playerNames from UI events from Monopoly start window instead of hard-coding them in
 		duration = 60;
-		//numPlayers = 4;
-		playerNames = new String[] {"Alan", "Conor", "Dan", "Alex"};
 		
 		// TODO Depending on what GRASP says, we may want to move the timer into the Board class...
 		// This timer will set "timeUp" flag to "true" after the duration (in minutes) has passed
@@ -40,7 +37,9 @@ public class Monopoly {
 	
 	
 	private static void startGame() {
-		Board board = new Board(playerNames);
+		InitialGUI initialGameGUI = new InitialGUI();
+		initialGameGUI.setVisible(true);
+
 	}
 	
 	public static boolean getTimeUp() {

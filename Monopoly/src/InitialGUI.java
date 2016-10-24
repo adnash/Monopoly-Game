@@ -4,8 +4,6 @@
 // InitialGUI.java
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,9 +11,9 @@ import javax.swing.border.EmptyBorder;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
@@ -32,33 +30,22 @@ public class InitialGUI extends JFrame {
 	
 	private PlayerEntryGUI players;
 
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					BufferedImage logoImage = ImageIO.read(new File("monopoly-logo.png"));
-					InitialGUI frame = new InitialGUI(logoImage);
-
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	/**
 	 * Create the frame.
 	 */
-	public InitialGUI(BufferedImage logoImage) {
+	public InitialGUI() {
 		
 		this.setTitle("Welcome to Monopoly!");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 500, 300);
+		
+		BufferedImage logoImage = null;
+		try {
+			logoImage = ImageIO.read(new File("monopoly-logo.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -74,6 +61,7 @@ public class InitialGUI extends JFrame {
 		twoPlayers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				players = new PlayerEntryGUI(2);
+				
 			}
 		});
 		contentPane.add(twoPlayers, BorderLayout.WEST);
@@ -97,7 +85,6 @@ public class InitialGUI extends JFrame {
 			}
 		});
 		contentPane.add(fourPlayers, BorderLayout.EAST);
-		PlayerEntryGUI frame = new PlayerEntryGUI(3);
 	}
 	
 	public int getNumPlayers(){

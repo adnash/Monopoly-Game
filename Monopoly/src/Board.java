@@ -15,15 +15,21 @@ public class Board {
 	private int numPlayers;
 
 	// Board constructor called once and only once by Monopoly class to initialize certain variables and objects
-	public Board(String[] playerNames) {
+	public Board(String[] playerNames, String[] playericons) {
 		numPlayers = playerNames.length;
 		// Initialize each player
+		players = new Player[numPlayers];
 		for (int i=0; i<numPlayers; i++) {
-			players[i] = new Player(i, playerNames[i]);
+			players[i] = new Player(i, playerNames[i], playericons[i]);
+		}
+		
+		for(int i = 0; i < players.length; i++){
+			System.out.println(players[i].getName());
 		}
 
 		setupBoard();
 	}
+
 
 	// TODO Do we even need this in its own method? These are hard-coded anyways and could belong in the global space. Just thinking out loud.
 	// Setting up squares
@@ -598,7 +604,7 @@ public class Board {
 		if (p.getPropertiesOwned().contains(property)) {
 			sq = getSquare(property);
 			System.out.println("Enter the number of the player you would like to sell it to.");
-			Player target = new Player(777, "blah");
+			Player target = new Player(777, "blah", "Cat");
 			for (int i = 0; i < players.length; i++) {
 				target = players[i];
 				//Make sure you're only selling to other players
@@ -644,6 +650,10 @@ public class Board {
 	//TODO Need to implement by interacting with timer in Monopoly class, (or we may want to move timer into this class)
 	private boolean checkTime() {
 		return Monopoly.getTimeUp();
+	}
+	
+	public int getNumPlayers() {
+		return numPlayers;
 	}
 
 }

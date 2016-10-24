@@ -10,13 +10,17 @@ public class Player {
 	// Global variables
 	private int playerID;
 	private String name;
+	private String icon;
+
+
 	private int balance;
 	private int currentSquare;
 	private ArrayList<Integer> propertiesOwned;
 
-	public Player(int playerID, String name) {
+	public Player(int playerID, String name, String icon) {
 		this.playerID = playerID;
 		this.name = name;
+		this.icon = icon;
 		// Every player starts with $1500
 		balance = 1500;
 		// Every player starts on "Go" square with ID "0"
@@ -31,6 +35,14 @@ public class Player {
 
 	public String getName() {
 		return name;
+	}
+	
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 	public int getBalance() {

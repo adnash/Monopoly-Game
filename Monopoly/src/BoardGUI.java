@@ -1,31 +1,30 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
+// CS414e
+// Conor Cox, Dan Wood, Alex Arbuckle, Alan Nash
+// A4
+// BoardGUI.java
+
 import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 
 public class BoardGUI {
+	private Board board;
 
 	public static void main(String[] args) {
-        new BoardGUI();
+        new BoardGUI(2, new String[]{"bob","joe"},new String[]{"Cat","Shoe"});
     }
 
-    public BoardGUI() {
+    public BoardGUI(int numPlayers, String[] playernames, String[] playericons) {
+    	
+    	board = new Board(playernames, playericons);
+    	
+    	ScoreboardGUI scoreboard = new ScoreboardGUI(board);
+    	
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -44,7 +43,7 @@ public class BoardGUI {
                     BufferedImage wheelbarrowImage = ImageIO.read(new File("monopoly-wheelbarrow.png"));
 
                     // Create the frame...
-                    JFrame frame = new JFrame("Testing");
+                    JFrame frame = new JFrame("The Game Of Monopoly");
                     frame.setBounds(0, 0, 1000, 1000);
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
