@@ -37,9 +37,11 @@ public class Jail extends Square {
 	// Reduce the amount of turns a player has left in jail
 	public void reduceJailTurns(Player player) {
 		for (int i = 0; i < players.length; i++) {
-			if (players[i].getPlayerID() == player.getPlayerID()) {
-				turnsLeft[i] -= 1;
-				return;
+			if(players[i] != null){
+				if (players[i].getPlayerID() == player.getPlayerID()) {
+					turnsLeft[i] -= 1;
+					return;
+				}
 			}
 		}
 	}
@@ -57,8 +59,10 @@ public class Jail extends Square {
 
 	public int checkTurnsLeft(Player player) {
 		for (int i = 0; i < players.length; i++) {
-			if (players[i].getPlayerID() == player.getPlayerID()) {
-				return turnsLeft[i];
+			if(players[i] != null){
+				if (players[i].getPlayerID() == player.getPlayerID()) {
+					return turnsLeft[i];
+				}
 			}
 		}
 		// Player isn't in jail!
@@ -68,17 +72,24 @@ public class Jail extends Square {
 	// Removes the player from "Jail" and sets the player's currentSquare to "Just_Visiting"
 	public void freePlayer(Player player) {
 		for (int i = 0; i < players.length; i++) {
-			if (players[i].getPlayerID() == player.getPlayerID()) {
-				player.setCurrentSquare(10);
-				players[i] = null;
-				turnsLeft[i] = 0;
-				return;
+			if(players[i] != null){
+				if (players[i].getPlayerID() == player.getPlayerID()) {
+					player.setCurrentSquare(10);
+					players[i] = null;
+					turnsLeft[i] = 0;
+					return;
+				}
 			}
 		}
 	}
-	
+
 	//This method has been added for testing
 	public Player[] getPlayers(){
 		return players;
+	}
+
+	//This method has been added for testing
+	public int[] getTurnsLeft(){
+		return turnsLeft;
 	}
 }

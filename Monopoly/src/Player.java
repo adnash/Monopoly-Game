@@ -26,7 +26,7 @@ public class Player {
 		// Every player starts on "Go" square with ID "0"
 		currentSquare = 0;
 		// No player starts with property
-		propertiesOwned = null;
+		propertiesOwned = new ArrayList<Integer>();
 	}
 
 	public int getPlayerID() {
@@ -84,6 +84,6 @@ public class Player {
 	}
 
 	public void removeProperty(int propertyID) {
-		this.propertiesOwned.remove(propertyID);
+		this.propertiesOwned.remove((Object)propertyID);
 	}
 }
