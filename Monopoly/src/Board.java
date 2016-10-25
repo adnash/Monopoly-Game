@@ -172,8 +172,9 @@ public class Board {
 				Curr_Play.setCurrentSquare(41);
 				return;
 			}
-
-			//TODO Now buy/sell houses or trade properties methods 
+			//TODO Option to buy/sale houses/trade
+			//TODO morgaget/unmortgage
+			//TODO Option to buy/sale houses/trade
 		} while(dice.isDouble());
 	}
 
@@ -232,6 +233,7 @@ public class Board {
 						return;
 					}
 					//TODO Option to buy/sale houses/trade
+					//TODO morgaget/unmortgage
 				} else {
 					//TODO Option to buy/sale houses/trade
 				}
@@ -253,7 +255,7 @@ public class Board {
 			if ((Curr_Estate.getOwnerID())!=-1 && (Curr_Estate.getOwnerID()) != Curr_Player.getPlayerID()) {
 				payRent_RealEstate(Curr_Estate, Curr_Player);
 				return true;
-			} else {
+			} else if(Curr_Estate.getOwnerID() == -1){
 				int answer = JOptionPane.showConfirmDialog(contentPane,"Would you like to buy " + Curr_Estate.getName(), "Buy?", JOptionPane.YES_NO_OPTION);
 				System.out.println(answer);
 
@@ -268,6 +270,8 @@ public class Board {
 					System.out.println("Invalid answer. Try again.");
 					return true;
 				}
+			}else{
+				return true;
 			}
 		} else if (Curr_Square instanceof Jail) {
 			Jail jail =(Jail) Curr_Square;
@@ -494,12 +498,14 @@ public class Board {
 	}
 
 	private void payRent_RealEstate(RealEstate Curr_Estate, Player Curr_Player) {
+		//TODO check if it makes them go negative
 		int rent = Curr_Estate.calcRent(isMonopoly(Curr_Estate.getID()));
 		players[(Curr_Estate.getOwnerID())].increaseBalance(rent);
 		Curr_Player.decreaseBalance(rent);
 	}
 
 	private void payRent_Utilities_RailRoads(RailroadsAndUtilities Curr_Property, Player Curr_Player) {
+		//TODO check if it makes them go negative
 		int rent = Curr_Property.calculateRent();
 		players[(Curr_Property.getOwnerID())].increaseBalance(rent);
 		Curr_Player.decreaseBalance(rent);

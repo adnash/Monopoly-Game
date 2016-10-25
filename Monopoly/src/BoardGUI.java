@@ -85,7 +85,12 @@ public class BoardGUI extends JFrame{
             			public void actionPerformed(ActionEvent e) {
             				board.gamePlay(player_turn);
             				player_turn = (player_turn+1)%numPlayers;
-            				// TODO start a roll/turn?
+            				
+            				
+            				
+            				//TODO figure out how to update GUI after resolvesquare
+            				
+            				
             			}
             		});
             		roll.setBounds(400, 700, 200, 100);
