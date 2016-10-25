@@ -197,6 +197,14 @@ public class Board {
 				Jail jail = (Jail) getSquare(40);
 				jail.freePlayer(Curr_Play);
 				playerTurnProcess(Curr_Play);
+			}else{
+				if(Curr_Play.getBalance()<50){
+					sellSequence(Curr_Play, 50 - Curr_Play.getBalance());
+					Curr_Play.decreaseBalance(50);
+					Jail jail = (Jail) getSquare(40);
+					jail.freePlayer(Curr_Play);
+					playerTurnProcess(Curr_Play);
+				}
 			}
 		case 'n':	// let player roll for doubles
 			dice.Roll();
@@ -382,7 +390,7 @@ public class Board {
 	}
 	
 	private int findMatchingOwners(int original, int owner2, int owner3, int owner4){
-		int count = 0;
+		int count = 1;
 		if(original == owner2)
 			count++;
 		if(original == owner3)
