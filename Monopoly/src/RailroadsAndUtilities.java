@@ -42,14 +42,18 @@ public class RailroadsAndUtilities extends Square {
 		}		
 	}
 	
-	// TODO Implement Monopoly tracking
-	public boolean isMonopoly() {
-		return true;
-	}
-	
-	// TODO Implement
-	public int calculateRent() {
-		return -1;
+	public int calculateRent(int numOwned, int dieRoll) {
+		if(this.ID == 12 || this.ID == 28){
+			return ((5*numOwned) * dieRoll);
+		}else{
+			switch(numOwned){
+			case 1: return 25;
+			case 2: return 50;
+			case 3: return 100;
+			case 4: return 200;
+			default: return 0;
+			}
+		}
 	}
 
 	public int getOwnerID() {

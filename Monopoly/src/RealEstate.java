@@ -87,7 +87,7 @@ public class RealEstate extends Square {
 	}
 
 	public boolean mortgage(Player player){
-		if (getOwnerID() == player.getPlayerID() && !isMortgaged) {
+		if (canMortgage(player)) {
 			// TODO Could use increaseBalance() method here. Should check to see if casting float to int gives correcnt amount
 			player.setBalance((int) (player.getBalance() + getMortgagePrice()));
 			isMortgaged = true;
