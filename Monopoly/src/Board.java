@@ -182,19 +182,16 @@ public class Board {
 	private void playerJailTurnProcess(Player Curr_Play) {
 		//Give option to pay 50 dollars
 		//TODO This is currently implemented using the console and system IO. We will need to implement it using the JFrame window later
-		Scanner input = new Scanner(System.in);
-		System.out.println("Pay $50 to get out of jail? (y/n)");
-		char answer = input.next().substring(0,1).toCharArray()[1];
-
+		int answer = JOptionPane.showConfirmDialog(contentPane,"Pay $50 to get out of jail? (y/n)", "Get out of jail?", JOptionPane.YES_NO_OPTION);
 		switch (answer) {
-		case 'y':	// debit player $50 and call player turn process
+		case 0:	// debit player $50 and call player turn process
 			if (Curr_Play.getBalance() >= 50) {
 				Curr_Play.decreaseBalance(50);
 				Jail jail = (Jail) getSquare(40);
 				jail.freePlayer(Curr_Play);
 				playerTurnProcess(Curr_Play);
 			}
-		case 'n':	// let player roll for doubles
+		case 1:	// let player roll for doubles
 			dice.Roll();
 			if (dice.getNumberOfDoublesRolled() > 0) {
 				// Move player by dice amount and end turn
@@ -256,9 +253,7 @@ public class Board {
 				payRent_RealEstate(Curr_Estate, Curr_Player);
 				return true;
 			} else if(Curr_Estate.getOwnerID() == -1){
-				int answer = JOptionPane.showConfirmDialog(contentPane,"Would you like to buy " + Curr_Estate.getName(), "Buy?", JOptionPane.YES_NO_OPTION);
-				System.out.println(answer);
-
+				int answer = JOptionPane.showConfirmDialog(contentPane,"Would you like to buy " + Curr_Estate.getName(), "Buy square?", JOptionPane.YES_NO_OPTION);
 				switch (answer) {
 				case 0:	
 					purchaseProperty(squareID, Curr_Player);
@@ -289,8 +284,6 @@ public class Board {
 				return true;
 			} else {
 				int answer = JOptionPane.showConfirmDialog(contentPane,"Would you like to buy "+Curr_RU.getName(), "Buy?", JOptionPane.YES_NO_OPTION);
-				System.out.println(answer);
-
 				switch (answer) {
 				case 0:	
 					purchaseProperty(squareID, Curr_Player);
@@ -528,24 +521,16 @@ public class Board {
 		while(loop.size() > 1) {
 			//Ask each player if they want to bid, and for how much
 			for(int i = 0; i < loop.size(); i++){
-				Scanner input = new Scanner(System.in);
-				System.out.println(loop.get(i) + ", would you like to place a bid on" + Curr_Square.getName() + "?" +" (y/n)");
-
-				char answer = input.next().substring(0,1).toCharArray()[1];
-
+				int answer = JOptionPane.showConfirmDialog(contentPane,loop.get(i) + ", would you like to place a bid on" + Curr_Square.getName() + "?", "Place bid?", JOptionPane.YES_NO_OPTION);
 				switch (answer) {
-				case 'y':
-					System.out.println("Enter an amount to bid. You have $" + loop.get(i).getBalance());
-					System.out.println("The current bid is $" + currentBid);
-					tempBid = input.nextInt();
+				case 0:
+					tempBid = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter an amount to bid. You have $" + loop.get(i).getBalance() + "\n" + "The current bid is $" + currentBid, "amount"));
 					if (tempBid > loop.get(i).getBalance()) {
-						System.out.println("You don't have enough money!");
-						System.out.println("You have been removed from the bidding.");
+						JOptionPane.showMessageDialog(contentPane, "You don't have enough money!You have been removed from the bidding.");
 						temp.remove(loop.get(i));
 					}
 					else if (tempBid <= currentBid) {
-						System.out.println("Too bad! Your bid is too low.");
-						System.out.println("You have been removed from the bidding.");
+						JOptionPane.showMessageDialog(contentPane, "Too bad! Your bid is too low.\nYou have been removed from the bidding.");
 						temp.remove(loop.get(i));
 					}
 					else {
@@ -553,13 +538,12 @@ public class Board {
 						winner = loop.get(i);
 					}
 					break;
-				case 'n':
+				case 1:
 				default:
 					System.out.println("You have been removed from the bidding.");
 					temp.remove(loop.get(i));
 				}
 				loop = temp;
-				input.close();
 			}
 		}
 		//Auction ends
@@ -626,10 +610,9 @@ public class Board {
 				}
 			}
 			//See if the other player agrees to the trade
-			System.out.println(target.getName() + ", would you like to buy " + sq.getName() + " for " + price + "? (y/n");
-			char answer = input.next().substring(0,1).toCharArray()[1];
+			int answer = JOptionPane.showConfirmDialog(contentPane,target.getName() + ", would you like to buy " + sq.getName() + " for " + price + "?", "Agree to trade?", JOptionPane.YES_NO_OPTION);
 			switch (answer) {
-			case 'y':
+			case 0:
 				System.out.println("The trade has been accepted!");
 				if (target.getBalance() <= price) {
 					System.out.println("But " + target.getName() + " does not have enough money...");
@@ -639,7 +622,7 @@ public class Board {
 				p.increaseBalance(price);
 				p.removeProperty(sq.getID());
 				target.addProperty(sq.getID());
-			case 'n':
+			case 1:
 			default:
 				System.out.println("The trade has been declined.");
 			}
