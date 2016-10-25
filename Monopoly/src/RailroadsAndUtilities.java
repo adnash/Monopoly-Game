@@ -43,9 +43,11 @@ public class RailroadsAndUtilities extends Square {
 	}
 	
 	public int calculateRent(int numOwned, int dieRoll) {
+		//Utilities
 		if(this.ID == 12 || this.ID == 28){
 			return ((5*numOwned) * dieRoll);
 		}else{
+			//Railroads
 			switch(numOwned){
 			case 1: return 25;
 			case 2: return 50;
