@@ -27,7 +27,7 @@ public class Board {
 		for (int i=0; i<numPlayers; i++) {
 			players[i] = new Player(i, playerNames[i], playericons[i]);
 		}
-		
+
 		System.out.print("Players: ");
 		for(int i = 0; i < players.length; i++){
 			System.out.print(players[i].getName() + ", ");
@@ -150,7 +150,7 @@ public class Board {
 			dice.Roll();
 			//Check for 3 doubles. If 3 go to jail and end turn.
 			//TODO We will want to keep track of doubles in Player objects, and reset after every turn
-					//Think this causes to store doubles to much.
+			//Think this causes to store doubles to much.
 			if (dice.getNumberOfDoublesRolled() == 3) {
 				dice.resetDoubles();
 				Curr_Play.setCurrentSquare(41);
@@ -158,7 +158,7 @@ public class Board {
 			}
 
 			//TODO We should move this to a helper method called "calculateMove" since we need this logic for rolling doubles in Jail too
-				//Yes Probably as a refactor
+			//Yes Probably as a refactor
 			int oldSquare = Curr_Play.getCurrentSquare();
 			int newSquare = oldSquare + dice.getSum();
 			if (newSquare >= 40) {
@@ -174,11 +174,7 @@ public class Board {
 				Curr_Play.setCurrentSquare(41);
 				return;
 			}
-			System.out.println("Would you like to buy any houses?(Y/N");//if yes call buyHouse(RealEstate, Player); with the desired property.
-			System.out.println("Would you like to sell any houses?(Y/N");//if yes call sellHouse(RealEstate, Player); with the desired property.
-			System.out.println("Would you like to mortgage any Properties?(Y/N");//if yes call mortgage(squareID, Player); with the desired property.
-			System.out.println("Would you like to unmortgage any Properties?(Y/N");//if yes call unmortgage(squareID, Player); with the desired property.
-			System.out.println("Would you like to Trade/Sell any Properties?(Y/N");//if yes call trarde(curr Player);
+			postTurn(Curr_Play);
 		} while(dice.isDouble());
 	}
 
@@ -232,7 +228,7 @@ public class Board {
 				if (jail.checkTurnsLeft(Curr_Play) == 0){
 					jail.freePlayer(Curr_Play);
 					Curr_Play.decreaseBalance(50);
-					
+
 					int oldSquare = Curr_Play.getCurrentSquare();
 					int newSquare = oldSquare + dice.getSum();
 					if (newSquare >= 40) {
@@ -246,22 +242,22 @@ public class Board {
 						Curr_Play.setCurrentSquare(41);
 						return;
 					}
-					System.out.println("Would you like to buy any houses?(Y/N");//if yes call buyHouse(RealEstate, Player); with the desired property.
-					System.out.println("Would you like to sell any houses?(Y/N");//if yes call sellHouse(RealEstate, Player); with the desired property.
-					System.out.println("Would you like to mortgage any Properties?(Y/N");//if yes call mortgage(squareID, Player); with the desired property.
-					System.out.println("Would you like to unmortgage any Properties?(Y/N");//if yes call unmortgage(squareID, Player); with the desired property.
-					System.out.println("Would you like to Trade/Sell any Properties?(Y/N");//if yes call trarde(curr Player);
+					postTurn(Curr_Play);
 				} else {
-					System.out.println("Would you like to buy any houses?(Y/N");//if yes call buyHouse(RealEstate, Player); with the desired property.
-					System.out.println("Would you like to sell any houses?(Y/N");//if yes call sellHouse(RealEstate, Player); with the desired property.
-					System.out.println("Would you like to mortgage any Properties?(Y/N");//if yes call mortgage(squareID, Player); with the desired property.
-					System.out.println("Would you like to unmortgage any Properties?(Y/N");//if yes call unmortgage(squareID, Player); with the desired property.
-					System.out.println("Would you like to Trade/Sell any Properties?(Y/N");//if yes call trarde(curr Player);
+					postTurn(Curr_Play);
 				}
 			}
 		default:	System.out.println("Invalid answer. Try again.");
 		}
 		//if not third turn end turn.
+	}
+	
+	private void postTurn(Player Curr_Player){
+		System.out.println("Would you like to buy any houses?(Y/N");//if yes call buyHouse(RealEstate, Player); with the desired property.
+		System.out.println("Would you like to sell any houses?(Y/N");//if yes call sellHouse(RealEstate, Player); with the desired property.
+		System.out.println("Would you like to mortgage any Properties?(Y/N");//if yes call mortgage(squareID, Player); with the desired property.
+		System.out.println("Would you like to unmortgage any Properties?(Y/N");//if yes call unmortgage(squareID, Player); with the desired property.
+		System.out.println("Would you like to Trade/Sell any Properties?(Y/N");//if yes call trarde(curr Player);
 	}
 
 	//random change for commit
@@ -339,7 +335,7 @@ public class Board {
 		}
 	}
 
-	
+
 	private boolean mortgageProperty(Player Curr_Player, int squareID) {
 		Square Curr_Square = getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
@@ -351,7 +347,7 @@ public class Board {
 				System.out.println("Mortgage unsuccesful on "+ Curr_Estate.getName());
 				return false;
 			}
-			
+
 		}else if (Curr_Square instanceof RailroadsAndUtilities) {
 			RailroadsAndUtilities Curr_RU =(RailroadsAndUtilities) Curr_Square;
 			if(Curr_RU.mortgage(Curr_Player)){
@@ -366,7 +362,7 @@ public class Board {
 			return false;
 		}
 	}
-	
+
 	private void unmortgageProperty(Player Curr_Player, int squareID) {
 		Square Curr_Square = getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
@@ -376,7 +372,7 @@ public class Board {
 			}else{
 				System.out.println("Mortgage unsuccesful on "+ Curr_Estate.getName());
 			}
-			
+
 		}else if (Curr_Square instanceof RailroadsAndUtilities) {
 			RailroadsAndUtilities Curr_RU =(RailroadsAndUtilities) Curr_Square;
 			if(Curr_RU.unmortgage(Curr_Player)){
@@ -388,7 +384,7 @@ public class Board {
 			System.out.println("Not a mortgable property.");
 		}
 	}
-	
+
 	private int findMatchingOwners(int original, int owner2, int owner3, int owner4){
 		int count = 1;
 		if(original == owner2)
@@ -417,18 +413,18 @@ public class Board {
 				RailroadsAndUtilities rail2 =(RailroadsAndUtilities) getSquare(15);
 				RailroadsAndUtilities rail3 =(RailroadsAndUtilities) getSquare(25);
 				RailroadsAndUtilities rail4 =(RailroadsAndUtilities) getSquare(35);
-				
+
 				switch(squareID){
-					case 5:
-						return findMatchingOwners(rail1.getOwnerID(),rail2.getOwnerID(),rail3.getOwnerID(),rail4.getOwnerID());
-					case 15:
-						return findMatchingOwners(rail2.getOwnerID(),rail1.getOwnerID(),rail3.getOwnerID(),rail4.getOwnerID());
-					case 25:
-						return findMatchingOwners(rail3.getOwnerID(),rail1.getOwnerID(),rail2.getOwnerID(),rail4.getOwnerID());
-					case 35:
-						return findMatchingOwners(rail4.getOwnerID(),rail1.getOwnerID(),rail2.getOwnerID(),rail3.getOwnerID());
-					default:
-						return 0;
+				case 5:
+					return findMatchingOwners(rail1.getOwnerID(),rail2.getOwnerID(),rail3.getOwnerID(),rail4.getOwnerID());
+				case 15:
+					return findMatchingOwners(rail2.getOwnerID(),rail1.getOwnerID(),rail3.getOwnerID(),rail4.getOwnerID());
+				case 25:
+					return findMatchingOwners(rail3.getOwnerID(),rail1.getOwnerID(),rail2.getOwnerID(),rail4.getOwnerID());
+				case 35:
+					return findMatchingOwners(rail4.getOwnerID(),rail1.getOwnerID(),rail2.getOwnerID(),rail3.getOwnerID());
+				default:
+					return 0;
 				}
 			}
 		}else if (Curr_Square instanceof RealEstate) {
@@ -455,143 +451,154 @@ public class Board {
 		} else {return 0;}
 	}
 
-	private boolean sellHouse(RealEstate Curr_Prop, Player Curr_Play) {
-		if (Curr_Prop.getOwnerID() == Curr_Play.getPlayerID()) {
-			int  monop[] = Curr_Prop.getMonopoly();
-			if (monop.length == 2){
-				RealEstate prop1 =(RealEstate) getSquare(monop[0]);
-				RealEstate prop2 =(RealEstate) getSquare(monop[1]);
-				if (prop1.getID() == Curr_Prop.getID()) {
-					if (prop2.getNumBuildings()<=Curr_Prop.getNumBuildings() && Curr_Prop.getNumBuildings()>0) {
-						Curr_Prop.sell(Curr_Play);
-						return true;
+	private boolean sellHouse(int squareID, Player Curr_Play) {
+		Square Curr_Square = getSquare(squareID);
+		if (Curr_Square instanceof RealEstate) {
+			RealEstate Curr_Prop =(RealEstate) Curr_Square; 
+
+			if (Curr_Prop.getOwnerID() == Curr_Play.getPlayerID()) {
+				int  monop[] = Curr_Prop.getMonopoly();
+				if (monop.length == 2){
+					RealEstate prop1 =(RealEstate) getSquare(monop[0]);
+					RealEstate prop2 =(RealEstate) getSquare(monop[1]);
+					if (prop1.getID() == Curr_Prop.getID()) {
+						if (prop2.getNumBuildings()<=Curr_Prop.getNumBuildings() && Curr_Prop.getNumBuildings()>0) {
+							Curr_Prop.sell(Curr_Play);
+							return true;
+						} else {
+							System.out.println("Must sell from " + prop2.getName() + "first.");
+							return false;
+						}
 					} else {
-						System.out.println("Must sell from " + prop2.getName() + "first.");
-						return false;
+						if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
+							if (Curr_Prop.getNumBuildings()>0) {
+								Curr_Prop.sell(Curr_Play);
+								return true;
+							} else {
+								System.out.println("Can't sell");
+								return false;
+							}
+						} else {
+							System.out.println("Must sell on " + prop1.getName() + "first.");
+							return false;
+						}
 					}
 				} else {
-					if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
-						if (Curr_Prop.getNumBuildings()>0) {
-							Curr_Prop.sell(Curr_Play);
-							return true;
+					RealEstate prop1 =(RealEstate) getSquare(monop[0]);
+					RealEstate prop2 =(RealEstate) getSquare(monop[1]);
+					RealEstate prop3 =(RealEstate) getSquare(monop[2]);
+					if (prop1.getID() == Curr_Prop.getID()) {
+						if (prop2.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
+							if (Curr_Prop.getNumBuildings()>0){
+								Curr_Prop.sell(Curr_Play);
+								return true;
+							} else {
+								System.out.println("Can't Sell");
+								return false;
+							}
 						} else {
-							System.out.println("Can't sell");
+							System.out.println("Must sell on other properties first.");
+							return false;
+						}
+					} else if (prop2.getID() == Curr_Prop.getID()) {
+						if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
+							if (Curr_Prop.getNumBuildings()>0) {
+								Curr_Prop.sell(Curr_Play);
+								return true;
+							} else {
+								System.out.println("Can't sell");
+								return false;
+							}
+						} else {
+							System.out.println("Must sell on other properties first.");
 							return false;
 						}
 					} else {
-						System.out.println("Must sell on " + prop1.getName() + "first.");
-						return false;
-					}
-				}
-			} else {
-				RealEstate prop1 =(RealEstate) getSquare(monop[0]);
-				RealEstate prop2 =(RealEstate) getSquare(monop[1]);
-				RealEstate prop3 =(RealEstate) getSquare(monop[2]);
-				if (prop1.getID() == Curr_Prop.getID()) {
-					if (prop2.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
-						if (Curr_Prop.getNumBuildings()>0){
-							Curr_Prop.sell(Curr_Play);
-							return true;
+						if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop2.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
+							if (Curr_Prop.getNumBuildings()>0) {
+								Curr_Prop.sell(Curr_Play);
+								return true;
+							} else {
+								System.out.println("Can't sell");
+								return false;
+							}
 						} else {
-							System.out.println("Can't Sell");
+							System.out.println("Must sell on other properties first.");
 							return false;
 						}
-					} else {
-						System.out.println("Must sell on other properties first.");
-						return false;
-					}
-				} else if (prop2.getID() == Curr_Prop.getID()) {
-					if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
-						if (Curr_Prop.getNumBuildings()>0) {
-							Curr_Prop.sell(Curr_Play);
-							return true;
-						} else {
-							System.out.println("Can't sell");
-							return false;
-						}
-					} else {
-						System.out.println("Must sell on other properties first.");
-						return false;
-					}
-				} else {
-					if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop2.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
-						if (Curr_Prop.getNumBuildings()>0) {
-							Curr_Prop.sell(Curr_Play);
-							return true;
-						} else {
-							System.out.println("Can't sell");
-							return false;
-						}
-					} else {
-						System.out.println("Must sell on other properties first.");
-						return false;
 					}
 				}
 			}
+			return false;
 		}
 		return false;
 	}
 
-	private void buyHouse(RealEstate Curr_Prop, Player Curr_Play) {
-		if (isMonopoly(Curr_Prop.getID()) == 1 && Curr_Prop.getOwnerID() == Curr_Play.getPlayerID()) {
-			int  monop[] = Curr_Prop.getMonopoly();
-			if (monop.length == 2){
-				RealEstate prop1 =(RealEstate) getSquare(monop[0]);
-				RealEstate prop2 =(RealEstate) getSquare(monop[1]);
-				if (prop1.getID() == Curr_Prop.getID()){
-					if (prop2.getNumBuildings()>=Curr_Prop.getNumBuildings()){
-						if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5){
-							Curr_Prop.build(Curr_Play);
+	private void buyHouse(int squareID, Player Curr_Play) {
+		Square Curr_Square = getSquare(squareID);
+		if (Curr_Square instanceof RealEstate) {
+			RealEstate Curr_Prop =(RealEstate) Curr_Square; 
+
+			if (isMonopoly(Curr_Prop.getID()) == 1 && Curr_Prop.getOwnerID() == Curr_Play.getPlayerID()) {
+				int  monop[] = Curr_Prop.getMonopoly();
+				if (monop.length == 2){
+					RealEstate prop1 =(RealEstate) getSquare(monop[0]);
+					RealEstate prop2 =(RealEstate) getSquare(monop[1]);
+					if (prop1.getID() == Curr_Prop.getID()){
+						if (prop2.getNumBuildings()>=Curr_Prop.getNumBuildings()){
+							if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5){
+								Curr_Prop.build(Curr_Play);
+							} else {
+								System.out.println("Can't build");
+							}
 						} else {
-							System.out.println("Can't build");
+							System.out.println("Must build on " + prop2.getName() + "first.");
 						}
 					} else {
-						System.out.println("Must build on " + prop2.getName() + "first.");
+						if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings()){
+							if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
+								Curr_Prop.build(Curr_Play);
+							} else {
+								System.out.println("Can't build");
+							}
+						} else {
+							System.out.println("Must build on " + prop1.getName() + "first.");
+						}
 					}
 				} else {
-					if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings()){
-						if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
-							Curr_Prop.build(Curr_Play);
+					RealEstate prop1 =(RealEstate) getSquare(monop[0]);
+					RealEstate prop2 =(RealEstate) getSquare(monop[1]);
+					RealEstate prop3 =(RealEstate) getSquare(monop[2]);
+					if (prop1.getID() == Curr_Prop.getID()) {
+						if (prop2.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
+							if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
+								Curr_Prop.build(Curr_Play);
+							} else {
+								System.out.println("Can't build");
+							}
 						} else {
-							System.out.println("Can't build");
+							System.out.println("Must build on other properties first.");
+						}
+					} else if (prop2.getID() == Curr_Prop.getID()) {
+						if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
+							if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
+								Curr_Prop.build(Curr_Play);
+							} else {
+								System.out.println("Can't build");
+							}
+						} else {
+							System.out.println("Must build on other properties first.");
 						}
 					} else {
-						System.out.println("Must build on " + prop1.getName() + "first.");
-					}
-				}
-			} else {
-				RealEstate prop1 =(RealEstate) getSquare(monop[0]);
-				RealEstate prop2 =(RealEstate) getSquare(monop[1]);
-				RealEstate prop3 =(RealEstate) getSquare(monop[2]);
-				if (prop1.getID() == Curr_Prop.getID()) {
-					if (prop2.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
-						if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
-							Curr_Prop.build(Curr_Play);
+						if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop2.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
+							if(Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
+								Curr_Prop.build(Curr_Play);
+							} else {
+								System.out.println("Can't build");
+							}
 						} else {
-							System.out.println("Can't build");
+							System.out.println("Must build on other properties first.");
 						}
-					} else {
-						System.out.println("Must build on other properties first.");
-					}
-				} else if (prop2.getID() == Curr_Prop.getID()) {
-					if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
-						if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
-							Curr_Prop.build(Curr_Play);
-						} else {
-							System.out.println("Can't build");
-						}
-					} else {
-						System.out.println("Must build on other properties first.");
-					}
-				} else {
-					if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop2.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
-						if(Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
-							Curr_Prop.build(Curr_Play);
-						} else {
-							System.out.println("Can't build");
-						}
-					} else {
-						System.out.println("Must build on other properties first.");
 					}
 				}
 			}
@@ -647,27 +654,27 @@ public class Board {
 		players[(Curr_Property.getOwnerID())].increaseBalance(rent);
 		Curr_Player.decreaseBalance(rent);
 	}
-	
+
 	//This is called when a player doesn't have enough money to pay rent or jail escape and is forced to sell then must pay rent or jail fee
 	private void sellSequence(Player Curr_Player, int negativeAmount){
 		int amountSold = 0;
 		RealEstate test = (RealEstate) getSquare(1);
-		
-		//TODO Need to determine what property the player is talking about.
+
+		//TODO Need to determine what property the player is talking about. Just using test prop for now.
 		while(amountSold<negativeAmount){
 			System.out.println("Would you like to sell houses?(Y/N)");
-				if(sellHouse(test, Curr_Player)){
-					amountSold += test.getBuildingPrice()/2;
-				}
+			if(sellHouse(test.getID(), Curr_Player)){
+				amountSold += test.getBuildingPrice()/2;
+			}
 			System.out.println("Would you like to mortgage a property?(Y/N)");
-				if(mortgageProperty(Curr_Player, test.getID())){
-					amountSold += test.getMortgagePrice();
-				}
-				
+			if(mortgageProperty(Curr_Player, test.getID())){
+				amountSold += test.getMortgagePrice();
+			}
+
 		}
 	}
-	
-	
+
+
 
 	private void auction(int squareID) {
 		Square Curr_Square = getSquare(squareID);
@@ -811,7 +818,7 @@ public class Board {
 	private boolean checkTime() {
 		return Monopoly.getTimeUp();
 	}
-	
+
 	public int getNumPlayers() {
 		return numPlayers;
 	}
