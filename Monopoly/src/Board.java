@@ -248,9 +248,21 @@ public class Board {
 	}
 	
 	private void postTurn(Player Curr_Player){
+		
+		String[] array = new String[Curr_Player.getPropertiesOwned().size()];
+		Square sq = new Square(1, "blah");
+
+		
+		for (int i = 0; i < Curr_Player.getPropertiesOwned().size(); i++) {
+			sq = getSquare(Curr_Player.getPropertiesOwned().get(i));
+			array[i] = sq.getID() + "";			
+		}
+		
+		
 		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy any houses?", "Buy houses?", JOptionPane.YES_NO_OPTION);
 		if(answer == 0){
-			answer = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter the square's ID", "Square ID"));
+			String answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to buy a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null).toString();
+			answer = Integer.parseInt(answerString);
 			if(answer != -1)
 				buyHouse(answer, Curr_Player);
 			else
@@ -259,7 +271,8 @@ public class Board {
 		
 		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to sell any houses?", "Sell houses?", JOptionPane.YES_NO_OPTION);
 		if(answer == 0){
-			answer = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter the square's ID", "Square ID"));
+			String answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to sell a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null).toString();
+			answer = Integer.parseInt(answerString);
 			if(answer != -1)
 				sellHouse(answer, Curr_Player);
 			else
@@ -268,7 +281,8 @@ public class Board {
 		
 		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to mortgage any Properties?", "Mortgage properties?", JOptionPane.YES_NO_OPTION);
 		if(answer == 0){
-			answer = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter the square's ID", "Square ID"));
+			String answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to mortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null).toString();
+			answer = Integer.parseInt(answerString);
 			if(answer != -1)
 				mortgageProperty(answer, Curr_Player);
 			else
@@ -277,7 +291,8 @@ public class Board {
 		
 		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to unmortgage any Properties?", "Unmortgage properties?", JOptionPane.YES_NO_OPTION);
 		if(answer == 0){
-			answer = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter the square's ID", "Square ID"));
+			String answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to unmortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null).toString();
+			answer = Integer.parseInt(answerString);
 			if(answer != -1)
 				unmortgageProperty(answer, Curr_Player);
 			else
@@ -287,7 +302,6 @@ public class Board {
 		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to Trade/Sell any Properties?", "Trade properties?", JOptionPane.YES_NO_OPTION);
 		if(answer == 0){
 			trade(Curr_Player);
-			JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
 		}
 	}
 
@@ -783,30 +797,29 @@ public class Board {
 
 		for (int i = 0; i < p.getPropertiesOwned().size(); i++) {
 			sq = getSquare(p.getPropertiesOwned().get(i));
-			array[i] = sq.getID() + ": " + sq.getName();			
+			array[i] = sq.getID() + "";			
 		}
+		String answerString = JOptionPane.showInputDialog(contentPane, p.getName() + ", you own these properties.\nSelect a property to trade.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null).toString();
+		int property = Integer.parseInt(answerString);
 		
-		JOptionPane.showInputDialog(contentPane, p.getName() + ", you own:", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
-
-		Scanner input = new Scanner(System.in);
-		System.out.println("Enter the number next to the property you wish to sell.");
-		System.out.println("Enter anything else to cancel the trade.");
-		int property = input.nextInt();
 		//The player entered a property to sell
 		if (p.getPropertiesOwned().contains(property)) {
 			sq = getSquare(property);
-			System.out.println("Enter the number of the player you would like to sell it to.");
+
+			ArrayList<String> playErs = new ArrayList<String>();
 			Player target = new Player(777, "blah", "Cat");
-			for (int i = 0; i < players.length; i++) {
+			for (int i = 0; i < players.length-1; i++) {
 				target = players[i];
 				//Make sure you're only selling to other players
 				if (target.getPlayerID() != p.getPlayerID()) {
-					System.out.println(target.getPlayerID() + ": " + target.getName());
+					playErs.add(target.getPlayerID() + "");
 				}
 			}
-			int otherPlayer = input.nextInt();
-			System.out.println("Enter the amount you wish to sell the property for.");
-			int price = input.nextInt();
+			answerString = JOptionPane.showInputDialog(contentPane, p.getName() + ", Select the other player number you would like to sell it to:", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, playErs.toArray(), null).toString();
+			int otherPlayer = Integer.parseInt(answerString);
+			
+			answerString = JOptionPane.showInputDialog(contentPane, p.getName() + ", enter the amount you wish to sell the property for");
+			int price = Integer.parseInt(answerString);
 			Player temp;
 			//Get the other player
 			for (int i = 0; i < players.length; i++) {
@@ -819,22 +832,23 @@ public class Board {
 			answer = JOptionPane.showConfirmDialog(contentPane,target.getName() + ", would you like to buy " + sq.getName() + " for " + price + "?", "Agree to trade?", JOptionPane.YES_NO_OPTION);
 			switch (answer) {
 			case 0:
-				System.out.println("The trade has been accepted!");
+				JOptionPane.showMessageDialog(contentPane, "The trade has been accepted!");
 				if (target.getBalance() <= price) {
-					System.out.println("But " + target.getName() + " does not have enough money...");
+					JOptionPane.showMessageDialog(contentPane, "But " + target.getName() + " does not have enough money...");
 					return;
 				}
 				target.decreaseBalance(price);
 				p.increaseBalance(price);
 				p.removeProperty(sq.getID());
 				target.addProperty(sq.getID());
+				break;
 			case 1:
 			default:
-				System.out.println("The trade has been declined.");
+				JOptionPane.showMessageDialog(contentPane, "The trade has been declined.");
 			}
 		}
 		else {
-			System.out.println("Trade cancelled.");
+			JOptionPane.showMessageDialog(contentPane, "Trade cancelled");
 		}
 	}
 
