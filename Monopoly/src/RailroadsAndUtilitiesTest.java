@@ -56,17 +56,59 @@ public class RailroadsAndUtilitiesTest {
 		assertTrue(r.isMortgaged());
 	}
 	
-	//This method hasn't been implemented yet
-//	@Test
-//	public void isMonopolyTest(){
-//		fail("This method hasn't been implemented yet");
-//	}
+	@Test
+	public void CalculateRentWithOneUtility(){
+		RailroadsAndUtilities r = new RailroadsAndUtilities(12, "test", 100);
+		
+		int result = r.calculateRent(1, 5);
+		
+		assertEquals(25, result);
+	}
 	
-	//This method hasn't been implemented yet
-//	@Test
-//	public void CalculateRentTest(){
-//		fail("This method hasn't been implemented yet");
-//	}
+	@Test
+	public void CalculateRentWithTwoUtilities(){
+		RailroadsAndUtilities r = new RailroadsAndUtilities(12, "test", 100);
+		
+		int result = r.calculateRent(2, 5);
+		
+		assertEquals(50, result);
+	}
+	
+	@Test
+	public void CalculateRentWithOneRailroad(){
+		RailroadsAndUtilities r = new RailroadsAndUtilities(1, "test", 100);
+		
+		int result = r.calculateRent(1, 5);
+		
+		assertEquals(25, result);
+	}
+	
+	@Test
+	public void CalculateRentWithTwoRailroads(){
+		RailroadsAndUtilities r = new RailroadsAndUtilities(1, "test", 100);
+		
+		int result = r.calculateRent(2, 5);
+		
+		assertEquals(50, result);
+	}
+	
+	@Test
+	public void CalculateRentWithThreeRailroads(){
+		RailroadsAndUtilities r = new RailroadsAndUtilities(1, "test", 100);
+		
+		int result = r.calculateRent(3, 5);
+		
+		assertEquals(100, result);
+	}
+	
+	@Test
+	public void CalculateRentWithFourRailroads(){
+		RailroadsAndUtilities r = new RailroadsAndUtilities(1, "test", 100);
+		
+		int result = r.calculateRent(4, 5);
+		
+		assertEquals(200, result);
+	}
 	
 	@Test
 	public void mortgagingAnOwnedProperty(){
