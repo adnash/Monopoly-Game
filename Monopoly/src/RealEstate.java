@@ -27,11 +27,6 @@ public class RealEstate extends Square {
 		this.monopoly = monopoly;
 	}
 
-	//TODO implement how to find Monopoly
-	public int[] getMonopoly() {
-		return monopoly;
-	}
-
 	// Pass boolean that says is monopoly
 	public int calcRent(boolean isMonopoly) {
 		if (isMonopoly) {
@@ -58,18 +53,22 @@ public class RealEstate extends Square {
 	}
 
 	public void build(Player player) {
+		// TODO need to check that player is owner and check to see if can build
+		// Probably best done with canBuild() method...
 		numBuildings++;
 		// TODO Should use decreaseBalance() method
 		player.setBalance(player.getBalance() - buildingPrice);
 	}
 
 	public void sell(Player player) {
+		// TODO need to add check that there are houses to actually sell?
+		// Probably best done with canSell() method...
 		numBuildings--;
-		// TODO Should use decreaseBalance() method
+		// TODO Should use decreaseBalance() method?
 		player.setBalance(player.getBalance() + (buildingPrice/2));
 	}
 
-	// TODO Need to add Monopoly check to see if possible to build
+	// TODO Need to add monopoly check to see if possible to build
 	public boolean canBuild(Player player) {
 		if (ownerID == player.getPlayerID() && !isMortgaged && (player.getBalance() >= buildingPrice) && (numBuildings < 5)) {
 			return true;
@@ -140,9 +139,21 @@ public class RealEstate extends Square {
 	public int getNumBuildings() {
 		return numBuildings;
 	}
+	
+	public boolean getIsMortgaged() {
+		return isMortgaged;
+	}
 
 	public int getBaseRent() {
 		return rentArray[0];
+	}
+	
+	public int[] getRentArray() {
+		return rentArray;
+	}
+	
+	public int[] getMonopoly() {
+		return monopoly;
 	}
 	
 	public int getGroup() {
