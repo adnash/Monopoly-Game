@@ -53,7 +53,8 @@ public class RealEstate extends Square {
 	}
 
 	public void build(Player player) {
-		// TODO need to check that player is owner
+		// TODO need to check that player is owner and check to see if can build
+		// Probably best done with canBuild() method...
 		numBuildings++;
 		// TODO Should use decreaseBalance() method
 		player.setBalance(player.getBalance() - buildingPrice);
@@ -61,6 +62,7 @@ public class RealEstate extends Square {
 
 	public void sell(Player player) {
 		// TODO need to add check that there are houses to actually sell?
+		// Probably best done with canSell() method...
 		numBuildings--;
 		// TODO Should use decreaseBalance() method?
 		player.setBalance(player.getBalance() + (buildingPrice/2));
@@ -136,6 +138,10 @@ public class RealEstate extends Square {
 
 	public int getNumBuildings() {
 		return numBuildings;
+	}
+	
+	public boolean getIsMortgaged() {
+		return isMortgaged;
 	}
 
 	public int getBaseRent() {
