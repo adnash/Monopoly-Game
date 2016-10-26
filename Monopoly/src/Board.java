@@ -15,9 +15,11 @@ public class Board {
 	// Global variables
 	private Square[] squares = new Square[41];
 	private Player[] players;
-	private Dice dice = new Dice();	
+	protected Dice dice = new Dice();	
 	private int numPlayers;
 	private JPanel contentPane;
+	private int answer;
+	private String stringAnswer;
 
 	// Board constructor called once and only once by Monopoly class to initialize certain variables and objects
 	public Board(String[] playerNames, String[] playericons) {
@@ -27,12 +29,6 @@ public class Board {
 		for (int i=0; i<numPlayers; i++) {
 			players[i] = new Player(i, playerNames[i], playericons[i]);
 		}
-
-		System.out.print("Players: ");
-		for(int i = 0; i < players.length; i++){
-			System.out.print(players[i].getName() + ", ");
-		}
-		System.out.println();
 
 		setupBoard();
 	}
@@ -182,7 +178,7 @@ public class Board {
 	private void playerJailTurnProcess(Player Curr_Play) {
 		//Give option to pay 50 dollars
 		//TODO This is currently implemented using the console and system IO. We will need to implement it using the JFrame window later
-		int answer = JOptionPane.showConfirmDialog(contentPane,"Pay $50 to get out of jail? (y/n)", "Get out of jail?", JOptionPane.YES_NO_OPTION);
+		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Play.getName() + ", pay $50 to get out of jail?", "Get out of jail?", JOptionPane.YES_NO_OPTION);
 		switch (answer) {
 		case 0:	// debit player $50 and call player turn process
 			if (Curr_Play.getBalance() >= 50) {
@@ -244,17 +240,55 @@ public class Board {
 					postTurn(Curr_Play);
 				}
 			}
-		default:	System.out.println("Invalid answer. Try again.");
+		default:	
+			JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again.");
+
 		}
 		//if not third turn end turn.
 	}
 	
 	private void postTurn(Player Curr_Player){
-		System.out.println("Would you like to buy any houses?(Y/N");//if yes call buyHouse(RealEstate, Player); with the desired property.
-		System.out.println("Would you like to sell any houses?(Y/N");//if yes call sellHouse(RealEstate, Player); with the desired property.
-		System.out.println("Would you like to mortgage any Properties?(Y/N");//if yes call mortgage(squareID, Player); with the desired property.
-		System.out.println("Would you like to unmortgage any Properties?(Y/N");//if yes call unmortgage(squareID, Player); with the desired property.
-		System.out.println("Would you like to Trade/Sell any Properties?(Y/N");//if yes call trarde(curr Player);
+		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy any houses?", "Buy houses?", JOptionPane.YES_NO_OPTION);
+		if(answer == 0){
+			answer = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter the square's ID", "Square ID"));
+			if(answer != -1)
+				buyHouse(answer, Curr_Player);
+			else
+				JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+		}
+		
+		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to sell any houses?", "Sell houses?", JOptionPane.YES_NO_OPTION);
+		if(answer == 0){
+			answer = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter the square's ID", "Square ID"));
+			if(answer != -1)
+				sellHouse(answer, Curr_Player);
+			else
+				JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+		}
+		
+		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to mortgage any Properties?", "Mortgage properties?", JOptionPane.YES_NO_OPTION);
+		if(answer == 0){
+			answer = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter the square's ID", "Square ID"));
+			if(answer != -1)
+				mortgageProperty(answer, Curr_Player);
+			else
+				JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+		}
+		
+		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to unmortgage any Properties?", "Unmortgage properties?", JOptionPane.YES_NO_OPTION);
+		if(answer == 0){
+			answer = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter the square's ID", "Square ID"));
+			if(answer != -1)
+				unmortgageProperty(answer, Curr_Player);
+			else
+				JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+		}
+		
+		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to Trade/Sell any Properties?", "Trade properties?", JOptionPane.YES_NO_OPTION);
+		if(answer == 0){
+			trade(Curr_Player);
+			JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+		}
 	}
 
 	//random change for commit
@@ -262,6 +296,7 @@ public class Board {
 	//when a player lands on a square this method will resolve all actions.
 	//return false if player goes to jail.
 	private boolean resolveSquare(Player Curr_Player, int squareID) {
+//		JOptionPane.showMessageDialog(contentPane, Curr_Player.getName() + " just landed on square " + squareID + " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
 		System.out.println(Curr_Player.getName() + " just landed on square " + squareID + " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
 		Square Curr_Square = getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
@@ -270,7 +305,7 @@ public class Board {
 				payRent_RealEstate(Curr_Estate, Curr_Player);
 				return true;
 			} else if(Curr_Estate.getOwnerID() == -1){
-				int answer = JOptionPane.showConfirmDialog(contentPane,"Would you like to buy " + Curr_Estate.getName(), "Buy square?", JOptionPane.YES_NO_OPTION);
+				answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy " + Curr_Estate.getName(), "Buy square?", JOptionPane.YES_NO_OPTION);
 				switch (answer) {
 				case 0:	
 					if(purchaseProperty(squareID, Curr_Player)){
@@ -283,7 +318,7 @@ public class Board {
 					auction(squareID);
 					return true;
 				default:	
-					System.out.println("Invalid answer. Try again.");
+					JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again");
 					return true;
 				}
 			}else{
@@ -304,7 +339,7 @@ public class Board {
 				payRent_Utilities_RailRoads(Curr_RU, Curr_Player);
 				return true;
 			} else if(Curr_RU.getOwnerID() == -1){
-				int answer = JOptionPane.showConfirmDialog(contentPane,"Would you like to buy "+Curr_RU.getName(), "Buy?", JOptionPane.YES_NO_OPTION);
+				answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy "+Curr_RU.getName(), "Buy?", JOptionPane.YES_NO_OPTION);
 				switch (answer) {
 				case 0:	
 					if(purchaseProperty(squareID, Curr_Player)){
@@ -317,7 +352,7 @@ public class Board {
 					auction(squareID);
 					return true;
 				default:	
-					System.out.println("Invalid answer. Try again.");
+					JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again");
 					return true;
 				}
 			}else{
@@ -329,52 +364,52 @@ public class Board {
 	}
 
 
-	private boolean mortgageProperty(Player Curr_Player, int squareID) {
+	private boolean mortgageProperty(int squareID, Player Curr_Player) {
 		Square Curr_Square = getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
 			RealEstate Curr_Estate =(RealEstate) Curr_Square; 
 			if(Curr_Estate.mortgage(Curr_Player)){
-				System.out.println("Mortgage succesful on "+ Curr_Estate.getName());
+				JOptionPane.showMessageDialog(contentPane, "Mortgage succesful on "+ Curr_Estate.getName());
 				return true;
 			}else{
-				System.out.println("Mortgage unsuccesful on "+ Curr_Estate.getName());
+				JOptionPane.showMessageDialog(contentPane, "Mortgage unsuccesful on "+ Curr_Estate.getName());
 				return false;
 			}
 
 		}else if (Curr_Square instanceof RailroadsAndUtilities) {
 			RailroadsAndUtilities Curr_RU =(RailroadsAndUtilities) Curr_Square;
 			if(Curr_RU.mortgage(Curr_Player)){
-				System.out.println("Mortgage succesful on "+ Curr_RU.getName());
+				JOptionPane.showMessageDialog(contentPane, "Mortgage succesful on "+ Curr_RU.getName());
 				return true;
 			}else{
-				System.out.println("Mortgage unsuccesful on "+ Curr_RU.getName());
+				JOptionPane.showMessageDialog(contentPane, "Mortgage unsuccesful on "+ Curr_RU.getName());
 				return false;
 			}
 		}else{
-			System.out.println("Not a mortgable property.");
+			JOptionPane.showMessageDialog(contentPane, "Not a mortgageable property");
 			return false;
 		}
 	}
 
-	private void unmortgageProperty(Player Curr_Player, int squareID) {
+	private void unmortgageProperty(int squareID, Player Curr_Player) {
 		Square Curr_Square = getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
 			RealEstate Curr_Estate =(RealEstate) Curr_Square; 
 			if(Curr_Estate.unMortgage(Curr_Player)){
-				System.out.println("Mortgage succesful on "+ Curr_Estate.getName());
+				JOptionPane.showMessageDialog(contentPane, "Unmortgage succesful on "+ Curr_Estate.getName());
 			}else{
-				System.out.println("Mortgage unsuccesful on "+ Curr_Estate.getName());
+				JOptionPane.showMessageDialog(contentPane, "Unmortgage unsuccesful on "+ Curr_Estate.getName());
 			}
 
 		}else if (Curr_Square instanceof RailroadsAndUtilities) {
 			RailroadsAndUtilities Curr_RU =(RailroadsAndUtilities) Curr_Square;
 			if(Curr_RU.unmortgage(Curr_Player)){
-				System.out.println("Mortgage succesful on "+ Curr_RU.getName());
+				JOptionPane.showMessageDialog(contentPane, "Unortgage succesful on "+ Curr_RU.getName());
 			}else{
-				System.out.println("Mortgage unsuccesful on "+ Curr_RU.getName());
+				JOptionPane.showMessageDialog(contentPane, "Unmortgage unsuccesful on "+ Curr_RU.getName());
 			}
 		}else{
-			System.out.println("Not a mortgable property.");
+			JOptionPane.showMessageDialog(contentPane, "Not a mortgageable property");
 		}
 	}
 
@@ -459,7 +494,7 @@ public class Board {
 							Curr_Prop.sell(Curr_Play);
 							return true;
 						} else {
-							System.out.println("Must sell from " + prop2.getName() + "first.");
+							JOptionPane.showMessageDialog(contentPane, "Must sell from " + prop2.getName() + " first");
 							return false;
 						}
 					} else {
@@ -468,11 +503,11 @@ public class Board {
 								Curr_Prop.sell(Curr_Play);
 								return true;
 							} else {
-								System.out.println("Can't sell");
+								JOptionPane.showMessageDialog(contentPane, "Can't sell");
 								return false;
 							}
 						} else {
-							System.out.println("Must sell on " + prop1.getName() + "first.");
+							JOptionPane.showMessageDialog(contentPane, "Must sell on " + prop1.getName() + " first");
 							return false;
 						}
 					}
@@ -486,11 +521,11 @@ public class Board {
 								Curr_Prop.sell(Curr_Play);
 								return true;
 							} else {
-								System.out.println("Can't Sell");
+								JOptionPane.showMessageDialog(contentPane, "Can't sell");
 								return false;
 							}
 						} else {
-							System.out.println("Must sell on other properties first.");
+							JOptionPane.showMessageDialog(contentPane, "Must sell on other properties first.");
 							return false;
 						}
 					} else if (prop2.getID() == Curr_Prop.getID()) {
@@ -499,11 +534,11 @@ public class Board {
 								Curr_Prop.sell(Curr_Play);
 								return true;
 							} else {
-								System.out.println("Can't sell");
+								JOptionPane.showMessageDialog(contentPane, "Can't sell");
 								return false;
 							}
 						} else {
-							System.out.println("Must sell on other properties first.");
+							JOptionPane.showMessageDialog(contentPane, "Must sell on other properties first");
 							return false;
 						}
 					} else {
@@ -512,11 +547,11 @@ public class Board {
 								Curr_Prop.sell(Curr_Play);
 								return true;
 							} else {
-								System.out.println("Can't sell");
+								JOptionPane.showMessageDialog(contentPane, "Can't sell");
 								return false;
 							}
 						} else {
-							System.out.println("Must sell on other properties first.");
+							JOptionPane.showMessageDialog(contentPane, "Must sell on other properties first");
 							return false;
 						}
 					}
@@ -542,20 +577,20 @@ public class Board {
 							if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5){
 								Curr_Prop.build(Curr_Play);
 							} else {
-								System.out.println("Can't build");
+								JOptionPane.showMessageDialog(contentPane, "Can't build");
 							}
 						} else {
-							System.out.println("Must build on " + prop2.getName() + "first.");
+							JOptionPane.showMessageDialog(contentPane, "Must build on " + prop2.getName() + " first");
 						}
 					} else {
 						if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings()){
 							if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
 								Curr_Prop.build(Curr_Play);
 							} else {
-								System.out.println("Can't build");
+								JOptionPane.showMessageDialog(contentPane, "Can't build");
 							}
 						} else {
-							System.out.println("Must build on " + prop1.getName() + "first.");
+							JOptionPane.showMessageDialog(contentPane, "Must build on " + prop1.getName() + " first");
 						}
 					}
 				} else {
@@ -567,30 +602,30 @@ public class Board {
 							if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
 								Curr_Prop.build(Curr_Play);
 							} else {
-								System.out.println("Can't build");
+								JOptionPane.showMessageDialog(contentPane, "Can't build");
 							}
 						} else {
-							System.out.println("Must build on other properties first.");
+							JOptionPane.showMessageDialog(contentPane, "Must build on other properties first");
 						}
 					} else if (prop2.getID() == Curr_Prop.getID()) {
 						if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
 							if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
 								Curr_Prop.build(Curr_Play);
 							} else {
-								System.out.println("Can't build");
+								JOptionPane.showMessageDialog(contentPane, "Can't build");
 							}
 						} else {
-							System.out.println("Must build on other properties first.");
+							JOptionPane.showMessageDialog(contentPane, "Must build on other properties first");
 						}
 					} else {
 						if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop2.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
 							if(Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
 								Curr_Prop.build(Curr_Play);
 							} else {
-								System.out.println("Can't build");
+								JOptionPane.showMessageDialog(contentPane, "Can't build");
 							}
 						} else {
-							System.out.println("Must build on other properties first.");
+							JOptionPane.showMessageDialog(contentPane, "Must build on other properties first");
 						}
 					}
 				}
@@ -606,9 +641,10 @@ public class Board {
 			if (Curr_Player.getBalance()>=Curr_Estate.getBuyPrice()) {
 				Curr_Player.decreaseBalance(Curr_Estate.getBuyPrice());
 				Curr_Estate.setOwnerID(Curr_Player.getPlayerID());
+				Curr_Player.addProperty(squareID);
 				return true;
 			} else {
-				System.out.println("Can not afford " + Curr_Estate.getName());
+				JOptionPane.showMessageDialog(contentPane, "Can't afford " + Curr_Estate.getName());
 				return false;
 			}
 		} else if (Curr_Square instanceof RailroadsAndUtilities) {
@@ -616,13 +652,14 @@ public class Board {
 			if (Curr_Player.getBalance()>=Curr_Rail_Utility.getPrice()) {
 				Curr_Player.decreaseBalance(Curr_Rail_Utility.getPrice());
 				Curr_Rail_Utility.setOwnerID(Curr_Player.getPlayerID());
+				Curr_Player.addProperty(squareID);
 				return true;
 			} else {
-				System.out.println("Can not afford " + Curr_Rail_Utility.getName());
+				JOptionPane.showMessageDialog(contentPane, "Can't afford " + Curr_Rail_Utility.getName());
 				return false;
 			}
 		} else {
-			System.out.println("Not an ownable Square");
+			JOptionPane.showMessageDialog(contentPane, "Not an ownable Square");
 			return true;
 		}
 	}
@@ -660,7 +697,7 @@ public class Board {
 				amountSold += test.getBuildingPrice()/2;
 			}
 			System.out.println("Would you like to mortgage a property?(Y/N)");
-			if(mortgageProperty(Curr_Player, test.getID())){
+			if(mortgageProperty(test.getID(), Curr_Player)){
 				amountSold += test.getMortgagePrice();
 			}
 
@@ -686,16 +723,16 @@ public class Board {
 		while(loop.size() > 1) {
 			//Ask each player if they want to bid, and for how much
 			for(int i = 0; i < loop.size(); i++){
-				int answer = JOptionPane.showConfirmDialog(contentPane,loop.get(i) + ", would you like to place a bid on" + Curr_Square.getName() + "?", "Place bid?", JOptionPane.YES_NO_OPTION);
+				answer = JOptionPane.showConfirmDialog(contentPane,loop.get(i).getName() + ", would you like to place a bid on" + Curr_Square.getName() + "?", "Place bid?", JOptionPane.YES_NO_OPTION);
 				switch (answer) {
 				case 0:
 					tempBid = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter an amount to bid. You have $" + loop.get(i).getBalance() + "\n" + "The current bid is $" + currentBid, "amount"));
 					if (tempBid > loop.get(i).getBalance()) {
-						JOptionPane.showMessageDialog(contentPane, "You don't have enough money!You have been removed from the bidding.");
+						JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", you don't have enough money!You have been removed from the bidding.");
 						temp.remove(loop.get(i));
 					}
 					else if (tempBid <= currentBid) {
-						JOptionPane.showMessageDialog(contentPane, "Too bad! Your bid is too low.\nYou have been removed from the bidding.");
+						JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", too bad! Your bid is too low.\nYou have been removed from the bidding.");
 						temp.remove(loop.get(i));
 					}
 					else {
@@ -705,7 +742,7 @@ public class Board {
 					break;
 				case 1:
 				default:
-					System.out.println("You have been removed from the bidding.");
+					JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", you have been removed from the bidding");
 					temp.remove(loop.get(i));
 				}
 				loop = temp;
@@ -713,10 +750,10 @@ public class Board {
 		}
 		//Auction ends
 		if (winner == null) {
-			System.out.println("Nobody bought the property.");
+			JOptionPane.showMessageDialog(contentPane, "Nobody bought the property");
 		}
 		else {
-			System.out.println(winner.getName() + " is the winner of the auction!");
+			JOptionPane.showMessageDialog(contentPane, winner.getName() + " is the winner of the auction!");
 			//Gets type of square
 			//Affordability is calculated in the auction
 			if (Curr_Square instanceof RealEstate) {
@@ -734,18 +771,22 @@ public class Board {
 	public void trade(Player p){
 		//Player has no properties to sell.
 		if (p.getPropertiesOwned().size() == 0) {
-			System.out.println("You have no properties to sell.");
+			JOptionPane.showMessageDialog(contentPane, "You have no peoperties to sell");
 			return;
 		}
 
 		//Player has properties to sell.
 		System.out.println("You own:");
 		Square sq = new Square(1, "blah");
+		
+		String[] array = new String[p.getPropertiesOwned().size()];
 
 		for (int i = 0; i < p.getPropertiesOwned().size(); i++) {
 			sq = getSquare(p.getPropertiesOwned().get(i));
-			System.out.println(sq.getID() + ": " + sq.getName());
+			array[i] = sq.getID() + ": " + sq.getName();			
 		}
+		
+		JOptionPane.showInputDialog(contentPane, p.getName() + ", you own:", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
 
 		Scanner input = new Scanner(System.in);
 		System.out.println("Enter the number next to the property you wish to sell.");
@@ -775,7 +816,7 @@ public class Board {
 				}
 			}
 			//See if the other player agrees to the trade
-			int answer = JOptionPane.showConfirmDialog(contentPane,target.getName() + ", would you like to buy " + sq.getName() + " for " + price + "?", "Agree to trade?", JOptionPane.YES_NO_OPTION);
+			answer = JOptionPane.showConfirmDialog(contentPane,target.getName() + ", would you like to buy " + sq.getName() + " for " + price + "?", "Agree to trade?", JOptionPane.YES_NO_OPTION);
 			switch (answer) {
 			case 0:
 				System.out.println("The trade has been accepted!");
@@ -804,6 +845,10 @@ public class Board {
 
 	public int getNumPlayers() {
 		return numPlayers;
+	}
+	
+	public Player[] getPlayers() {
+		return players;
 	}
 
 }

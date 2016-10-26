@@ -12,7 +12,7 @@ public class Dice {
 	private int face2;
 	private int numberOfDoublesRolled;
 
-	public void Dice() {
+	public Dice() {
 		face1 = 0;
 		face2 = 0;
 		numberOfDoublesRolled = 0;
