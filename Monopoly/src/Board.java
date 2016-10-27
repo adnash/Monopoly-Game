@@ -4,9 +4,7 @@
 // Board.java
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -19,7 +17,6 @@ public class Board {
 	private int numPlayers;
 	private JPanel contentPane;
 	private int answer;
-	private String stringAnswer;
 
 	// Board constructor called once and only once by Monopoly class to initialize certain variables and objects
 	public Board(String[] playerNames, String[] playericons) {
@@ -196,6 +193,7 @@ public class Board {
 				}
 			}
 		case 1:	// let player roll for doubles
+			JOptionPane.showMessageDialog(contentPane, "You will now roll for doubles");
 			dice.Roll();
 			if (dice.getNumberOfDoublesRolled() > 0) {
 				// Move player by dice amount and end turn
@@ -241,7 +239,7 @@ public class Board {
 				}
 			}
 		default:	
-			JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again.");
+			
 
 		}
 		//if not third turn end turn.
@@ -261,42 +259,50 @@ public class Board {
 		
 		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy any houses?", "Buy houses?", JOptionPane.YES_NO_OPTION);
 		if(answer == 0){
-			String answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to buy a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null).toString();
-			answer = Integer.parseInt(answerString);
-			if(answer != -1)
-				buyHouse(answer, Curr_Player);
-			else
-				JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+			Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to buy a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
+			if(answerString != null){
+				answer = Integer.parseInt(answerString.toString());
+				if(answer != -1)
+					buyHouse(answer, Curr_Player);
+				else
+					JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+			}
 		}
 		
 		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to sell any houses?", "Sell houses?", JOptionPane.YES_NO_OPTION);
 		if(answer == 0){
-			String answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to sell a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null).toString();
-			answer = Integer.parseInt(answerString);
-			if(answer != -1)
-				sellHouse(answer, Curr_Player);
-			else
-				JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+			Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to sell a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
+			if(answerString != null){
+				answer = Integer.parseInt(answerString.toString());
+				if(answer != -1)
+					sellHouse(answer, Curr_Player);
+				else
+					JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+			}
 		}
 		
 		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to mortgage any Properties?", "Mortgage properties?", JOptionPane.YES_NO_OPTION);
 		if(answer == 0){
-			String answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to mortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null).toString();
-			answer = Integer.parseInt(answerString);
-			if(answer != -1)
-				mortgageProperty(answer, Curr_Player);
-			else
-				JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+			Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to mortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
+			if(answerString != null){
+				answer = Integer.parseInt(answerString.toString());
+				if(answer != -1)
+					mortgageProperty(answer, Curr_Player);
+				else
+					JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+			}
 		}
 		
 		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to unmortgage any Properties?", "Unmortgage properties?", JOptionPane.YES_NO_OPTION);
 		if(answer == 0){
-			String answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to unmortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null).toString();
-			answer = Integer.parseInt(answerString);
-			if(answer != -1)
-				unmortgageProperty(answer, Curr_Player);
-			else
-				JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+			Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to unmortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
+			if(answerString != null){
+				answer = Integer.parseInt(answerString.toString());
+				if(answer != -1)
+					unmortgageProperty(answer, Curr_Player);
+				else
+					JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+			}
 		}
 		
 		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to Trade/Sell any Properties?", "Trade properties?", JOptionPane.YES_NO_OPTION);
@@ -341,7 +347,7 @@ public class Board {
 		} else if (Curr_Square.getID() == 30) {
 			Jail jail =(Jail) getSquare(40);
 			jail.addPlayer(Curr_Player);
-			Curr_Player.setCurrentSquare(41);
+			Curr_Player.setCurrentSquare(40);
 			return false;
 		} else if (Curr_Square instanceof Tax) {
 			Tax tax = (Tax) Curr_Square;
