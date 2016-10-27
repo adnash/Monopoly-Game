@@ -51,3 +51,14 @@ public class Monopoly {
 	}*/
 	
 }
+
+// Credits:
+// Monopoly board image: http://collider.com/monopoly-origins-movie-early-development/ 
+// Monopoly logo image: http://logo-share.blogspot.com/2014/11/monopoly-logo.html
+// Monopoly icon images: http://coolmaterial.com/feature/the-story-behind-monopoly-pieces/
+
+
+
+
+
+

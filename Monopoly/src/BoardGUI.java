@@ -3,8 +3,6 @@
 // A4
 // BoardGUI.java
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -22,24 +20,20 @@ public class BoardGUI extends JFrame{
 	
 	private Board board;
 	
-	private JLabel player1;
-	private JLabel player2;
-	private JLabel player3;
-	private JLabel player4;
+	// movable player icon
+	private JLabel player1, player2, player3, player4;
 
-	private JLabel player1bal;
-	private JLabel player2bal;
-	private JLabel player3bal;
-	private JLabel player4bal;
+	// player balance
+	private JLabel player1bal, player2bal, player3bal, player4bal;
 	
-	private JLabel player1icon;
-	private JLabel player2icon;
-	private JLabel player3icon;
-	private JLabel player4icon;
+	// player static icon on the scoreboard
+	private JLabel player1icon, player2icon, player3icon, player4icon;
 	
-	private JLabel die1;
-	private JLabel die2;
+	// dice
+	private JLabel die1, die2;
 	
+	// number of houses on each property
+	private JLabel houses1, houses3, houses6, houses8, houses9, houses11, houses13, houses14, houses16, houses18, houses19, houses21, houses23, houses24, houses26, houses27, houses29, houses31, houses32, houses34, houses37, houses39;
 	
 	private int newSpace;
 	
@@ -199,6 +193,95 @@ public class BoardGUI extends JFrame{
             			break;
             		}
                     
+                    // adding counters for the number of houses on spaces with default 0
+                    houses1 = new JLabel("0");
+                    houses1.setFont(font);
+                    houses1.setBounds(815, 860, 50, 50);
+                    frame.add(houses1);
+                    houses3 = new JLabel("0");
+                    houses3.setFont(font);
+                    houses3.setBounds(655, 860, 50, 50);
+                    frame.add(houses3);
+                    houses6 = new JLabel("0");
+                    houses6.setFont(font);
+                    houses6.setBounds(415, 860, 50, 50);
+                    frame.add(houses6);
+                    houses8 = new JLabel("0");
+                    houses8.setFont(font);
+                    houses8.setBounds(255, 860, 50, 50);
+                    frame.add(houses8);
+                    houses9 = new JLabel("0");
+                    houses9.setFont(font);
+                    houses9.setBounds(175, 860, 50, 50);
+                    frame.add(houses9);
+                    houses11 = new JLabel("0");
+                    houses11.setFont(font);
+                    houses11.setBounds(110, 800, 50, 50);
+                    frame.add(houses11);
+                    houses13 = new JLabel("0");
+                    houses13.setFont(font);
+                    houses13.setBounds(110, 640, 50, 50);
+                    frame.add(houses13);
+                    houses14 = new JLabel("0");
+                    houses14.setFont(font);
+                    houses14.setBounds(110, 560, 50, 50);
+                    frame.add(houses14);
+                    houses16 = new JLabel("0");
+                    houses16.setFont(font);
+                    houses16.setBounds(110, 400, 50, 50);
+                    frame.add(houses16);
+                    houses18 = new JLabel("0");
+                    houses18.setFont(font);
+                    houses18.setBounds(110, 240, 50, 50);
+                    frame.add(houses18);
+                    houses19 = new JLabel("0");
+                    houses19.setFont(font);
+                    houses19.setBounds(110, 160, 50, 50);
+                    frame.add(houses19);
+                    houses21 = new JLabel("0");
+                    houses21.setFont(font);
+                    houses21.setBounds(160, 90, 50, 50);
+                    frame.add(houses21);
+                    houses23 = new JLabel("0");
+                    houses23.setFont(font);
+                    houses23.setBounds(320, 90, 50, 50);
+                    frame.add(houses23);
+                    houses24 = new JLabel("0");
+                    houses24.setFont(font);
+                    houses24.setBounds(400, 90, 50, 50);
+                    frame.add(houses24);
+                    houses26 = new JLabel("0");
+                    houses26.setFont(font);
+                    houses26.setBounds(560, 90, 50, 50);
+                    frame.add(houses26);
+                    houses27 = new JLabel("0");
+                    houses27.setFont(font);
+                    houses27.setBounds(640, 90, 50, 50);
+                    frame.add(houses27);
+                    houses29 = new JLabel("0");
+                    houses29.setFont(font);
+                    houses29.setBounds(800, 90, 50, 50);
+                    frame.add(houses29);
+                    houses31 = new JLabel("0");
+                    houses31.setFont(font);
+                    houses31.setBounds(880, 160, 50, 50);
+                    frame.add(houses31);
+                    houses32 = new JLabel("0");
+                    houses32.setFont(font);
+                    houses32.setBounds(880, 240, 50, 50);
+                    frame.add(houses32);
+                    houses34 = new JLabel("0");
+                    houses34.setFont(font);
+                    houses34.setBounds(880, 400, 50, 50);
+                    frame.add(houses34);
+                    houses37 = new JLabel("0");
+                    houses37.setFont(font);
+                    houses37.setBounds(880, 640, 50, 50);
+                    frame.add(houses37);
+                    houses39 = new JLabel("0");
+                    houses39.setFont(font);
+                    houses39.setBounds(880, 800, 50, 50);
+                    frame.add(houses39);
                     
                     die1 = new JLabel("Die 1:    " + board.dice.getFace1());
                     die2 = new JLabel("Die 2:    " + board.dice.getFace2());
@@ -417,7 +500,94 @@ public class BoardGUI extends JFrame{
                     			frame.add(player4bal);
             					break;
             				}
-
+            				houses1.setText(((RealEstate)board.getSquare(1)).getNumBuildings() + "");
+            				houses1.setFont(font);
+            				houses1.setBounds(815, 860, 50, 50);
+            				frame.add(houses1);
+            				houses3.setText(((RealEstate)board.getSquare(3)).getNumBuildings() + "");
+            				houses3.setFont(font);
+            				houses3.setBounds(655, 860, 50, 50);
+            				frame.add(houses3);
+            				houses6.setText(((RealEstate)board.getSquare(6)).getNumBuildings() + "");
+            				houses6.setFont(font);
+            				houses6.setBounds(415, 860, 50, 50);
+            				frame.add(houses6);
+            				houses8.setText(((RealEstate)board.getSquare(8)).getNumBuildings() + "");
+            				houses8.setFont(font);
+            				houses8.setBounds(255, 860, 50, 50);
+            				frame.add(houses8);
+            				houses9.setText(((RealEstate)board.getSquare(9)).getNumBuildings() + "");
+            				houses9.setFont(font);
+            				houses9.setBounds(175, 860, 50, 50);
+            				frame.add(houses9);
+            				houses11.setText(((RealEstate)board.getSquare(11)).getNumBuildings() + "");
+            				houses11.setFont(font);
+            				houses11.setBounds(110, 800, 50, 50);
+            				frame.add(houses11);
+            				houses13.setText(((RealEstate)board.getSquare(13)).getNumBuildings() + "");
+            				houses13.setFont(font);
+            				houses13.setBounds(110, 640, 50, 50);
+            				frame.add(houses13);
+            				houses14.setText(((RealEstate)board.getSquare(14)).getNumBuildings() + "");
+            				houses14.setFont(font);
+            				houses14.setBounds(110, 560, 50, 50);
+            				frame.add(houses14);
+            				houses16.setText(((RealEstate)board.getSquare(16)).getNumBuildings() + "");
+            				houses16.setFont(font);
+            				houses16.setBounds(110, 400, 50, 50);
+            				frame.add(houses16);
+            				houses18.setText(((RealEstate)board.getSquare(18)).getNumBuildings() + "");
+            				houses18.setFont(font);
+            				houses18.setBounds(110, 240, 50, 50);
+            				frame.add(houses18);
+            				houses19.setText(((RealEstate)board.getSquare(19)).getNumBuildings() + "");
+            				houses19.setFont(font);
+            				houses19.setBounds(110, 160, 50, 50);
+            				frame.add(houses19);
+            				houses21.setText(((RealEstate)board.getSquare(21)).getNumBuildings() + "");
+            				houses21.setFont(font);
+            				houses21.setBounds(160, 90, 50, 50);
+            				frame.add(houses21);
+            				houses23.setText(((RealEstate)board.getSquare(23)).getNumBuildings() + "");
+            				houses23.setFont(font);
+            				houses23.setBounds(320, 90, 50, 50);
+            				frame.add(houses23);
+            				houses24.setText(((RealEstate)board.getSquare(24)).getNumBuildings() + "");
+            				houses24.setFont(font);
+            				houses24.setBounds(400, 90, 50, 50);
+            				frame.add(houses24);
+            				houses26.setText(((RealEstate)board.getSquare(26)).getNumBuildings() + "");
+            				houses26.setFont(font);
+            				houses26.setBounds(560, 90, 50, 50);
+            				frame.add(houses26);
+            				houses27.setText(((RealEstate)board.getSquare(27)).getNumBuildings() + "");
+            				houses27.setFont(font);
+            				houses27.setBounds(640, 90, 50, 50);
+            				frame.add(houses27);
+            				houses29.setText(((RealEstate)board.getSquare(29)).getNumBuildings() + "");
+            				houses29.setFont(font);
+            				houses29.setBounds(800, 90, 50, 50);
+            				frame.add(houses29);
+            				houses31.setText(((RealEstate)board.getSquare(31)).getNumBuildings() + "");
+            				houses31.setFont(font);
+            				houses31.setBounds(880, 160, 50, 50);
+            				frame.add(houses31);
+            				houses32.setText(((RealEstate)board.getSquare(32)).getNumBuildings() + "");
+            				houses32.setFont(font);
+            				houses32.setBounds(880, 240, 50, 50);
+            				frame.add(houses32);
+            				houses34.setText(((RealEstate)board.getSquare(34)).getNumBuildings() + "");
+            				houses34.setFont(font);
+            				houses34.setBounds(880, 400, 50, 50);
+            				frame.add(houses34);
+            				houses37.setText(((RealEstate)board.getSquare(37)).getNumBuildings() + "");
+            				houses37.setFont(font);
+            				houses37.setBounds(880, 640, 50, 50);
+            				frame.add(houses37);
+            				houses39.setText(((RealEstate)board.getSquare(39)).getNumBuildings() + "");
+            				houses39.setFont(font);
+            				houses39.setBounds(880, 800, 50, 50);
+            				frame.add(houses39);
             				
             				player_turn = (player_turn+1)%numPlayers;
             				
@@ -425,7 +595,6 @@ public class BoardGUI extends JFrame{
                             die2.setText("Die 2:    " + board.dice.getFace2());
             				frame.add(die1);
             				frame.add(die2);
-            				//TODO figure out how to update GUI after resolvesquare
             				
             				frame.revalidate();
             				frame.repaint();
@@ -434,24 +603,6 @@ public class BoardGUI extends JFrame{
             		roll.setBounds(400, 750, 200, 100);
             		frame.add(roll);
             		
-            		
-                    
-//                    player1.setBounds(900, 130, 50, 50);;
-//                    frame.add(player1);
-//                    
-//                    player2.setBounds(950, 130, 50, 50);;
-//                    frame.add(player2);
-//                    
-//                    player3.setBounds(900, 160, 50, 50);;
-//                    frame.add(player3);
-//                    
-//                    player4.setBounds(950, 160, 50, 50);;
-//                    frame.add(player4);
-
-
-                                      
-
-
                   frame.pack();
                   frame.setVisible(true);
               } catch (IOException exp) {

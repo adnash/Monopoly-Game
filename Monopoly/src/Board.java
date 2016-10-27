@@ -353,7 +353,7 @@ public class Board {
 				payRent_Utilities_RailRoads(Curr_RU, Curr_Player);
 				return true;
 			} else if(Curr_RU.getOwnerID() == -1){
-				answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy "+Curr_RU.getName(), "Buy?", JOptionPane.YES_NO_OPTION);
+				answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy " + Curr_RU.getName(), "Buy?", JOptionPane.YES_NO_OPTION);
 				switch (answer) {
 				case 0:	
 					if(purchaseProperty(squareID, Curr_Player)){
@@ -765,8 +765,7 @@ public class Board {
 		//Auction ends
 		if (winner == null) {
 			JOptionPane.showMessageDialog(contentPane, "Nobody bought the property");
-		}
-		else {
+		}else {
 			JOptionPane.showMessageDialog(contentPane, winner.getName() + " is the winner of the auction!");
 			//Gets type of square
 			//Affordability is calculated in the auction
@@ -779,6 +778,7 @@ public class Board {
 				winner.decreaseBalance(Final_Square.getPrice());
 				Final_Square.setOwnerID(winner.getPlayerID());
 			}
+			winner.addProperty(Curr_Square.getID());
 		}
 	}
 
@@ -808,7 +808,7 @@ public class Board {
 
 			ArrayList<String> playErs = new ArrayList<String>();
 			Player target = new Player(777, "blah", "Cat");
-			for (int i = 0; i < players.length-1; i++) {
+			for (int i = 0; i < players.length; i++) {
 				target = players[i];
 				//Make sure you're only selling to other players
 				if (target.getPlayerID() != p.getPlayerID()) {
