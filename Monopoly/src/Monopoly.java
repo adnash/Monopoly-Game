@@ -6,6 +6,8 @@
 import java.util.Timer;
 import java.util.TimerTask;
 
+//There is no test class for Monopoly because its useful methods are private
+
 public class Monopoly {
 	
 	// Global variables

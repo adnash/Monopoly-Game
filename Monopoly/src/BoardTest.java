@@ -4,6 +4,8 @@ import org.junit.Test;
 
 public class BoardTest {
 
+	//We aren't (can't) testing private methods.
+	
 	@Test
 	public void constructorAndSetupBoardTest() {
 		String [] players = new String[] {"Dan", "Conor"};
@@ -152,5 +154,6 @@ public class BoardTest {
 		assertEquals(b.getPlayers()[1].getPlayerID(), 1);
 		assertEquals(b.getPlayers()[1].getIcon(), "Dog");
 	}
+	
 
 }
