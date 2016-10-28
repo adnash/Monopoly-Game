@@ -1,0 +1,156 @@
+commit 54fdd87742f6b75f0004b7f5f7d5b2186d65e4e7
+Author: Dan Wood <bad444@comcast.net>
+Date:   Thu Oct 27 22:37:05 2016 -0600
+
+    Updated the Class Diagram Again
+    
+    Conor >:(
+
+commit 4fa7551d7eda92f7e87334386d3f72a4de0d4695
+Author: Dan Wood <bad444@comcast.net>
+Date:   Thu Oct 27 21:47:10 2016 -0600
+
+    Added the Final PNG Files for Diagrams
+    
+    Conor delete the XML files PLEASE!@!@!@!
+
+commit 4a0463f01ce0f273721fbfe02e66ea41bc3a536d
+Author: Dan Wood <bad444@comcast.net>
+Date:   Thu Oct 27 20:23:35 2016 -0600
+
+    Added the method to determine the winner.
+
+commit 067f151a86e94bab7f20930c8e2636c4ebda4246
+Author: Dan Wood <bad444@comcast.net>
+Date:   Thu Oct 27 13:20:03 2016 -0600
+
+    Added some arbitrary comments
+    
+    Basically just saying you can't (and therefore we won't) test private methods in the Monopoly.java and Board.java classes.
+
+commit 7d509a5c6cd6b30097eac7e74333ae2a1460a435
+Author: Dan Wood <bad444@comcast.net>
+Date:   Wed Oct 26 14:41:51 2016 -0600
+
+    Began writing BoardTest.java
+    
+    We may not be able to (or want to) test all the methods!!!
+
+commit 678b2452e934f1c21b619d5da76e5bb3a3d9a309
+Author: Dan Wood <bad444@comcast.net>
+Date:   Tue Oct 25 23:36:17 2016 -0600
+
+    Updated Class Diagram.xml Again
+    
+    Yeah.
+
+commit 96f719e21381750d7e2b5737e586d69b8b71621f
+Author: Dan Wood <bad444@comcast.net>
+Date:   Tue Oct 25 13:37:13 2016 -0600
+
+    Finished remaining tests for RailroadsAndUtilitiesTest.java
+    
+    May be more tests to be added.
+
+commit 3ddfee6714948498e4a1636d9360451f3f23ffeb
+Author: Dan Wood <bad444@comcast.net>
+Date:   Mon Oct 24 17:18:40 2016 -0600
+
+    Wrote RailroadsAndUtilitiesTest.java
+    
+    Both isMonopoly and calculateRent have not been written yet, so they still need to be tested.
+
+commit 301e9ad34371d14962309441019c76f6779f543d
+Author: Dan Wood <bad444@comcast.net>
+Date:   Mon Oct 24 16:42:57 2016 -0600
+
+    Added TaxTest.java, SquareTest.java, and DiceTest.java
+    
+    The only test classes left to write are for Monopoly, Board, RealEstate, and RailroadsAndUtilities.
+
+commit 4612fe86a6db686fac630a6f5cb9bc9a2fb32d43
+Author: Dan Wood <bad444@comcast.net>
+Date:   Mon Oct 24 14:35:33 2016 -0600
+
+    Created JailTest.java and PlayerTest.java
+    
+    These classes MAY be completed.
+
+commit eac87a945d83ebe65a53a4de93a4103090c96f7b
+Author: Dan Wood <bad444@comcast.net>
+Date:   Mon Oct 24 13:35:08 2016 -0600
+
+    Pushing so Conor can do stuff with the UI
+    
+    Started making Jail test
+
+commit 8826bc216540cf16092077423158e79fdb62937c
+Author: Dan Wood <bad444@comcast.net>
+Date:   Sun Oct 23 23:22:55 2016 -0600
+
+    Updated XML Files
+    
+    Delete the PNGs and the Sequence Diagram_ Jailed Player Pays Bail.*
+
+commit be4025524319e0cf9cc0853a636245f1125301b9
+Author: Dan Wood <bad444@comcast.net>
+Date:   Fri Oct 21 17:13:01 2016 -0600
+
+    Added the Trade and Auction Functions
+    
+    They need to be added into the main flow still.
+
+commit ca63ec1d49df61a474e607ad59d061b7534b99cc
+Merge: f6984f1 465cecc
+Author: Dan Wood <bad444@comcast.net>
+Date:   Fri Oct 21 15:56:58 2016 -0600
+
+    Trying to pull.
+    
+    Please enter a commit message to explain why this merge is necessary,
+
+commit 795c1439682fd51d8d7526560b3da190225d883e
+Author: Dan Wood <bad444@comcast.net>
+Date:   Fri Oct 21 00:25:56 2016 -0600
+
+    Added Class Diagram
+    
+    All diagrams were re-added as XMLs so everyone can change them if anyone even bothers to look at this. Like seriously though.
+
+commit 3199c895a6320008baabf34966ea4bf9332918d4
+Author: Dan Wood <bad444@comcast.net>
+Date:   Wed Oct 19 17:19:03 2016 -0600
+
+    Added preliminary diagrams.
+    
+    Mortgaging a Property
+    Jailed Player Pays Bail
+    Player Buys Real Estate
+    
+    Hopefully I did this right.
+
+commit f6984f1c62e580d2fa2d259629c2ed3f4611ff2c
+Author: Dan Wood <bad444@comcast.net>
+Date:   Wed Oct 19 17:15:21 2016 -0600
+
+    Added preliminary sequence diagrams.
+    
+    Jailed Player Pays Bail
+    Mortgaging a Property
+    Player Buys Real Estate
+
+commit f615ff1fa2af87e2773888e890eab5aaae538c8c
+Author: Dan Wood <bad444@comcast.net>
+Date:   Tue Oct 18 13:36:03 2016 -0600
+
+    Implemented methods for Go, Jail, and Tax.
+    
+    All methods are implemented with comments describing how they work and thought process/assumptions.
+
+commit 1e6f7d88694876299de1cd7768b9c35472abf578
+Author: Dan Wood <bad444@comcast.net>
+Date:   Sun Oct 16 16:40:33 2016 -0600
+
+    Completed Skeleton
+    
+    Added Go, Jail, RailroadsAndUtilities, RealEstate, Square, and Tax classes with method stubs, getters, and setters for current known attributes.
