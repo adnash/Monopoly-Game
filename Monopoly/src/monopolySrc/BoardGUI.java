@@ -1,3 +1,4 @@
+package monopolySrc;
 // CS414e
 // Conor Cox, Dan Wood, Alex Arbuckle, Alan Nash
 // A4
@@ -39,21 +40,20 @@ public class BoardGUI extends JFrame{
 	
 	private int newSpace;
 	
-	
 	private int player_turn = 0;
 	
 	public static void main(String[] args) {
-        new BoardGUI(4, new String[]{"bob","joe","shannon","beth"},new String[]{"Cat","Shoe","Battleship","Thimble"});
+        new BoardGUI(4, new String[]{"bob","joe","shannon","beth"},new String[]{"Cat","Shoe","Battleship","Thimble"}, 1);
     }
 	
 	private int x(){
 		return 80 * ((newSpace - 1) % 10);
 	}
 
-    public BoardGUI(int numPlayers, String[] playernames, String[] playericons) {
+    public BoardGUI(int numPlayers, String[] playernames, String[] playericons, int duration) {
     	JFrame.setDefaultLookAndFeelDecorated(true);
     	
-    	board = new Board(playernames, playericons);
+    	board = new Board(playernames, playericons, duration);
     	
 //    	ScoreboardGUI scoreboard = new ScoreboardGUI(board);
     	
@@ -102,9 +102,9 @@ public class BoardGUI extends JFrame{
                         player2icon.setBounds(400, 150, 50, 50);
                         frame.add(player2icon);
                         
-                        player1bal.setBounds(500, 125, 300, 50);
+                        player1bal.setBounds(500, 125, 400, 50);
                         player1bal.setFont(font);
-                        player2bal.setBounds(500, 150, 300, 50);
+                        player2bal.setBounds(500, 150, 400, 50);
                         player2bal.setFont(font);
                         
                         player1bal.setForeground(Color.BLUE);
@@ -140,11 +140,11 @@ public class BoardGUI extends JFrame{
                         player3icon.setBounds(450, 175, 50, 50);
                         frame.add(player3icon);
                         
-                        player1bal.setBounds(500, 125, 300, 50);
+                        player1bal.setBounds(500, 125, 400, 50);
                         player1bal.setFont(font);
-                        player2bal.setBounds(500, 150, 300, 50);
+                        player2bal.setBounds(500, 150, 400, 50);
                         player2bal.setFont(font);
-                        player3bal.setBounds(500, 175, 300, 50);
+                        player3bal.setBounds(500, 175, 400, 50);
                         player3bal.setFont(font);
                         
                         player1bal.setForeground(Color.BLUE);
@@ -189,16 +189,16 @@ public class BoardGUI extends JFrame{
                         player4icon.setBounds(400, 200, 50, 50);
                         frame.add(player4icon);
                         
-                        player1bal.setBounds(500, 125, 300, 50);
+                        player1bal.setBounds(500, 125, 400, 50);
                         player1bal.setFont(font);
                         
-                        player2bal.setBounds(500, 150, 300, 50);
+                        player2bal.setBounds(500, 150, 400, 50);
                         player2bal.setFont(font);
                         
-                        player3bal.setBounds(500, 175, 300, 50);
+                        player3bal.setBounds(500, 175, 400, 50);
                         player3bal.setFont(font);
                         
-                        player4bal.setBounds(500, 200, 300, 50);
+                        player4bal.setBounds(500, 200, 400, 50);
                         player4bal.setFont(font);
                         
                         player1bal.setForeground(Color.BLUE);

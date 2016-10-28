@@ -1,3 +1,4 @@
+package monopolySrc;
 // CS414e
 // Conor Cox, Dan Wood, Alex Arbuckle, Alan Nash
 // A4
@@ -29,6 +30,8 @@ public class RealEstate extends Square {
 
 	// Pass boolean that says is monopoly
 	public int calcRent(boolean isMonopoly) {
+		if(isMortgaged)
+			return 0;
 		if (isMonopoly) {
 			if (numBuildings == 0) {
 				return rentArray[1];

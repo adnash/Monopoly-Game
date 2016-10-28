@@ -1,3 +1,4 @@
+package monopolySrc;
 // CS414e
 // Conor Cox, Dan Wood, Alex Arbuckle, Alan Nash
 // A4
@@ -24,6 +25,10 @@ public class PlayerEntryGUI extends JFrame {
 	private JTextField text2;
 	private JTextField text3;
 	private JTextField text4;
+	
+	private JTextField time;
+	
+	private int duration;
 	
 	private JComboBox<String> player1icon;
 	private JComboBox<String> player2icon;
@@ -59,6 +64,10 @@ public class PlayerEntryGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public PlayerEntryGUI(int numPlayers) {
+		start(numPlayers, this);
+	}		
+	
+	public void start(int numPlayers, PlayerEntryGUI gui){
 		this.setVisible(true);
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		this.setTitle("Player Entry!");
@@ -72,6 +81,18 @@ public class PlayerEntryGUI extends JFrame {
 		GridBagConstraints c = new GridBagConstraints();
 		contentPane.setLayout(GridBagLayout);
 		
+		time = new JTextField();
+		time.setText("Duration of game");
+		time.setColumns(10);
+		c.gridx = 5;
+		c.gridy = 5;
+		c.ipadx = 50;
+		c.ipady = 50;
+		GridBagLayout.setConstraints(time, c);
+		contentPane.add(time);
+		
+		c.ipadx = 0;
+		c.ipady = 0;
 		
 		// Creates the username fields
 		text1 = new JTextField();
@@ -167,7 +188,11 @@ public class PlayerEntryGUI extends JFrame {
 						playernames[1] = text2.getText();
 						playericons[0] = player1icon.getSelectedItem().toString();
 						playericons[1] = player2icon.getSelectedItem().toString();
-						board = new BoardGUI(numPlayers, playernames, playericons);
+						String temp = time.getText();
+						duration = Integer.parseInt(temp);
+						if(duration > 0)
+							board = new BoardGUI(numPlayers, playernames, playericons, duration);
+						gui.dispose();
 					}else{
 						JOptionPane.showMessageDialog(contentPane, "Every player must choose an icon and all user icons must be unique");
 					}
@@ -180,8 +205,11 @@ public class PlayerEntryGUI extends JFrame {
 						playericons[0] = player1icon.getSelectedItem().toString();
 						playericons[1] = player2icon.getSelectedItem().toString();
 						playericons[2] = player3icon.getSelectedItem().toString();
-						board = new BoardGUI(numPlayers, playernames, playericons);
-
+						String temp = time.getText();
+						duration = Integer.parseInt(temp);
+						if(duration > 0)
+							board = new BoardGUI(numPlayers, playernames, playericons, duration);
+						gui.dispose();
 					}else{
 						JOptionPane.showMessageDialog(contentPane, "Every player must choose an icon and all user icons must be unique");
 					}
@@ -196,7 +224,11 @@ public class PlayerEntryGUI extends JFrame {
 						playericons[1] = player2icon.getSelectedItem().toString();
 						playericons[2] = player3icon.getSelectedItem().toString();
 						playericons[3] = player4icon.getSelectedItem().toString();
-						board = new BoardGUI(numPlayers, playernames, playericons);
+						String temp = time.getText();
+						duration = Integer.parseInt(temp);
+						if(duration > 0)
+							board = new BoardGUI(numPlayers, playernames, playericons, duration);
+						gui.dispose();
 					}else{
 						JOptionPane.showMessageDialog(contentPane, "Every player must choose an icon and all user icons must be unique");
 					}
@@ -209,5 +241,7 @@ public class PlayerEntryGUI extends JFrame {
 		c.ipadx = 50;
 		c.ipady = 50;
 		contentPane.add(start, c);	
-	}		
+	}
+	
+	
 }

@@ -1,3 +1,4 @@
+package monopolySrc;
 // CS414e
 // Conor Cox, Dan Wood, Alex Arbuckle, Alan Nash
 // A4
@@ -50,7 +51,10 @@ public class InitialGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public InitialGUI() {
-		
+		start(this);		
+	}
+	
+	public void start(InitialGUI gui){
 		this.setTitle("Welcome to Monopoly!");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 500, 300);
@@ -77,7 +81,7 @@ public class InitialGUI extends JFrame {
 		twoPlayers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				players = new PlayerEntryGUI(2);
-				
+				gui.dispose();
 			}
 		});
 		contentPane.add(twoPlayers, BorderLayout.WEST);
@@ -88,6 +92,7 @@ public class InitialGUI extends JFrame {
 		threePlayers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				players = new PlayerEntryGUI(3);
+				gui.dispose();
 			}
 		});
 		contentPane.add(threePlayers, BorderLayout.CENTER);
@@ -98,6 +103,7 @@ public class InitialGUI extends JFrame {
 		fourPlayers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				players = new PlayerEntryGUI(4);
+				gui.dispose();
 			}
 		});
 		contentPane.add(fourPlayers, BorderLayout.EAST);

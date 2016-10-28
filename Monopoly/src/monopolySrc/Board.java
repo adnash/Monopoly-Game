@@ -1,9 +1,12 @@
+package monopolySrc;
 // CS414e
 // Conor Cox, Dan Wood, Alex Arbuckle, Alan Nash
 // A4
 // Board.java
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -16,10 +19,16 @@ public class Board {
 	protected Dice dice = new Dice();	
 	private int numPlayers;
 	private JPanel contentPane;
+	
 	private int answer;
+	
+	private int duration;
+	private static Timer timer = new Timer();
+	private static boolean timeUp = false;
 
 	// Board constructor called once and only once by Monopoly class to initialize certain variables and objects
-	public Board(String[] playerNames, String[] playericons) {
+	public Board(String[] playerNames, String[] playericons, int duration) {
+		this.duration = duration;
 		numPlayers = playerNames.length;
 		// Initialize each player
 		players = new Player[numPlayers];
@@ -34,6 +43,15 @@ public class Board {
 	// TODO Do we even need this in its own method? These are hard-coded anyways and could belong in the global space. Just thinking out loud.
 	// Setting up squares
 	private void setupBoard() {
+		
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				timeUp = true;
+				
+			}
+		}, duration*60*1000);
+		
 		Square go = new Square(0, "Go");
 		squares[0] = go;
 		RealEstate Mediterranean_Avenue = new RealEstate(1, "Mediterranean Avenue", 60, 50, new int [] {2,4,10,30,90,160,250}, new int [] {1,3});
@@ -128,10 +146,9 @@ public class Board {
 	// Iterate through players for turns. After Each Player check timer.
 	public void gamePlay(int player_turn) {
 		Jail jail = (Jail) getSquare(40);
-		if (Monopoly.getTimeUp()) {
+		if (getTimeUp()) {
 			determineWinner();
 		}
-		checkTime();
 		if (jail.isPlayerJailed(players[player_turn])) {
 			playerJailTurnProcess(players[player_turn]);
 		} else {
@@ -149,7 +166,7 @@ public class Board {
 			//Think this causes to store doubles to much.
 			if (dice.getNumberOfDoublesRolled() == 3) {
 				dice.resetDoubles();
-				Curr_Play.setCurrentSquare(41);
+				Curr_Play.setCurrentSquare(40);
 				return;
 			}
 
@@ -167,7 +184,7 @@ public class Board {
 			//Returned false so player goes to jail. need to reset double count.
 			if(!resolveSquare(Curr_Play, newSquare)) {
 				dice.resetDoubles();
-				Curr_Play.setCurrentSquare(41);
+				Curr_Play.setCurrentSquare(40);
 				return;
 			}
 			postTurn(Curr_Play);
@@ -212,7 +229,7 @@ public class Board {
 				Curr_Play.setCurrentSquare(newSquare);
 				if (!resolveSquare(Curr_Play, newSquare)) {
 					dice.resetDoubles();
-					Curr_Play.setCurrentSquare(41);
+					Curr_Play.setCurrentSquare(40);
 					return;
 				}
 			} else {
@@ -233,7 +250,7 @@ public class Board {
 					Curr_Play.setCurrentSquare(newSquare);
 					if (!resolveSquare(Curr_Play, newSquare)) {
 						dice.resetDoubles();
-						Curr_Play.setCurrentSquare(41);
+						Curr_Play.setCurrentSquare(40);
 						return;
 					}
 					postTurn(Curr_Play);
@@ -258,60 +275,85 @@ public class Board {
 			sq = getSquare(Curr_Player.getPropertiesOwned().get(i));
 			array[i] = sq.getID() + "";			
 		}
+		boolean looper = true;
 		
-		
-		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy any houses?", "Buy houses?", JOptionPane.YES_NO_OPTION);
-		if(answer == 0){
-			Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to buy a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
-			if(answerString != null){
-				answer = Integer.parseInt(answerString.toString());
-				if(answer != -1)
-					buyHouse(answer, Curr_Player);
-				else
-					JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+		while(looper){
+			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy any houses?", "Buy houses?", JOptionPane.YES_NO_OPTION);
+			if(answer == 0){
+				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to buy a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
+				if(answerString != null){
+					answer = Integer.parseInt(answerString.toString());
+					if(answer != -1)
+						buyHouse(answer, Curr_Player);
+					else
+						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+				}
+			}else{
+				looper = false;
 			}
 		}
 		
-		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to sell any houses?", "Sell houses?", JOptionPane.YES_NO_OPTION);
-		if(answer == 0){
-			Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to sell a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
-			if(answerString != null){
-				answer = Integer.parseInt(answerString.toString());
-				if(answer != -1)
-					sellHouse(answer, Curr_Player);
-				else
-					JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+		looper = true;
+		while(looper){
+			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to sell any houses?", "Sell houses?", JOptionPane.YES_NO_OPTION);
+			if(answer == 0){
+				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to sell a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
+				if(answerString != null){
+					answer = Integer.parseInt(answerString.toString());
+					if(answer != -1)
+						sellHouse(answer, Curr_Player);
+					else
+						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+				}
+			}else{
+				looper = false;
 			}
 		}
 		
-		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to mortgage any Properties?", "Mortgage properties?", JOptionPane.YES_NO_OPTION);
-		if(answer == 0){
-			Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to mortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
-			if(answerString != null){
-				answer = Integer.parseInt(answerString.toString());
-				if(answer != -1)
-					mortgageProperty(answer, Curr_Player);
-				else
-					JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+		looper = true;
+		while(looper){
+			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to mortgage any Properties?", "Mortgage properties?", JOptionPane.YES_NO_OPTION);
+			if(answer == 0){
+				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to mortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
+				if(answerString != null){
+					answer = Integer.parseInt(answerString.toString());
+					if(answer != -1)
+						mortgageProperty(answer, Curr_Player);
+					else
+						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+				}
+			}else{
+				looper = false;
 			}
 		}
 		
-		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to unmortgage any Properties?", "Unmortgage properties?", JOptionPane.YES_NO_OPTION);
-		if(answer == 0){
-			Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to unmortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
-			if(answerString != null){
-				answer = Integer.parseInt(answerString.toString());
-				if(answer != -1)
-					unmortgageProperty(answer, Curr_Player);
-				else
-					JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+		looper = true;
+		while(looper){
+			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to unmortgage any Properties?", "Unmortgage properties?", JOptionPane.YES_NO_OPTION);
+			if(answer == 0){
+				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to unmortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
+				if(answerString != null){
+					answer = Integer.parseInt(answerString.toString());
+					if(answer != -1)
+						unmortgageProperty(answer, Curr_Player);
+					else
+						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+				}
+			}else{
+				looper = false;
 			}
 		}
 		
-		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to Trade/Sell any Properties?", "Trade properties?", JOptionPane.YES_NO_OPTION);
-		if(answer == 0){
-			trade(Curr_Player);
+		looper = true;
+		while(looper){
+			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to Trade/Sell any Properties?", "Trade properties?", JOptionPane.YES_NO_OPTION);
+			if(answer == 0){
+				trade(Curr_Player);
+			}else{
+				looper = false;
+			}
 		}
+		
 	}
 
 	//random change for commit
@@ -319,8 +361,8 @@ public class Board {
 	//when a player lands on a square this method will resolve all actions.
 	//return false if player goes to jail.
 	private boolean resolveSquare(Player Curr_Player, int squareID) {
-//		JOptionPane.showMessageDialog(contentPane, Curr_Player.getName() + " just landed on square " + squareID + " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
-		System.out.println(Curr_Player.getName() + " just landed on square " + squareID + " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
+		JOptionPane.showMessageDialog(contentPane, Curr_Player.getName() + " just landed on square " + squareID + " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
+//		System.out.println(Curr_Player.getName() + " just landed on square " + squareID + " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
 		Square Curr_Square = getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
 			RealEstate Curr_Estate =(RealEstate) Curr_Square; 
@@ -521,7 +563,7 @@ public class Board {
 							return false;
 						}
 					} else {
-						if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
+						if (prop1.getNumBuildings()<=Curr_Prop.getNumBuildings()) {
 							if (Curr_Prop.getNumBuildings()>0) {
 								Curr_Prop.sell(Curr_Play);
 								return true;
@@ -539,7 +581,7 @@ public class Board {
 					RealEstate prop2 =(RealEstate) getSquare(monop[1]);
 					RealEstate prop3 =(RealEstate) getSquare(monop[2]);
 					if (prop1.getID() == Curr_Prop.getID()) {
-						if (prop2.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
+						if (prop2.getNumBuildings()<=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
 							if (Curr_Prop.getNumBuildings()>0){
 								Curr_Prop.sell(Curr_Play);
 								return true;
@@ -552,7 +594,7 @@ public class Board {
 							return false;
 						}
 					} else if (prop2.getID() == Curr_Prop.getID()) {
-						if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
+						if (prop1.getNumBuildings()<=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
 							if (Curr_Prop.getNumBuildings()>0) {
 								Curr_Prop.sell(Curr_Play);
 								return true;
@@ -565,7 +607,7 @@ public class Board {
 							return false;
 						}
 					} else {
-						if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop2.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
+						if (prop1.getNumBuildings()<=Curr_Prop.getNumBuildings() && prop2.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
 							if (Curr_Prop.getNumBuildings()>0) {
 								Curr_Prop.sell(Curr_Play);
 								return true;
@@ -710,20 +752,52 @@ public class Board {
 
 	//This is called when a player doesn't have enough money to pay rent or jail escape and is forced to sell then must pay rent or jail fee
 	private void sellSequence(Player Curr_Player, int negativeAmount){
+		
+		String[] array = new String[Curr_Player.getPropertiesOwned().size()];
+		Square sq = new Square(1, "blah");
+
+		
+		for (int i = 0; i < Curr_Player.getPropertiesOwned().size(); i++) {
+			sq = getSquare(Curr_Player.getPropertiesOwned().get(i));
+			array[i] = sq.getID() + "";			
+		}
+		
 		int amountSold = 0;
 		RealEstate test = (RealEstate) getSquare(1);
 
 		//TODO Need to determine what property the player is talking about. Just using test prop for now.
+		int count = 0;
 		while(amountSold<negativeAmount){
-			System.out.println("Would you like to sell houses?(Y/N)");
-			if(sellHouse(test.getID(), Curr_Player)){
-				amountSold += test.getBuildingPrice()/2;
+			if(count > 10)
+				return;
+			count++;
+			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to sell any houses?", "Sell houses?", JOptionPane.YES_NO_OPTION);
+			if(answer == 0){
+				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to sell a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
+				if(answerString != null){
+					answer = Integer.parseInt(answerString.toString());
+					if(answer != -1){
+						sellHouse(answer, Curr_Player);
+						amountSold += test.getBuildingPrice()/2;
+					}else{
+						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+					}
+				}
 			}
-			System.out.println("Would you like to mortgage a property?(Y/N)");
-			if(mortgageProperty(test.getID(), Curr_Player)){
-				amountSold += test.getMortgagePrice();
+			
+			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to mortgage any Properties?", "Mortgage properties?", JOptionPane.YES_NO_OPTION);
+			if(answer == 0){
+				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to mortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
+				if(answerString != null){
+					answer = Integer.parseInt(answerString.toString());
+					if(answer != -1){
+						mortgageProperty(answer, Curr_Player);
+						amountSold += test.getMortgagePrice();
+					}else{
+						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+					}
+				}
 			}
-
 		}
 	}
 
@@ -746,7 +820,7 @@ public class Board {
 		while(loop.size() > 1) {
 			//Ask each player if they want to bid, and for how much
 			for(int i = 0; i < loop.size(); i++){
-				answer = JOptionPane.showConfirmDialog(contentPane,loop.get(i).getName() + ", would you like to place a bid on" + Curr_Square.getName() + "?", "Place bid?", JOptionPane.YES_NO_OPTION);
+				answer = JOptionPane.showConfirmDialog(contentPane,loop.get(i).getName() + ", would you like to place a bid on " + Curr_Square.getName() + "?", "Place bid?", JOptionPane.YES_NO_OPTION);
 				switch (answer) {
 				case 0:
 					tempBid = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter an amount to bid. You have $" + loop.get(i).getBalance() + "\n" + "The current bid is $" + currentBid, "amount"));
@@ -768,8 +842,8 @@ public class Board {
 					JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", you have been removed from the bidding");
 					temp.remove(loop.get(i));
 				}
-				loop = temp;
 			}
+			loop = temp;
 		}
 		//Auction ends
 		if (winner == null) {
@@ -808,10 +882,22 @@ public class Board {
 			sq = getSquare(p.getPropertiesOwned().get(i));
 			array[i] = sq.getID() + "";			
 		}
-		String answerString = JOptionPane.showInputDialog(contentPane, p.getName() + ", you own these properties.\nSelect a property to trade.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null).toString();
-		int property = Integer.parseInt(answerString);
+		Object answerString = JOptionPane.showInputDialog(contentPane, p.getName() + ", you own these properties.\nSelect a property to trade.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
+		if(answerString == null)
+			return;
+		int property = Integer.parseInt(answerString.toString());
 		
-		//The player entered a property to sell
+		int sq_ID = sq.getID();
+		if(sq_ID != 5 && sq_ID != 12 && sq_ID != 15 && sq_ID != 25 && sq_ID != 28 && sq_ID != 35){
+			RealEstate re = (RealEstate) getSquare(sq_ID);
+			if(re.getNumBuildings() != 0){
+				answerString = JOptionPane.showInputDialog(contentPane, "You suck and can't sell this.");
+
+				System.out.println("You suck and can't sell this.");
+			}
+		}
+
+				//The player entered a property to sell
 		if (p.getPropertiesOwned().contains(property)) {
 			sq = getSquare(property);
 
@@ -824,11 +910,15 @@ public class Board {
 					playErs.add(target.getPlayerID() + "");
 				}
 			}
-			answerString = JOptionPane.showInputDialog(contentPane, p.getName() + ", Select the other player number you would like to sell it to:", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, playErs.toArray(), null).toString();
-			int otherPlayer = Integer.parseInt(answerString);
+			answerString = JOptionPane.showInputDialog(contentPane, p.getName() + ", Select the other player number you would like to sell it to:", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, playErs.toArray(), null);
+			if(answerString == null)
+				return;
+			int otherPlayer = Integer.parseInt(answerString.toString());
 			
 			answerString = JOptionPane.showInputDialog(contentPane, p.getName() + ", enter the amount you wish to sell the property for");
-			int price = Integer.parseInt(answerString);
+			if(answerString == null)
+				return;
+			int price = Integer.parseInt(answerString.toString());
 			Player temp;
 			//Get the other player
 			for (int i = 0; i < players.length; i++) {
@@ -850,6 +940,15 @@ public class Board {
 				p.increaseBalance(price);
 				p.removeProperty(sq.getID());
 				target.addProperty(sq.getID());
+				sq_ID = sq.getID();
+				if(sq_ID == 5 || sq_ID == 12 || sq_ID == 15 || sq_ID == 25 || sq_ID == 28 || sq_ID == 35){
+					RailroadsAndUtilities rnu = (RailroadsAndUtilities)getSquare(sq_ID);
+					rnu.setOwnerID(target.getPlayerID());
+				}
+				else{
+					RealEstate re = (RealEstate) getSquare(sq_ID);
+					re.setOwnerID(target.getPlayerID());
+				}
 				break;
 			case 1:
 			default:
@@ -863,7 +962,7 @@ public class Board {
 
 	//TODO Need to implement by interacting with timer in Monopoly class, (or we may want to move timer into this class)
 	private boolean checkTime() {
-		return Monopoly.getTimeUp();
+		return getTimeUp();
 	}
 	
 	private void determineWinner(){
@@ -871,16 +970,33 @@ public class Board {
 		ArrayList<Player> candidates = new ArrayList<Player>();
 		
 		//Checks for ties
-		for(int i = 0; i < players.length; i++){
+		for(int i = 1; i < players.length; i++){
 			if(players[i].getBalance() >= winner.getBalance()){
 				candidates.add(players[i]);
 				winner = players[i];
 			}
 		}
 		
+		if(candidates.size() == 0){
+			JOptionPane.showMessageDialog(contentPane, "The winner is " + winner.getName() + " with a balance of " + winner.getBalance() + "!");
+			try {
+			   Thread.sleep(5000);
+			} 
+			catch (InterruptedException e) {
+			   e.printStackTrace();
+			}
+			System.exit(0);
+		}
 		//One definitive winner
 		if(candidates.size() == 1){
-			System.out.println("The winner is " + candidates.get(0) + " with a balance of " + candidates.get(0).getBalance());
+			JOptionPane.showMessageDialog(contentPane, "The winner is " + candidates.get(0).getName() + " with a balance of " + candidates.get(0).getBalance() + "!");
+			try {
+			   Thread.sleep(5000);
+			} 
+			catch (InterruptedException e) {
+			   e.printStackTrace();
+			}
+			System.exit(0);
 		}
 		//Tied game, get the guy with the most properties.
 		//If there is a tie there, pick one arbitrarily.
@@ -898,8 +1014,14 @@ public class Board {
 			
 			//Determine the winner
 			//If there is a tie here it picks the player with the lowest player ID
-			System.out.println("The winner is " + trueWinners.get(0) + " with a balance of " + trueWinners.get(0).getBalance());
-
+			JOptionPane.showMessageDialog(contentPane, "The winner is " + trueWinners.get(0).getName() + " with a balance of " + trueWinners.get(0).getBalance());
+			try {
+			   Thread.sleep(5000);
+			} 
+			catch (InterruptedException e) {
+			   e.printStackTrace();
+			}
+			System.exit(0);
 		}
 	}
 
@@ -909,6 +1031,10 @@ public class Board {
 	
 	public Player[] getPlayers() {
 		return players;
+	}
+	
+	public static boolean getTimeUp() {
+		return timeUp;
 	}
 
 }

@@ -1,6 +1,10 @@
+package monopolyTests;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import monopolySrc.Player;
+import monopolySrc.Tax;
 
 public class TaxTest {
 

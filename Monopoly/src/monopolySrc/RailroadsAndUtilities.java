@@ -1,3 +1,4 @@
+package monopolySrc;
 // CS414e
 // Conor Cox, Dan Wood, Alex Arbuckle, Alan Nash
 // A4
@@ -43,6 +44,8 @@ public class RailroadsAndUtilities extends Square {
 	}
 	
 	public int calculateRent(int numOwned, int dieRoll) {
+		if(isMortgaged)
+			return 0;
 		//Utilities
 		if(this.ID == 12 || this.ID == 28){
 			return ((5*numOwned) * dieRoll);
