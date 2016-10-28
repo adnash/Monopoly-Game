@@ -862,6 +862,43 @@ public class Board {
 	private boolean checkTime() {
 		return Monopoly.getTimeUp();
 	}
+	
+	private void determineWinner(){
+		Player winner = players[0];
+		ArrayList<Player> candidates = new ArrayList<Player>();
+		
+		//Checks for ties
+		for(int i = 0; i < players.length; i++){
+			if(players[i].getBalance() >= winner.getBalance()){
+				candidates.add(players[i]);
+				winner = players[i];
+			}
+		}
+		
+		//One definitive winner
+		if(candidates.size() == 1){
+			System.out.println("The winner is " + candidates.get(0) + " with a balance of " + candidates.get(0).getBalance());
+		}
+		//Tied game, get the guy with the most properties.
+		//If there is a tie there, pick one arbitrarily.
+		else{
+			ArrayList<Player> trueWinners = new ArrayList<Player>();
+			trueWinners = candidates;
+			for(int i = 0; i < candidates.size(); i++){
+				if(winner.getPropertiesOwned().size() > candidates.get(i).getPropertiesOwned().size()){
+					trueWinners.remove(i);
+				}
+				else if(candidates.get(i).getPropertiesOwned().size() > winner.getPropertiesOwned().size()){
+					trueWinners.remove(winner);
+				}
+			}
+			
+			//Determine the winner
+			//If there is a tie here it picks the player with the lowest player ID
+			System.out.println("The winner is " + trueWinners.get(0) + " with a balance of " + trueWinners.get(0).getBalance());
+
+		}
+	}
 
 	public int getNumPlayers() {
 		return numPlayers;
