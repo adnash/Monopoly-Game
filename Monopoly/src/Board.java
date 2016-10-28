@@ -128,6 +128,9 @@ public class Board {
 	// Iterate through players for turns. After Each Player check timer.
 	public void gamePlay(int player_turn) {
 		Jail jail = (Jail) getSquare(40);
+		if (Monopoly.getTimeUp()) {
+			determineWinner();
+		}
 		checkTime();
 		if (jail.isPlayerJailed(players[player_turn])) {
 			playerJailTurnProcess(players[player_turn]);
