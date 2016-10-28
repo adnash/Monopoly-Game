@@ -100,7 +100,7 @@ public class RealEstate extends Square {
 	}
 
 	public boolean canMortgage(Player player){
-		if (numBuildings == 0 && !isMortgaged && ownerID == player.getPlayerID()) {
+		if ((numBuildings == 0) && (!isMortgaged) && (ownerID == player.getPlayerID())) {
 			return true;
 		} else {
 			return false;
