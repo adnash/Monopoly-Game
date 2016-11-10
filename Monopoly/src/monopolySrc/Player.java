@@ -12,6 +12,9 @@ public class Player {
 	private int playerID;
 	private String name;
 	private String icon;
+	private boolean isAI;
+	
+	private int numGetOutOfJail;
 
 
 	private int balance;
@@ -28,6 +31,10 @@ public class Player {
 		currentSquare = 0;
 		// No player starts with property
 		propertiesOwned = new ArrayList<Integer>();
+		// No player starts with a Get Out of Jail Free card
+		numGetOutOfJail = 0;
+		// Initialize player as a non-AI player
+		isAI = false;
 	}
 
 	public int getPlayerID() {
@@ -86,5 +93,25 @@ public class Player {
 
 	public void removeProperty(int propertyID) {
 		this.propertiesOwned.remove((Object)propertyID);
+	}
+	
+	public boolean getAI() {
+		return this.isAI;
+	}
+	
+	public void setAI(boolean b) {
+		this.isAI = b;
+	}
+	
+	public void receiveJCard() {
+		numGetOutOfJail++;
+	}
+	
+	public void removeJCard() {
+		numGetOutOfJail--;
+	}
+	
+	public int getJCard() {
+		return numGetOutOfJail;
 	}
 }
