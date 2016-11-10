@@ -953,8 +953,10 @@ public class Board {
 						case 0:
 							rnu.unmortgage(target);
 							break;
+						//1 is no
 						case 1:
 							target.decreaseBalance((int)(rnu.getPrice()*.1));
+						default:
 						}
 					}
 				}
