@@ -203,6 +203,7 @@ public class Board {
 				Jail jail = (Jail) getSquare(40);
 				jail.freePlayer(Curr_Play);
 				playerTurnProcess(Curr_Play);
+				return;
 			}else{
 				if(Curr_Play.getBalance()<50){
 					sellSequence(Curr_Play, 50 - Curr_Play.getBalance());
@@ -210,6 +211,7 @@ public class Board {
 					Jail jail = (Jail) getSquare(40);
 					jail.freePlayer(Curr_Play);
 					playerTurnProcess(Curr_Play);
+					return;
 				}
 			}
 		case 1:	// let player roll for doubles
@@ -219,7 +221,6 @@ public class Board {
 				// Move player by dice amount and end turn
 				Jail jail = (Jail) getSquare(40);
 				jail.freePlayer(Curr_Play);
-				playerTurnProcess(Curr_Play);
 				int oldSquare = Curr_Play.getCurrentSquare();
 				int newSquare = oldSquare + dice.getSum();
 				if (newSquare >= 40) {
@@ -232,6 +233,7 @@ public class Board {
 					Curr_Play.setCurrentSquare(40);
 					return;
 				}
+				postTurn(Curr_Play);
 			} else {
 				Jail jail = (Jail) getSquare(40);
 				jail.reduceJailTurns(Curr_Play);
@@ -944,10 +946,32 @@ public class Board {
 				if(sq_ID == 5 || sq_ID == 12 || sq_ID == 15 || sq_ID == 25 || sq_ID == 28 || sq_ID == 35){
 					RailroadsAndUtilities rnu = (RailroadsAndUtilities)getSquare(sq_ID);
 					rnu.setOwnerID(target.getPlayerID());
+					if(rnu.isMortgaged()){
+						System.out.println("Would you like to unmortgage");
+						switch (answer){
+						//0 is yes
+						case 0:
+							rnu.unmortgage(target);
+							break;
+						case 1:
+							target.decreaseBalance((int)(rnu.getPrice()*.1));
+						}
+					}
 				}
 				else{
 					RealEstate re = (RealEstate) getSquare(sq_ID);
 					re.setOwnerID(target.getPlayerID());
+					if(re.getIsMortgaged()){
+						System.out.println("Would you like to unmortgage");
+						switch (answer){
+						//0 is yes
+						case 0:
+							re.unMortgage(target);
+							break;
+						case 1:
+							target.decreaseBalance((int)(re.getBuyPrice()*.1));
+						}
+					}
 				}
 				break;
 			case 1:
@@ -965,18 +989,33 @@ public class Board {
 		return getTimeUp();
 	}
 	
+	private int playerValue(Player p){
+		int total = p.getBalance();
+		for (int temp : p.getPropertiesOwned()) {
+			Square Curr_Square = getSquare(temp);
+			if (Curr_Square instanceof RealEstate) {
+				RealEstate Curr_Estate =(RealEstate) Curr_Square;
+				total+=Curr_Estate.getBuyPrice();
+			}else if (Curr_Square instanceof RailroadsAndUtilities) {
+				RailroadsAndUtilities Curr_RU =(RailroadsAndUtilities) Curr_Square;
+				total+=Curr_RU.getPrice();
+			}
+		}
+		return total;
+	}
+	
 	private void determineWinner(){
 		Player winner = players[0];
-		ArrayList<Player> candidates = new ArrayList<Player>();
+		//ArrayList<Player> candidates = new ArrayList<Player>();
 		
 		//Checks for ties
 		for(int i = 1; i < players.length; i++){
-			if(players[i].getBalance() >= winner.getBalance()){
-				candidates.add(players[i]);
+			if(playerValue(players[i]) >= playerValue(winner)){
 				winner = players[i];
 			}
 		}
 		
+		/*
 		if(candidates.size() == 0){
 			JOptionPane.showMessageDialog(contentPane, "The winner is " + winner.getName() + " with a balance of " + winner.getBalance() + "!");
 			try {
@@ -1011,10 +1050,11 @@ public class Board {
 					trueWinners.remove(winner);
 				}
 			}
+			*/
 			
 			//Determine the winner
 			//If there is a tie here it picks the player with the lowest player ID
-			JOptionPane.showMessageDialog(contentPane, "The winner is " + trueWinners.get(0).getName() + " with a balance of " + trueWinners.get(0).getBalance());
+			JOptionPane.showMessageDialog(contentPane, "The winner is " + winner.getName() + " with a balance of " + winner.getBalance());
 			try {
 			   Thread.sleep(5000);
 			} 
@@ -1022,7 +1062,6 @@ public class Board {
 			   e.printStackTrace();
 			}
 			System.exit(0);
-		}
 	}
 
 	public int getNumPlayers() {
