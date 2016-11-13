@@ -9,6 +9,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -26,10 +27,10 @@ public class PlayerEntryGUI extends JFrame {
 	private JTextField text3;
 	private JTextField text4;
 	
-	private JTextField time;
+	private JComboBox time;
 	
 	private int duration;
-	
+		
 	private JComboBox<String> player1icon;
 	private JComboBox<String> player2icon;
 	private JComboBox<String> player3icon;
@@ -41,7 +42,9 @@ public class PlayerEntryGUI extends JFrame {
 	private String[] playernames;
 	private String[] playericons;
 	
-	private BoardGUI board;
+	private Board board;
+	private BoardGUI boardGUI;
+	private ScoreboardGUI scoreboard;
 
 	
 	/**
@@ -51,7 +54,7 @@ public class PlayerEntryGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PlayerEntryGUI frame = new PlayerEntryGUI(3);
+					PlayerEntryGUI frame = new PlayerEntryGUI(2);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -80,16 +83,6 @@ public class PlayerEntryGUI extends JFrame {
 		GridBagLayout.columnWeights = new double[]{0.0, 1.0};
 		GridBagConstraints c = new GridBagConstraints();
 		contentPane.setLayout(GridBagLayout);
-		
-		time = new JTextField();
-		time.setText("Duration of game");
-		time.setColumns(10);
-		c.gridx = 5;
-		c.gridy = 5;
-		c.ipadx = 50;
-		c.ipady = 50;
-		GridBagLayout.setConstraints(time, c);
-		contentPane.add(time);
 		
 		c.ipadx = 0;
 		c.ipady = 0;
@@ -147,6 +140,22 @@ public class PlayerEntryGUI extends JFrame {
 		c.gridy = 3;
 		GridBagLayout.setConstraints(player4icon, c);
 		
+		String[] timeList = new String[]{"5","10","15","20","30","45","60","120"};
+		
+	    JLabel label1 = new JLabel("Select game duration(minutes):");
+	    c.gridx = 2;
+	    c.gridy = 3;
+	    GridBagLayout.setConstraints(label1, c);
+	    
+		time = new JComboBox(timeList);
+		c.gridx = 3;
+		c.gridy = 3;
+		GridBagLayout.setConstraints(time, c);
+	    
+
+		contentPane.add(label1);
+		contentPane.add(time);
+		
 		switch (numPlayers) {
 		case 2:
 			contentPane.add(text1);
@@ -188,10 +197,13 @@ public class PlayerEntryGUI extends JFrame {
 						playernames[1] = text2.getText();
 						playericons[0] = player1icon.getSelectedItem().toString();
 						playericons[1] = player2icon.getSelectedItem().toString();
-						String temp = time.getText();
+						String temp = time.getSelectedItem().toString();
 						duration = Integer.parseInt(temp);
-						if(duration > 0)
-							board = new BoardGUI(numPlayers, playernames, playericons, duration);
+						if(duration > 0){
+							board = new Board(playernames, playericons, duration);
+							boardGUI = new BoardGUI(numPlayers, board, playericons);
+							scoreboard = new ScoreboardGUI(boardGUI, board, playericons);
+						}
 						gui.dispose();
 					}else{
 						JOptionPane.showMessageDialog(contentPane, "Every player must choose an icon and all user icons must be unique");
@@ -205,10 +217,13 @@ public class PlayerEntryGUI extends JFrame {
 						playericons[0] = player1icon.getSelectedItem().toString();
 						playericons[1] = player2icon.getSelectedItem().toString();
 						playericons[2] = player3icon.getSelectedItem().toString();
-						String temp = time.getText();
+						String temp = time.getSelectedItem().toString();
 						duration = Integer.parseInt(temp);
-						if(duration > 0)
-							board = new BoardGUI(numPlayers, playernames, playericons, duration);
+						if(duration > 0){
+							board = new Board(playernames, playericons, duration);
+							boardGUI = new BoardGUI(numPlayers, board, playericons);
+							scoreboard = new ScoreboardGUI(boardGUI, board, playericons);
+						}
 						gui.dispose();
 					}else{
 						JOptionPane.showMessageDialog(contentPane, "Every player must choose an icon and all user icons must be unique");
@@ -224,10 +239,13 @@ public class PlayerEntryGUI extends JFrame {
 						playericons[1] = player2icon.getSelectedItem().toString();
 						playericons[2] = player3icon.getSelectedItem().toString();
 						playericons[3] = player4icon.getSelectedItem().toString();
-						String temp = time.getText();
+						String temp = time.getSelectedItem().toString();
 						duration = Integer.parseInt(temp);
-						if(duration > 0)
-							board = new BoardGUI(numPlayers, playernames, playericons, duration);
+						if(duration > 0){
+							board = new Board(playernames, playericons, duration);
+							boardGUI = new BoardGUI(numPlayers, board, playericons);
+							scoreboard = new ScoreboardGUI(boardGUI, board, playericons);
+						}
 						gui.dispose();
 					}else{
 						JOptionPane.showMessageDialog(contentPane, "Every player must choose an icon and all user icons must be unique");

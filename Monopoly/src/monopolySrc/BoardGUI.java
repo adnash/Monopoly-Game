@@ -22,15 +22,13 @@ import javax.swing.JLabel;
 public class BoardGUI extends JFrame{
 	
 	private Board board;
+	private JFrame frame;
 	
 	// movable player icon
 	private JLabel player1, player2, player3, player4;
 
 	// player balance
 	private JLabel player1bal, player2bal, player3bal, player4bal;
-	
-	// player static icon on the scoreboard
-	private JLabel player1icon, player2icon, player3icon, player4icon;
 	
 	// dice
 	private JLabel die1, die2;
@@ -42,31 +40,38 @@ public class BoardGUI extends JFrame{
 	
 	private int player_turn = 0;
 	
+	private int numPlayers;
+	
 	public static void main(String[] args) {
-        new BoardGUI(4, new String[]{"bob","joe","shannon","beth"},new String[]{"Cat","Shoe","Battleship","Thimble"}, 1);
+        new BoardGUI(4, new Board(new String[]{"bob","joe","shannon","beth"},new String[]{"Cat","Shoe","Battleship","Thimble"}, 1), new String[]{"Cat","Shoe","Battleship","Thimble"});
     }
 	
 	private int x(){
 		return 80 * ((newSpace - 1) % 10);
 	}
+	
+	public Board getBoard(){
+		return board;
+	}
 
-    public BoardGUI(int numPlayers, String[] playernames, String[] playericons, int duration) {
+    public BoardGUI(int numPlayers, Board board, String[] playericons) {
     	JFrame.setDefaultLookAndFeelDecorated(true);
     	
-    	board = new Board(playernames, playericons, duration);
+    	this.numPlayers = numPlayers;
     	
-//    	ScoreboardGUI scoreboard = new ScoreboardGUI(board);
-    	
+    	this.board = board;
+    	    	
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
                 try {
                 	JFrame.setDefaultLookAndFeelDecorated(true);
+                	
                     // Load the background image
                     BufferedImage monopolyImage = ImageIO.read(new File("monopoly.png"));
                     
                     // Create the frame...
-                    JFrame frame = new JFrame("The Game Of Monopoly");
+                    frame = new JFrame("The Game Of Monopoly");
                     frame.setBounds(0, 0, 1000, 1000);
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -78,457 +83,31 @@ public class BoardGUI extends JFrame{
                     // Supply a layout manager for the body of the content
                     frame.setLayout(null);
                     
+                    // Creates the font used for the board
                     Font font = new Font("Verdana", Font.BOLD, 20);
+
                     
-                    // setting the player icons
-                    switch (numPlayers) {
-            		case 2:
-            			player1 = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[0] + ".png")))));
-            			player2 = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[1] + ".png")))));
-            			
-            			player1icon = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[0] + ".png")))));
-            			player2icon = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[1] + ".png")))));
-            			
-            			player1bal = new JLabel(board.getPlayers()[0].getName() + "'s balance: " + board.getPlayers()[0].getBalance());
-            			player2bal = new JLabel(board.getPlayers()[1].getName() + "'s balance: " + board.getPlayers()[1].getBalance());
-            			
-            			player1.setBounds(870, 870, 50, 50);;
-                        frame.add(player1);
-                        player2.setBounds(950, 870, 50, 50);;
-                        frame.add(player2);
-                        
-                        player1icon.setBounds(450, 125, 50, 50);
-                        frame.add(player1icon);
-                        player2icon.setBounds(400, 150, 50, 50);
-                        frame.add(player2icon);
-                        
-                        player1bal.setBounds(500, 125, 400, 50);
-                        player1bal.setFont(font);
-                        player2bal.setBounds(500, 150, 400, 50);
-                        player2bal.setFont(font);
-                        
-                        player1bal.setForeground(Color.BLUE);
-            			player2bal.setForeground(Color.RED);
-            			
-                        frame.add(player1bal);
-                        frame.add(player2bal);
-            			break;
-            		case 3:
-            			player1 = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[0] + ".png")))));
-            			player2 = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[1] + ".png")))));
-            			player3 = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[2] + ".png")))));
-            			
-            			player1icon = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[0] + ".png")))));
-            			player2icon = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[1] + ".png")))));
-            			player3icon = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[2] + ".png")))));
-            			
-            			player1bal = new JLabel(board.getPlayers()[0].getName() + "'s balance: " + board.getPlayers()[0].getBalance());
-            			player2bal = new JLabel(board.getPlayers()[1].getName() + "'s balance: " + board.getPlayers()[1].getBalance());
-            			player3bal = new JLabel(board.getPlayers()[2].getName() + "'s balance: " + board.getPlayers()[2].getBalance());
-            			
-            			player1.setBounds(870, 870, 50, 50);;
-                        frame.add(player1);
-                        player2.setBounds(950, 870, 50, 50);;
-                        frame.add(player2);
-                        player3.setBounds(870, 950, 50, 50);;
-                        frame.add(player3);
-                        
-                        player1icon.setBounds(450, 125, 50, 50);
-                        frame.add(player1icon);
-                        player2icon.setBounds(400, 150, 50, 50);
-                        frame.add(player2icon);
-                        player3icon.setBounds(450, 175, 50, 50);
-                        frame.add(player3icon);
-                        
-                        player1bal.setBounds(500, 125, 400, 50);
-                        player1bal.setFont(font);
-                        player2bal.setBounds(500, 150, 400, 50);
-                        player2bal.setFont(font);
-                        player3bal.setBounds(500, 175, 400, 50);
-                        player3bal.setFont(font);
-                        
-                        player1bal.setForeground(Color.BLUE);
-            			player2bal.setForeground(Color.RED);
-            			player3bal.setForeground(Color.GREEN);
-            			
-                        frame.add(player1bal);
-                        frame.add(player2bal);
-                        frame.add(player3bal);
-            			break;
-            		case 4:
-            			player1 = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[0] + ".png")))));
-            			player2 = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[1] + ".png")))));
-            			player3 = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[2] + ".png")))));
-            			player4 = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[3] + ".png")))));
-            			
-            			player1icon = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[0] + ".png")))));
-            			player2icon = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[1] + ".png")))));
-            			player3icon = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[2] + ".png")))));
-            			player4icon = new JLabel(new ImageIcon(ImageIO.read((new File("monopoly-" + playericons[3] + ".png")))));
-            			
-            			player1bal = new JLabel(board.getPlayers()[0].getName() + "'s balance: " + board.getPlayers()[0].getBalance());
-            			player2bal = new JLabel(board.getPlayers()[1].getName() + "'s balance: " + board.getPlayers()[1].getBalance());
-            			player3bal = new JLabel(board.getPlayers()[2].getName() + "'s balance: " + board.getPlayers()[2].getBalance());
-            			player4bal = new JLabel(board.getPlayers()[3].getName() + "'s balance: " + board.getPlayers()[3].getBalance());
-            			
-            			player1.setBounds(870, 870, 50, 50);;
-                        frame.add(player1);
-                        player2.setBounds(950, 870, 50, 50);;
-                        frame.add(player2);
-                        player3.setBounds(870, 950, 50, 50);;
-                        frame.add(player3);
-                        player4.setBounds(950, 950, 50, 50);;
-                        frame.add(player4);
-                        
-                        player1icon.setBounds(450, 125, 50, 50);
-                        frame.add(player1icon);
-                        player2icon.setBounds(400, 150, 50, 50);
-                        frame.add(player2icon);
-                        player3icon.setBounds(450, 175, 50, 50);
-                        frame.add(player3icon);
-                        player4icon.setBounds(400, 200, 50, 50);
-                        frame.add(player4icon);
-                        
-                        player1bal.setBounds(500, 125, 400, 50);
-                        player1bal.setFont(font);
-                        
-                        player2bal.setBounds(500, 150, 400, 50);
-                        player2bal.setFont(font);
-                        
-                        player3bal.setBounds(500, 175, 400, 50);
-                        player3bal.setFont(font);
-                        
-                        player4bal.setBounds(500, 200, 400, 50);
-                        player4bal.setFont(font);
-                        
-                        player1bal.setForeground(Color.BLUE);
-            			player2bal.setForeground(Color.RED);
-            			player3bal.setForeground(Color.GREEN);
-            			player4bal.setForeground(Color.GRAY);
-            			
-                        frame.add(player1bal);
-                        frame.add(player2bal);
-                        frame.add(player3bal);
-                        frame.add(player4bal);
-            			break;
-            		}
+                    // Sets up the board and all of the initial values
+                    // Very important method
+                    preBoardSetup(numPlayers, playericons, font);
                     
-                    // adding counters for the number of houses on spaces with default 0
-                    houses1 = new JLabel("0");
-                    houses1.setFont(font);
-                    houses1.setBounds(815, 860, 50, 50);
-                    frame.add(houses1);
-                    houses3 = new JLabel("0");
-                    houses3.setFont(font);
-                    houses3.setBounds(655, 860, 50, 50);
-                    frame.add(houses3);
-                    houses6 = new JLabel("0");
-                    houses6.setFont(font);
-                    houses6.setBounds(415, 860, 50, 50);
-                    frame.add(houses6);
-                    houses8 = new JLabel("0");
-                    houses8.setFont(font);
-                    houses8.setBounds(255, 860, 50, 50);
-                    frame.add(houses8);
-                    houses9 = new JLabel("0");
-                    houses9.setFont(font);
-                    houses9.setBounds(175, 860, 50, 50);
-                    frame.add(houses9);
-                    houses11 = new JLabel("0");
-                    houses11.setFont(font);
-                    houses11.setBounds(110, 800, 50, 50);
-                    frame.add(houses11);
-                    houses13 = new JLabel("0");
-                    houses13.setFont(font);
-                    houses13.setBounds(110, 640, 50, 50);
-                    frame.add(houses13);
-                    houses14 = new JLabel("0");
-                    houses14.setFont(font);
-                    houses14.setBounds(110, 560, 50, 50);
-                    frame.add(houses14);
-                    houses16 = new JLabel("0");
-                    houses16.setFont(font);
-                    houses16.setBounds(110, 400, 50, 50);
-                    frame.add(houses16);
-                    houses18 = new JLabel("0");
-                    houses18.setFont(font);
-                    houses18.setBounds(110, 240, 50, 50);
-                    frame.add(houses18);
-                    houses19 = new JLabel("0");
-                    houses19.setFont(font);
-                    houses19.setBounds(110, 160, 50, 50);
-                    frame.add(houses19);
-                    houses21 = new JLabel("0");
-                    houses21.setFont(font);
-                    houses21.setBounds(160, 90, 50, 50);
-                    frame.add(houses21);
-                    houses23 = new JLabel("0");
-                    houses23.setFont(font);
-                    houses23.setBounds(320, 90, 50, 50);
-                    frame.add(houses23);
-                    houses24 = new JLabel("0");
-                    houses24.setFont(font);
-                    houses24.setBounds(400, 90, 50, 50);
-                    frame.add(houses24);
-                    houses26 = new JLabel("0");
-                    houses26.setFont(font);
-                    houses26.setBounds(560, 90, 50, 50);
-                    frame.add(houses26);
-                    houses27 = new JLabel("0");
-                    houses27.setFont(font);
-                    houses27.setBounds(640, 90, 50, 50);
-                    frame.add(houses27);
-                    houses29 = new JLabel("0");
-                    houses29.setFont(font);
-                    houses29.setBounds(800, 90, 50, 50);
-                    frame.add(houses29);
-                    houses31 = new JLabel("0");
-                    houses31.setFont(font);
-                    houses31.setBounds(880, 160, 50, 50);
-                    frame.add(houses31);
-                    houses32 = new JLabel("0");
-                    houses32.setFont(font);
-                    houses32.setBounds(880, 240, 50, 50);
-                    frame.add(houses32);
-                    houses34 = new JLabel("0");
-                    houses34.setFont(font);
-                    houses34.setBounds(880, 400, 50, 50);
-                    frame.add(houses34);
-                    houses37 = new JLabel("0");
-                    houses37.setFont(font);
-                    houses37.setBounds(880, 640, 50, 50);
-                    frame.add(houses37);
-                    houses39 = new JLabel("0");
-                    houses39.setFont(font);
-                    houses39.setBounds(880, 800, 50, 50);
-                    frame.add(houses39);
-                    
-                    die1 = new JLabel("Die 1:    " + board.dice.getFace1());
-                    die2 = new JLabel("Die 2:    " + board.dice.getFace2());
-                    die1.setFont(font);
-                    die2.setFont(font);
-                    die1.setBounds(400, 675, 125, 50);
-    				die2.setBounds(400, 700, 125, 50);
-    				frame.add(die1);
-    				frame.add(die2);
                     
                     JButton roll = new JButton("ROLL");
-            		roll.setFont(new Font("PT Sans", Font.BOLD, 50));
+            		roll.setFont(new Font("Verdana", Font.BOLD, 50));
             		roll.addActionListener(new ActionListener() {
             			public void actionPerformed(ActionEvent e) {
             				
+            				// Calls the turn controller in board. Runs basically the whole game
             				board.gamePlay(player_turn);
-            				newSpace = board.getPlayers()[player_turn].getCurrentSquare();
-            				if(newSpace == 0){
-            					switch(player_turn){
-            					case 0:
-            						player1.setBounds(870, 870, 50, 50);;
-                                    frame.add(player1);
-            						break;
-            					case 1:
-                                    player2.setBounds(950, 870, 50, 50);;
-                                    frame.add(player2);
-            						break;
-            					case 2:
-                                    player3.setBounds(870, 950, 50, 50);;
-                                    frame.add(player3);
-            						break;
-            					case 3:
-                                    player4.setBounds(950, 950, 50, 50);;
-                                    frame.add(player4);
-            						break;
-            					}
-            				}else if(newSpace >= 1 && newSpace <= 9){
-            					switch(player_turn){
-            					case 0:
-            						player1.setBounds(775 - x(), 900, 50, 50);;
-                                    frame.add(player1);
-            						break;
-            					case 1:
-                                    player2.setBounds(810 - x(), 900, 50, 50);;
-                                    frame.add(player2);
-            						break;
-            					case 2:
-                                    player3.setBounds(775 - x(), 950, 50, 50);;
-                                    frame.add(player3);
-            						break;
-            					case 3:
-                                    player4.setBounds(810 - x(), 950, 50, 50);;
-                                    frame.add(player4);
-            						break;
-            					}
-            				}else if(newSpace == 10){
-            					switch(player_turn){
-            					case 0:
-            						player1.setBounds(0, 870, 50, 50);;
-                                    frame.add(player1);
-            						break;
-            					case 1:
-                                    player2.setBounds(0, 920, 50, 50);;
-                                    frame.add(player2);
-            						break;
-            					case 2:
-                                    player3.setBounds(30, 950, 50, 50);;
-                                    frame.add(player3);
-            						break;
-            					case 3:
-                                    player4.setBounds(80, 950, 50, 50);;
-                                    frame.add(player4);
-            						break;
-            					}
-            				}else if(newSpace >= 11 && newSpace <= 19){
-            					switch(player_turn){
-            					case 0:
-            						player1.setBounds(0, 780 - x(), 50, 50);;
-                                    frame.add(player1);
-            						break;
-            					case 1:
-                                    player2.setBounds(50, 780 - x(), 50, 50);;
-                                    frame.add(player2);
-            						break;
-            					case 2:
-                                    player3.setBounds(0, 810 - x(), 50, 50);;
-                                    frame.add(player3);
-            						break;
-            					case 3:
-                                    player4.setBounds(50, 810 - x(), 50, 50);;
-                                    frame.add(player4);
-            						break;
-            					}
-            				}else if(newSpace == 20){
-            					switch(player_turn){
-            					case 0:
-            						player1.setBounds(0, 0, 50, 50);;
-                                    frame.add(player1);
-            						break;
-            					case 1:
-                                    player2.setBounds(80, 0, 50, 50);;
-                                    frame.add(player2);
-            						break;
-            					case 2:
-                                    player3.setBounds(0, 80, 50, 50);;
-                                    frame.add(player3);
-            						break;
-            					case 3:
-                                    player4.setBounds(80, 80, 50, 50);;
-                                    frame.add(player4);
-            						break;
-            					}
-            				}else if(newSpace >= 21 && newSpace <= 29){
-            					switch(player_turn){
-            					case 0:
-            						player1.setBounds(130 + x(), 0, 50, 50);;
-                                    frame.add(player1);
-            						break;
-            					case 1:
-                                    player2.setBounds(160 + x(), 0, 50, 50);;
-                                    frame.add(player2);
-            						break;
-            					case 2:
-                                    player3.setBounds(130 + x(), 50, 50, 50);;
-                                    frame.add(player3);
-            						break;
-            					case 3:
-                                    player4.setBounds(160 + x(), 50, 50, 50);;
-                                    frame.add(player4);
-            						break;
-            					}
-            				}else if(newSpace == 30){
-            					switch(player_turn){
-            					case 0:
-            						player1.setBounds(870, 0, 50, 50);;
-                                    frame.add(player1);
-            						break;
-            					case 1:
-                                    player2.setBounds(950, 0, 50, 50);;
-                                    frame.add(player2);
-            						break;
-            					case 2:
-                                    player3.setBounds(870, 80, 50, 50);;
-                                    frame.add(player3);
-            						break;
-            					case 3:
-                                    player4.setBounds(950, 80, 50, 50);;
-                                    frame.add(player4);
-            						break;
-            					}
-            				}else if(newSpace >= 31 && newSpace <= 39){
-            					switch(player_turn){
-            					case 0:
-            						player1.setBounds(900, 130 + x(), 50, 50);;
-                                    frame.add(player1);
-            						break;
-            					case 1:
-                                    player2.setBounds(950, 130 + x(), 50, 50);;
-                                    frame.add(player2);
-            						break;
-            					case 2:
-                                    player3.setBounds(900, 160 + x(), 50, 50);;
-                                    frame.add(player3);
-            						break;
-            					case 3:
-                                    player4.setBounds(950, 160 + x(), 50, 50);;
-                                    frame.add(player4);
-            						break;
-            					}
-            				}else if(newSpace == 40){
-            					switch(player_turn){
-            					case 0:
-            						player1.setBounds(35, 870, 50, 50);;
-                                    frame.add(player1);
-            						break;
-            					case 1:
-                                    player2.setBounds(85, 870, 50, 50);;
-                                    frame.add(player2);
-            						break;
-            					case 2:
-                                    player3.setBounds(30, 915, 50, 50);;
-                                    frame.add(player3);
-            						break;
-            					case 3:
-                                    player4.setBounds(80, 915, 50, 50);;
-                                    frame.add(player4);
-            						break;
-            					}
-            				}else{
-            					//should never get here
-            				}
             				
-            				switch(numPlayers){
-            				case 2:
-            					player1bal.setText(board.getPlayers()[0].getName() + "'s balance: " + board.getPlayers()[0].getBalance());
-                    			player2bal.setText(board.getPlayers()[1].getName() + "'s balance: " + board.getPlayers()[1].getBalance());
-                    			player1bal.setForeground(Color.BLUE);
-                    			player2bal.setForeground(Color.RED);
-                    			frame.add(player1bal);
-                    			frame.add(player2bal);
-            					break;
-            				case 3:
-            					player1bal.setText(board.getPlayers()[0].getName() + "'s balance: " + board.getPlayers()[0].getBalance());
-                    			player2bal.setText(board.getPlayers()[1].getName() + "'s balance: " + board.getPlayers()[1].getBalance());
-                    			player3bal.setText(board.getPlayers()[2].getName() + "'s balance: " + board.getPlayers()[2].getBalance());
-                    			player1bal.setForeground(Color.BLUE);
-                    			player2bal.setForeground(Color.RED);
-                    			player3bal.setForeground(Color.GREEN);
-                    			frame.add(player1bal);
-                    			frame.add(player2bal);
-                    			frame.add(player3bal);
-            					break;
-            				case 4:
-                    			player1bal.setText(board.getPlayers()[0].getName() + "'s balance: " + board.getPlayers()[0].getBalance());
-                    			player2bal.setText(board.getPlayers()[1].getName() + "'s balance: " + board.getPlayers()[1].getBalance());
-                    			player3bal.setText(board.getPlayers()[2].getName() + "'s balance: " + board.getPlayers()[2].getBalance());
-                    			player4bal.setText(board.getPlayers()[3].getName() + "'s balance: " + board.getPlayers()[3].getBalance());
-                    			player1bal.setForeground(Color.BLUE);
-                    			player2bal.setForeground(Color.RED);
-                    			player3bal.setForeground(Color.GREEN);
-                    			player4bal.setForeground(Color.GRAY);
-                    			frame.add(player1bal);
-                    			frame.add(player2bal);
-                    			frame.add(player3bal);
-                    			frame.add(player4bal);
-            					break;
-            				}
+            				// Gets the new space that the player is one and moves them there
+            				newSpace = board.getPlayers()[player_turn].getCurrentSquare();
+            				
+            				// This is the dynamic update method
+            				// Anytime it is called it will update the board with fresh information
+            				// It is public because any method outside this class needs to call it in order to update the board.
+            				// Just call this method FUCKING EVERYWHERE and we should be good
+            				update();
             				
             				if(((RealEstate)board.getSquare(1)).getOwnerID() == 0)
             				      houses1.setForeground(Color.BLUE);
@@ -838,4 +417,345 @@ public class BoardGUI extends JFrame{
             }
         });
     }
+    
+    private void updatePlayer1Balance(){
+    	player1bal.setText(board.getPlayers()[0].getName() + "'s balance: " + board.getPlayers()[0].getBalance());
+		player1bal.setForeground(Color.BLUE);
+		frame.add(player1bal);
+    }
+    
+	private void updatePlayer2Balance(){
+		player2bal.setText(board.getPlayers()[1].getName() + "'s balance: " + board.getPlayers()[1].getBalance());
+		player2bal.setForeground(Color.RED);
+		frame.add(player2bal);
+	    }
+	
+	private void updatePlayer3Balance(){
+		player3bal.setText(board.getPlayers()[2].getName() + "'s balance: " + board.getPlayers()[2].getBalance());
+		player3bal.setForeground(Color.GREEN);
+		frame.add(player3bal);
+	}
+	
+	private void updatePlayer4Balance(){
+		player4bal.setText(board.getPlayers()[3].getName() + "'s balance: " + board.getPlayers()[3].getBalance());
+		player4bal.setForeground(Color.GRAY);
+		frame.add(player4bal);
+	}
+    
+    private void updatePlayer1Location(){
+    	if(newSpace == 0){
+    		player1.setBounds(870, 870, 50, 50);            
+    	}else if(newSpace >= 1 && newSpace <= 9){
+    		player1.setBounds(775 - x(), 900, 50, 50);
+    	}else if(newSpace == 10){
+    		player1.setBounds(0, 870, 50, 50);
+    	}else if(newSpace >= 11 && newSpace <= 19){
+    		player1.setBounds(0, 780 - x(), 50, 50);
+    	}else if(newSpace == 20){
+    		player1.setBounds(0, 0, 50, 50);
+    	}else if(newSpace >= 21 && newSpace <= 29){
+    		player1.setBounds(130 + x(), 0, 50, 50);
+    	}else if(newSpace == 30){
+    		player1.setBounds(870, 0, 50, 50);
+    	}else if(newSpace >= 31 && newSpace <= 39){
+    		player1.setBounds(900, 130 + x(), 50, 50);
+    	}else if(newSpace == 40){
+    		player1.setBounds(35, 870, 50, 50);
+    	}
+    	frame.add(player1);
+    }
+
+    private void updatePlayer2Location(){
+    	if(newSpace == 0){
+    		player2.setBounds(950, 870, 50, 50);;
+    	}else if(newSpace >= 1 && newSpace <= 9){
+    		player2.setBounds(810 - x(), 900, 50, 50);;
+    	}else if(newSpace == 10){
+    		player2.setBounds(0, 920, 50, 50);;
+    	}else if(newSpace >= 11 && newSpace <= 19){
+    		player2.setBounds(50, 780 - x(), 50, 50);;
+    	}else if(newSpace == 20){
+    		player2.setBounds(80, 0, 50, 50);;
+    	}else if(newSpace >= 21 && newSpace <= 29){
+    		player2.setBounds(160 + x(), 0, 50, 50);;
+    	}else if(newSpace == 30){
+    		player2.setBounds(950, 0, 50, 50);;
+    	}else if(newSpace >= 31 && newSpace <= 39){
+    		player2.setBounds(950, 130 + x(), 50, 50);;
+    	}else if(newSpace == 40){
+    		player2.setBounds(85, 870, 50, 50);;
+    	}
+    	frame.add(player2);
+    }
+
+    private void updatePlayer3Location(){
+    	if(newSpace == 0){
+    		player3.setBounds(870, 950, 50, 50);;
+    	}else if(newSpace >= 1 && newSpace <= 9){
+    		player3.setBounds(775 - x(), 950, 50, 50);;
+    	}else if(newSpace == 10){
+    		player3.setBounds(30, 950, 50, 50);;
+    	}else if(newSpace >= 11 && newSpace <= 19){
+    		player3.setBounds(0, 810 - x(), 50, 50);;
+    	}else if(newSpace == 20){
+    		player3.setBounds(0, 80, 50, 50);;
+    	}else if(newSpace >= 21 && newSpace <= 29){
+    		player3.setBounds(130 + x(), 50, 50, 50);;
+    	}else if(newSpace == 30){
+    		player3.setBounds(870, 80, 50, 50);;
+    	}else if(newSpace >= 31 && newSpace <= 39){
+    		player3.setBounds(900, 160 + x(), 50, 50);;
+    	}else if(newSpace == 40){
+    		player3.setBounds(30, 915, 50, 50);;
+    	}
+    	frame.add(player3);
+    }
+
+    private void updatePlayer4Location(){
+    	if(newSpace == 0){
+    		player4.setBounds(950, 950, 50, 50);;
+
+    	}else if(newSpace >= 1 && newSpace <= 9){
+    		player4.setBounds(810 - x(), 950, 50, 50);;
+    	}else if(newSpace == 10){
+    		player4.setBounds(80, 950, 50, 50);;
+    	}else if(newSpace >= 11 && newSpace <= 19){
+    		player4.setBounds(50, 810 - x(), 50, 50);;
+    	}else if(newSpace == 20){
+    		player4.setBounds(80, 80, 50, 50);;
+    	}else if(newSpace >= 21 && newSpace <= 29){
+    		player4.setBounds(160 + x(), 50, 50, 50);;
+    	}else if(newSpace == 30){
+    		player4.setBounds(950, 80, 50, 50);;
+    	}else if(newSpace >= 31 && newSpace <= 39){
+    		player4.setBounds(950, 160 + x(), 50, 50);;
+    	}else if(newSpace == 40){
+    		player4.setBounds(80, 915, 50, 50);;
+    	}
+    	frame.add(player4);
+    }
+    
+    private void preBoardSetup(int numPlayers, String[] playericons, Font font){
+    	switch (numPlayers) {
+		case 2:
+			pre2Players(playericons, font);
+			break;
+		case 3:
+			pre3Players(playericons, font);
+			break;
+		case 4:
+			pre4Players(playericons, font);
+			break;
+		}
+    	 
+    	preSquareSetup(font);
+    	
+    	preDiceSetup(font);
+    }
+    
+    private void preDiceSetup(Font font){
+    	die1 = new JLabel("Die 1:    " + board.dice.getFace1());
+        die2 = new JLabel("Die 2:    " + board.dice.getFace2());
+        die1.setFont(font);
+        die2.setFont(font);
+        die1.setBounds(400, 675, 125, 50);
+		die2.setBounds(400, 700, 125, 50);
+		frame.add(die1);
+		frame.add(die2);
+    }
+    
+    private void preSquareSetup(Font font){
+    	// adding counters for the number of houses on spaces with default 0
+        houses1 = new JLabel("0");
+        houses1.setFont(font);
+        houses1.setBounds(815, 860, 50, 50);
+        frame.add(houses1);
+        houses3 = new JLabel("0");
+        houses3.setFont(font);
+        houses3.setBounds(655, 860, 50, 50);
+        frame.add(houses3);
+        houses6 = new JLabel("0");
+        houses6.setFont(font);
+        houses6.setBounds(415, 860, 50, 50);
+        frame.add(houses6);
+        houses8 = new JLabel("0");
+        houses8.setFont(font);
+        houses8.setBounds(255, 860, 50, 50);
+        frame.add(houses8);
+        houses9 = new JLabel("0");
+        houses9.setFont(font);
+        houses9.setBounds(175, 860, 50, 50);
+        frame.add(houses9);
+        houses11 = new JLabel("0");
+        houses11.setFont(font);
+        houses11.setBounds(110, 800, 50, 50);
+        frame.add(houses11);
+        houses13 = new JLabel("0");
+        houses13.setFont(font);
+        houses13.setBounds(110, 640, 50, 50);
+        frame.add(houses13);
+        houses14 = new JLabel("0");
+        houses14.setFont(font);
+        houses14.setBounds(110, 560, 50, 50);
+        frame.add(houses14);
+        houses16 = new JLabel("0");
+        houses16.setFont(font);
+        houses16.setBounds(110, 400, 50, 50);
+        frame.add(houses16);
+        houses18 = new JLabel("0");
+        houses18.setFont(font);
+        houses18.setBounds(110, 240, 50, 50);
+        frame.add(houses18);
+        houses19 = new JLabel("0");
+        houses19.setFont(font);
+        houses19.setBounds(110, 160, 50, 50);
+        frame.add(houses19);
+        houses21 = new JLabel("0");
+        houses21.setFont(font);
+        houses21.setBounds(160, 90, 50, 50);
+        frame.add(houses21);
+        houses23 = new JLabel("0");
+        houses23.setFont(font);
+        houses23.setBounds(320, 90, 50, 50);
+        frame.add(houses23);
+        houses24 = new JLabel("0");
+        houses24.setFont(font);
+        houses24.setBounds(400, 90, 50, 50);
+        frame.add(houses24);
+        houses26 = new JLabel("0");
+        houses26.setFont(font);
+        houses26.setBounds(560, 90, 50, 50);
+        frame.add(houses26);
+        houses27 = new JLabel("0");
+        houses27.setFont(font);
+        houses27.setBounds(640, 90, 50, 50);
+        frame.add(houses27);
+        houses29 = new JLabel("0");
+        houses29.setFont(font);
+        houses29.setBounds(800, 90, 50, 50);
+        frame.add(houses29);
+        houses31 = new JLabel("0");
+        houses31.setFont(font);
+        houses31.setBounds(880, 160, 50, 50);
+        frame.add(houses31);
+        houses32 = new JLabel("0");
+        houses32.setFont(font);
+        houses32.setBounds(880, 240, 50, 50);
+        frame.add(houses32);
+        houses34 = new JLabel("0");
+        houses34.setFont(font);
+        houses34.setBounds(880, 400, 50, 50);
+        frame.add(houses34);
+        houses37 = new JLabel("0");
+        houses37.setFont(font);
+        houses37.setBounds(880, 640, 50, 50);
+        frame.add(houses37);
+        houses39 = new JLabel("0");
+        houses39.setFont(font);
+        houses39.setBounds(880, 800, 50, 50);
+        frame.add(houses39);
+    }
+    
+    private void pre2Players(String[] playericons, Font font){
+    	try {
+			player1 = new JLabel(new ImageIcon(ImageIO.read((new File("logos/monopoly-" + playericons[0] + ".png")))));
+			player2 = new JLabel(new ImageIcon(ImageIO.read((new File("logos/monopoly-" + playericons[1] + ".png")))));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		player1.setBounds(870, 870, 50, 50);;
+        frame.add(player1);
+        player2.setBounds(950, 870, 50, 50);;
+        frame.add(player2);
+    }
+    
+    private void pre3Players(String[] playericons, Font font){
+    	try {
+			player1 = new JLabel(new ImageIcon(ImageIO.read((new File("logos/monopoly-" + playericons[0] + ".png")))));
+			player2 = new JLabel(new ImageIcon(ImageIO.read((new File("logos/monopoly-" + playericons[1] + ".png")))));
+			player3 = new JLabel(new ImageIcon(ImageIO.read((new File("logos/monopoly-" + playericons[2] + ".png")))));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		player1.setBounds(870, 870, 50, 50);;
+        frame.add(player1);
+        player2.setBounds(950, 870, 50, 50);;
+        frame.add(player2);
+        player3.setBounds(870, 950, 50, 50);;
+        frame.add(player3);
+    }
+    
+    private void pre4Players(String[] playericons, Font font){
+    	try {
+			player1 = new JLabel(new ImageIcon(ImageIO.read((new File("logos/monopoly-" + playericons[0] + ".png")))));
+			player2 = new JLabel(new ImageIcon(ImageIO.read((new File("logos/monopoly-" + playericons[1] + ".png")))));
+			player3 = new JLabel(new ImageIcon(ImageIO.read((new File("logos/monopoly-" + playericons[2] + ".png")))));
+			player4 = new JLabel(new ImageIcon(ImageIO.read((new File("logos/monopoly-" + playericons[3] + ".png")))));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		player1.setBounds(870, 870, 50, 50);;
+        frame.add(player1);
+        player2.setBounds(950, 870, 50, 50);;
+        frame.add(player2);
+        player3.setBounds(870, 950, 50, 50);;
+        frame.add(player3);
+        player4.setBounds(950, 950, 50, 50);;
+        frame.add(player4);
+    }
+    
+    
+    
+    public void update(){
+    	
+    	// Updating the location of the players
+    	switch(player_turn){
+		case 0:
+			updatePlayer1Location();
+			break;
+		case 1:
+			updatePlayer2Location();
+			break;
+		case 2:
+			updatePlayer3Location();
+			break;
+		case 3:
+			updatePlayer4Location();
+			break;
+		}
+    	
+    	// Updating the players balances
+    	switch(numPlayers){
+    	case 2:
+    		updatePlayer1Balance();
+    		updatePlayer2Balance();
+    		break;
+    	case 3:
+    		updatePlayer1Balance();
+    		updatePlayer2Balance();
+    		updatePlayer3Balance();
+    		break;
+    	case 4:
+    		updatePlayer1Balance();
+    		updatePlayer2Balance();
+    		updatePlayer3Balance();
+    		updatePlayer4Balance();
+    		break;
+    	}
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
