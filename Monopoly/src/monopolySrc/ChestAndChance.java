@@ -309,5 +309,4 @@ public class ChestAndChance {
 			chanceDeck.add(7);
 		}
 	}
-
 }
