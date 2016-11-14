@@ -27,6 +27,7 @@ public class ScoreboardGUI extends JFrame {
 	private int numplayers;
 	
 	JLabel time;
+	JLabel timesec;
 	
 	private int duration;
 		
@@ -53,7 +54,7 @@ public class ScoreboardGUI extends JFrame {
 		
 		this.numplayers = board.getNumPlayers();
 		this.board = board;
-		this.duration = duration;
+		this.duration = duration - 1;
 		System.out.println(this.duration);
 		
 		BufferedImage image = null;
@@ -136,32 +137,60 @@ public class ScoreboardGUI extends JFrame {
 		label.setFont(new Font("Verdana", Font.BOLD, 20));
 		frame.add(label);
 		
-		time = new JLabel(duration + "");
+		time = new JLabel(duration + ":");
 		time.setBounds(525, 350, 500, 50);
         time.setFont(new Font("Verdana", Font.BOLD, 20));
         frame.add(time);
+        
+        timesec = new JLabel(59 + "");
+		timesec.setBounds(545, 350, 500, 50);
+        timesec.setFont(new Font("Verdana", Font.BOLD, 20));
+        frame.add(timesec);
 		
-        duration--;
-		timer.start();
+		mintimer.start();
+		sectimer.start();
 	}
 	
-	private void updateTime(){
-        time.setText(duration + "");
+	private void updateMinTime(){
+        time.setText(duration + ":");
         time.setBounds(525, 350, 500, 50);
         time.setFont(new Font("Verdana", Font.BOLD, 20));
         frame.add(time);
 	}
 	
-	Timer timer = new Timer(1000, new ActionListener() {
+	private void updateSecTime(int sec){
+        timesec.setText(sec + "");
+        timesec.setBounds(545, 350, 500, 50);
+        timesec.setFont(new Font("Verdana", Font.BOLD, 20));
+        frame.add(timesec);
+	}
+	
+	Timer mintimer = new Timer(60000, new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 	        if (duration < 0) {
 	        	//TODO END GAME HERE
 	            ((Timer)e.getSource()).stop();
 	        } else {
-	        	updateTime();
-	        	System.out.println(duration);
+	        	updateMinTime();
 	            duration--;
+	        }
+	        
+	    }
+	});
+	
+	Timer sectimer = new Timer(1000, new ActionListener() {
+		private int sec = 59;
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	        if (sec < 0) {
+	        	//TODO END GAME HERE
+	            ((Timer)e.getSource()).stop();
+	            sec = 59;
+	            sectimer.start();
+	        } else {
+	        	updateSecTime(sec);
+	            sec--;
 	        }
 	        
 	    }

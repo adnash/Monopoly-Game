@@ -206,6 +206,7 @@ public class PlayerEntryGUI extends JFrame {
 							
 							boardGUI.setGUI(scoreboard);
 							scoreboard.setGUI(boardGUI);
+							board.setGUI(boardGUI);
 						}
 						gui.dispose();
 					}else{
@@ -229,6 +230,7 @@ public class PlayerEntryGUI extends JFrame {
 							
 							boardGUI.setGUI(scoreboard);
 							scoreboard.setGUI(boardGUI);
+							board.setGUI(boardGUI);
 						}
 						gui.dispose();
 					}else{
@@ -254,6 +256,7 @@ public class PlayerEntryGUI extends JFrame {
 							
 							boardGUI.setGUI(scoreboard);
 							scoreboard.setGUI(boardGUI);
+							board.setGUI(boardGUI);
 						}
 						gui.dispose();
 					}else{

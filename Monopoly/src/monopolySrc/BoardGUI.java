@@ -45,10 +45,14 @@ public class BoardGUI extends JFrame{
 		
 	private ScoreboardGUI scoreboard;
 	
+	private static int tempduration = 2;
+	
 	Font font = new Font("Verdana", Font.BOLD, 20);
 	
 	public static void main(String[] args) {
-        new BoardGUI(null, 4, new Board(new String[]{"bob","joe","shannon","beth"},new String[]{"Cat","Shoe","Battleship","Thimble"}, 1), new String[]{"Cat","Shoe","Battleship","Thimble"});
+		Board temp = new Board(new String[]{"bob","joe","shannon","beth"},new String[]{"Cat","Shoe","Battleship","Thimble"}, tempduration);
+        BoardGUI tempGUI = new BoardGUI(null, 4, temp, new String[]{"Cat","Shoe","Battleship","Thimble"});
+        temp.setGUI(tempGUI);
     }
 	
 	private int x(){
@@ -63,7 +67,7 @@ public class BoardGUI extends JFrame{
     	JFrame.setDefaultLookAndFeelDecorated(true);
     	
     	//temp scoreboard
-    	scoreboard = new ScoreboardGUI(this, board, playericons, 1);
+    	scoreboard = new ScoreboardGUI(this, board, playericons, tempduration);
     	this.scoreboard = scoreboard;
     	    	    	
     	this.board = board;
@@ -148,7 +152,10 @@ public class BoardGUI extends JFrame{
     	      houses1.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(1)).getOwnerID() == 3)
     	      houses1.setForeground(Color.ORANGE);
-    	houses1.setText(((RealEstate)board.getSquare(1)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(1)).getIsMortgaged())
+    	    houses1.setText("M");
+    	else
+    	    houses1.setText(((RealEstate)board.getSquare(1)).getNumBuildings() + "");
     	houses1.setFont(font);
     	houses1.setBounds(815, 870, 30, 30);
     	frame.add(houses1);
@@ -161,7 +168,10 @@ public class BoardGUI extends JFrame{
     	      houses3.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(3)).getOwnerID() == 3)
     	      houses3.setForeground(Color.ORANGE);
-    	houses3.setText(((RealEstate)board.getSquare(3)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(3)).getIsMortgaged())
+    	    houses1.setText("M");
+    	else
+    	    houses1.setText(((RealEstate)board.getSquare(3)).getNumBuildings() + "");
     	houses3.setFont(font);
     	houses3.setBounds(655, 870, 30, 30);
     	frame.add(houses3);
@@ -174,6 +184,10 @@ public class BoardGUI extends JFrame{
     		RR1.setForeground(Color.GREEN);
     	else if(((RailroadsAndUtilities)board.getSquare(5)).getOwnerID() == 3)
     		RR1.setForeground(Color.ORANGE);
+    	if(((RailroadsAndUtilities)board.getSquare(5)).isMortgaged())
+    	    RR1.setText("M");
+    	else
+    	    RR1.setText("*");
     	RR1.setFont(font);
     	RR1.setBounds(500, 870, 30, 30);
     	frame.add(RR1);
@@ -186,7 +200,10 @@ public class BoardGUI extends JFrame{
     	      houses6.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(6)).getOwnerID() == 3)
     	      houses6.setForeground(Color.ORANGE);
-    	houses6.setText(((RealEstate)board.getSquare(6)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(6)).getIsMortgaged())
+    	    houses6.setText("M");
+    	else
+    	    houses6.setText(((RealEstate)board.getSquare(6)).getNumBuildings() + "");
     	houses6.setFont(font);
     	houses6.setBounds(415, 870, 30, 30);
     	frame.add(houses6);
@@ -199,7 +216,10 @@ public class BoardGUI extends JFrame{
     	      houses8.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(8)).getOwnerID() == 3)
     	      houses8.setForeground(Color.ORANGE);
-    	houses8.setText(((RealEstate)board.getSquare(8)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(8)).getIsMortgaged())
+    	    houses8.setText("M");
+    	else
+    	    houses8.setText(((RealEstate)board.getSquare(8)).getNumBuildings() + "");
     	houses8.setFont(font);
     	houses8.setBounds(255, 870, 30, 30);
     	frame.add(houses8);
@@ -212,7 +232,10 @@ public class BoardGUI extends JFrame{
     	      houses9.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(9)).getOwnerID() == 3)
     	      houses9.setForeground(Color.ORANGE);
-    	houses9.setText(((RealEstate)board.getSquare(9)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(9)).getIsMortgaged())
+    	    houses9.setText("M");
+    	else
+    	    houses9.setText(((RealEstate)board.getSquare(9)).getNumBuildings() + "");
     	houses9.setFont(font);
     	houses9.setBounds(175, 870, 30, 30);
     	frame.add(houses9);
@@ -225,7 +248,10 @@ public class BoardGUI extends JFrame{
     	      houses11.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(11)).getOwnerID() == 3)
     	      houses11.setForeground(Color.ORANGE);
-    	houses11.setText(((RealEstate)board.getSquare(11)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(11)).getIsMortgaged())
+    	    houses11.setText("M");
+    	else
+    	    houses11.setText(((RealEstate)board.getSquare(11)).getNumBuildings() + "");
     	houses11.setFont(font);
     	houses11.setBounds(100, 800, 30, 30);
     	frame.add(houses11);
@@ -238,6 +264,10 @@ public class BoardGUI extends JFrame{
     		util1.setForeground(Color.GREEN);
     	else if(((RailroadsAndUtilities)board.getSquare(12)).getOwnerID() == 3)
     		util1.setForeground(Color.ORANGE);
+    	if(((RailroadsAndUtilities)board.getSquare(12)).isMortgaged())
+    	    util1.setText("M");
+    	else
+    	    util1.setText("*");
     	util1.setFont(font);
     	util1.setBounds(100, 725, 30, 30);
     	frame.add(util1);
@@ -250,7 +280,10 @@ public class BoardGUI extends JFrame{
     	      houses13.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(13)).getOwnerID() == 3)
     	      houses13.setForeground(Color.ORANGE);
-    	houses13.setText(((RealEstate)board.getSquare(13)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(13)).getIsMortgaged())
+    	    houses13.setText("M");
+    	else
+    	    houses13.setText(((RealEstate)board.getSquare(13)).getNumBuildings() + "");
     	houses13.setFont(font);
     	houses13.setBounds(100, 640, 30, 30);
     	frame.add(houses13);
@@ -263,7 +296,10 @@ public class BoardGUI extends JFrame{
     	      houses14.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(14)).getOwnerID() == 3)
     	      houses14.setForeground(Color.ORANGE);
-    	houses14.setText(((RealEstate)board.getSquare(14)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(14)).getIsMortgaged())
+    	    houses14.setText("M");
+    	else
+    	    houses14.setText(((RealEstate)board.getSquare(14)).getNumBuildings() + "");
     	houses14.setFont(font);
     	houses14.setBounds(100, 560, 30, 30);
     	frame.add(houses14);
@@ -276,6 +312,10 @@ public class BoardGUI extends JFrame{
     		RR2.setForeground(Color.GREEN);
     	else if(((RailroadsAndUtilities)board.getSquare(15)).getOwnerID() == 3)
     		RR2.setForeground(Color.ORANGE);
+    	if(((RailroadsAndUtilities)board.getSquare(15)).isMortgaged())
+    	    RR2.setText("M");
+    	else
+    	    RR2.setText("*");
     	RR2.setFont(font);
     	RR2.setBounds(100, 475, 30, 30);
     	frame.add(RR2);
@@ -288,7 +328,10 @@ public class BoardGUI extends JFrame{
     	      houses16.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(16)).getOwnerID() == 3)
     	      houses16.setForeground(Color.ORANGE);
-    	houses16.setText(((RealEstate)board.getSquare(16)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(16)).getIsMortgaged())
+    	    houses16.setText("M");
+    	else
+    	    houses16.setText(((RealEstate)board.getSquare(16)).getNumBuildings() + "");
     	houses16.setFont(font);
     	houses16.setBounds(100, 400, 30, 30);
     	frame.add(houses16);
@@ -301,7 +344,10 @@ public class BoardGUI extends JFrame{
     	      houses18.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(18)).getOwnerID() == 3)
     	      houses18.setForeground(Color.ORANGE);
-    	houses18.setText(((RealEstate)board.getSquare(18)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(18)).getIsMortgaged())
+    	    houses18.setText("M");
+    	else
+    	    houses18.setText(((RealEstate)board.getSquare(18)).getNumBuildings() + "");
     	houses18.setFont(font);
     	houses18.setBounds(100, 240, 30, 30);
     	frame.add(houses18);
@@ -314,7 +360,10 @@ public class BoardGUI extends JFrame{
     	      houses19.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(19)).getOwnerID() == 3)
     	      houses19.setForeground(Color.ORANGE);
-    	houses19.setText(((RealEstate)board.getSquare(19)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(19)).getIsMortgaged())
+    	    houses19.setText("M");
+    	else
+    	    houses19.setText(((RealEstate)board.getSquare(19)).getNumBuildings() + "");
     	houses19.setFont(font);
     	houses19.setBounds(100, 160, 30, 30);
     	frame.add(houses19);
@@ -327,7 +376,10 @@ public class BoardGUI extends JFrame{
     	      houses21.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(21)).getOwnerID() == 3)
     	      houses21.setForeground(Color.ORANGE);
-    	houses21.setText(((RealEstate)board.getSquare(21)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(21)).getIsMortgaged())
+    	    houses21.setText("M");
+    	else
+    	    houses21.setText(((RealEstate)board.getSquare(21)).getNumBuildings() + "");
     	houses21.setFont(font);
     	houses21.setBounds(160, 100, 30, 30);
     	frame.add(houses21);
@@ -340,7 +392,10 @@ public class BoardGUI extends JFrame{
     	      houses23.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(23)).getOwnerID() == 3)
     	      houses23.setForeground(Color.ORANGE);
-    	houses23.setText(((RealEstate)board.getSquare(23)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(23)).getIsMortgaged())
+    	    houses23.setText("M");
+    	else
+    	    houses23.setText(((RealEstate)board.getSquare(23)).getNumBuildings() + "");
     	houses23.setFont(font);
     	houses23.setBounds(320, 100, 30, 30);
     	frame.add(houses23);
@@ -353,7 +408,10 @@ public class BoardGUI extends JFrame{
     	      houses24.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(24)).getOwnerID() == 3)
     	      houses24.setForeground(Color.ORANGE);
-    	houses24.setText(((RealEstate)board.getSquare(24)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(24)).getIsMortgaged())
+    	    houses24.setText("M");
+    	else
+    	    houses24.setText(((RealEstate)board.getSquare(24)).getNumBuildings() + "");
     	houses24.setFont(font);
     	houses24.setBounds(400, 100, 30, 30);
     	frame.add(houses24);
@@ -366,6 +424,10 @@ public class BoardGUI extends JFrame{
     		RR3.setForeground(Color.GREEN);
     	else if(((RailroadsAndUtilities)board.getSquare(25)).getOwnerID() == 3)
     		RR3.setForeground(Color.ORANGE);
+    	if(((RailroadsAndUtilities)board.getSquare(25)).isMortgaged())
+    	    RR3.setText("M");
+    	else
+    	    RR3.setText("*");
     	RR3.setFont(font);
     	RR3.setBounds(475, 100, 30, 30);
     	frame.add(RR3);
@@ -378,7 +440,10 @@ public class BoardGUI extends JFrame{
     	      houses26.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(26)).getOwnerID() == 3)
     	      houses26.setForeground(Color.ORANGE);
-    	houses26.setText(((RealEstate)board.getSquare(26)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(26)).getIsMortgaged())
+    	    houses26.setText("M");
+    	else
+    	    houses26.setText(((RealEstate)board.getSquare(26)).getNumBuildings() + "");
     	houses26.setFont(font);
     	houses26.setBounds(560, 100, 30, 30);
     	frame.add(houses26);
@@ -391,7 +456,10 @@ public class BoardGUI extends JFrame{
     	      houses27.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(27)).getOwnerID() == 3)
     	      houses27.setForeground(Color.ORANGE);
-    	houses27.setText(((RealEstate)board.getSquare(27)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(27)).getIsMortgaged())
+    	    houses27.setText("M");
+    	else
+    	    houses27.setText(((RealEstate)board.getSquare(27)).getNumBuildings() + "");
     	houses27.setFont(font);
     	houses27.setBounds(640, 100, 30, 30);
     	frame.add(houses27);
@@ -404,6 +472,10 @@ public class BoardGUI extends JFrame{
     		util2.setForeground(Color.GREEN);
     	else if(((RailroadsAndUtilities)board.getSquare(28)).getOwnerID() == 3)
     		util2.setForeground(Color.ORANGE);
+    	if(((RailroadsAndUtilities)board.getSquare(28)).isMortgaged())
+    	    util2.setText("M");
+    	else
+    	    util2.setText("*");
     	util2.setFont(font);
     	util2.setBounds(725, 100, 30, 30);
     	frame.add(util2);
@@ -416,7 +488,10 @@ public class BoardGUI extends JFrame{
     	      houses29.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(29)).getOwnerID() == 3)
     	      houses29.setForeground(Color.ORANGE);
-    	houses29.setText(((RealEstate)board.getSquare(29)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(29)).getIsMortgaged())
+    	    houses29.setText("M");
+    	else
+    	    houses29.setText(((RealEstate)board.getSquare(29)).getNumBuildings() + "");
     	houses29.setFont(font);
     	houses29.setBounds(800, 100, 30, 30);
     	frame.add(houses29);
@@ -429,7 +504,10 @@ public class BoardGUI extends JFrame{
     	      houses31.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(31)).getOwnerID() == 3)
     	      houses31.setForeground(Color.ORANGE);
-    	houses31.setText(((RealEstate)board.getSquare(31)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(31)).getIsMortgaged())
+    	    houses31.setText("M");
+    	else
+    	    houses31.setText(((RealEstate)board.getSquare(31)).getNumBuildings() + "");
     	houses31.setFont(font);
     	houses31.setBounds(870, 160, 30, 30);
     	frame.add(houses31);
@@ -442,7 +520,10 @@ public class BoardGUI extends JFrame{
     	      houses32.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(32)).getOwnerID() == 3)
     	      houses32.setForeground(Color.ORANGE);
-    	houses32.setText(((RealEstate)board.getSquare(32)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(32)).getIsMortgaged())
+    	    houses32.setText("M");
+    	else
+    	    houses32.setText(((RealEstate)board.getSquare(32)).getNumBuildings() + "");
     	houses32.setFont(font);
     	houses32.setBounds(870, 240, 30, 30);
     	frame.add(houses32);
@@ -455,7 +536,10 @@ public class BoardGUI extends JFrame{
     	      houses34.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(34)).getOwnerID() == 3)
     	      houses34.setForeground(Color.ORANGE);
-    	houses34.setText(((RealEstate)board.getSquare(34)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(34)).getIsMortgaged())
+    	    houses34.setText("M");
+    	else
+    	    houses34.setText(((RealEstate)board.getSquare(34)).getNumBuildings() + "");
     	houses34.setFont(font);
     	houses34.setBounds(870, 400, 30, 30);
     	frame.add(houses34);
@@ -468,6 +552,10 @@ public class BoardGUI extends JFrame{
     		RR4.setForeground(Color.GREEN);
     	else if(((RailroadsAndUtilities)board.getSquare(35)).getOwnerID() == 3)
     		RR4.setForeground(Color.ORANGE);
+    	if(((RailroadsAndUtilities)board.getSquare(35)).isMortgaged())
+    	    RR4.setText("M");
+    	else
+    	    RR4.setText("*");
     	RR4.setFont(font);
     	RR4.setBounds(870, 475, 30, 30);
     	frame.add(RR4);
@@ -480,7 +568,10 @@ public class BoardGUI extends JFrame{
     	      houses37.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(37)).getOwnerID() == 3)
     	      houses37.setForeground(Color.ORANGE);
-    	houses37.setText(((RealEstate)board.getSquare(37)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(37)).getIsMortgaged())
+    	    houses37.setText("M");
+    	else
+    	    houses37.setText(((RealEstate)board.getSquare(37)).getNumBuildings() + "");
     	houses37.setFont(font);
     	houses37.setBounds(870, 640, 30, 30);
     	frame.add(houses37);
@@ -493,10 +584,14 @@ public class BoardGUI extends JFrame{
     	      houses39.setForeground(Color.GREEN);
     	else if(((RealEstate)board.getSquare(39)).getOwnerID() == 3)
     	      houses39.setForeground(Color.ORANGE);
-    	houses39.setText(((RealEstate)board.getSquare(39)).getNumBuildings() + "");
+    	if(((RealEstate)board.getSquare(39)).getIsMortgaged())
+    	    houses39.setText("M");
+    	else
+    	    houses39.setText(((RealEstate)board.getSquare(39)).getNumBuildings() + "");
     	houses39.setFont(font);
     	houses39.setBounds(870, 800, 30, 30);
     	frame.add(houses39);
+
     }
     
     private void updatePlayer1Location(){

@@ -50,7 +50,6 @@ public class Board {
 			@Override
 			public void run() {
 				timeUp = true;
-				
 			}
 		}, duration*60*1000);
 		
