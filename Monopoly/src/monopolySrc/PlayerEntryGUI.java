@@ -54,7 +54,7 @@ public class PlayerEntryGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PlayerEntryGUI frame = new PlayerEntryGUI(2);
+					PlayerEntryGUI frame = new PlayerEntryGUI(4);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -201,8 +201,11 @@ public class PlayerEntryGUI extends JFrame {
 						duration = Integer.parseInt(temp);
 						if(duration > 0){
 							board = new Board(playernames, playericons, duration);
-							boardGUI = new BoardGUI(numPlayers, board, playericons);
-							scoreboard = new ScoreboardGUI(boardGUI, board, playericons);
+							boardGUI = new BoardGUI(scoreboard, numPlayers, board, playericons);
+							scoreboard = new ScoreboardGUI(boardGUI, board, playericons, duration);
+							
+							boardGUI.setGUI(scoreboard);
+							scoreboard.setGUI(boardGUI);
 						}
 						gui.dispose();
 					}else{
@@ -221,8 +224,11 @@ public class PlayerEntryGUI extends JFrame {
 						duration = Integer.parseInt(temp);
 						if(duration > 0){
 							board = new Board(playernames, playericons, duration);
-							boardGUI = new BoardGUI(numPlayers, board, playericons);
-							scoreboard = new ScoreboardGUI(boardGUI, board, playericons);
+							boardGUI = new BoardGUI(scoreboard, numPlayers, board, playericons);
+							scoreboard = new ScoreboardGUI(boardGUI, board, playericons, duration);
+							
+							boardGUI.setGUI(scoreboard);
+							scoreboard.setGUI(boardGUI);
 						}
 						gui.dispose();
 					}else{
@@ -243,8 +249,11 @@ public class PlayerEntryGUI extends JFrame {
 						duration = Integer.parseInt(temp);
 						if(duration > 0){
 							board = new Board(playernames, playericons, duration);
-							boardGUI = new BoardGUI(numPlayers, board, playericons);
-							scoreboard = new ScoreboardGUI(boardGUI, board, playericons);
+							boardGUI = new BoardGUI(scoreboard, numPlayers, board, playericons);
+							scoreboard = new ScoreboardGUI(boardGUI, board, playericons, duration);
+							
+							boardGUI.setGUI(scoreboard);
+							scoreboard.setGUI(boardGUI);
 						}
 						gui.dispose();
 					}else{
