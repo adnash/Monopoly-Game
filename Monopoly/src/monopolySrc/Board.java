@@ -20,6 +20,8 @@ public class Board {
 	private int numPlayers;
 	private JPanel contentPane;
 	
+	private BoardGUI GUI;
+	
 	private int answer;
 	
 	private int duration;
@@ -1077,5 +1079,15 @@ public class Board {
 	public static boolean getTimeUp() {
 		return timeUp;
 	}
+	
+	public void setGUI(BoardGUI GUI){
+		this.GUI = GUI;
+	}
 
 }
+
+
+
+
+
+

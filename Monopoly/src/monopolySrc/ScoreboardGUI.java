@@ -1,31 +1,18 @@
+package monopolySrc;
 // CS414e
 // Conor Cox, Dan Wood, Alex Arbuckle, Alan Nash
 // A4
 // ScoreboardGIO.java
 
-package monopolySrc;
-
 import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
 import javax.swing.Timer;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JComboBox;
-
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +53,6 @@ public class ScoreboardGUI extends JFrame {
 		
 		this.numplayers = board.getNumPlayers();
 		this.board = board;
-		this.boardGUI = boardGUI;
 		this.duration = duration;
 		System.out.println(this.duration);
 		
@@ -151,7 +137,7 @@ public class ScoreboardGUI extends JFrame {
 		frame.add(label);
 		
 		time = new JLabel(duration + "");
-		time.setBounds(550, 350, 500, 50);
+		time.setBounds(525, 350, 500, 50);
         time.setFont(new Font("Verdana", Font.BOLD, 20));
         frame.add(time);
 		
@@ -228,43 +214,59 @@ public class ScoreboardGUI extends JFrame {
     	try {			
 			player1icon = new JLabel(new ImageIcon(ImageIO.read((new File("logos/monopoly-" + playericons[0] + ".png")))));
 			player2icon = new JLabel(new ImageIcon(ImageIO.read((new File("logos/monopoly-" + playericons[1] + ".png")))));
+			player3icon = new JLabel(new ImageIcon(ImageIO.read((new File("logos/monopoly-" + playericons[2] + ".png")))));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	player1icon.setBounds(20, 125, 50, 50);
         player2icon.setBounds(20, 175, 50, 50);
+        player3icon.setBounds(20, 225, 50, 50);
         frame.add(player1icon);
 		frame.add(player2icon);
+		frame.add(player3icon);
     	
     	player1name = new JLabel(board.getPlayers()[0].getName());
     	player2name = new JLabel(board.getPlayers()[1].getName());
+    	player3name = new JLabel(board.getPlayers()[2].getName());
     	player1name.setBounds(110, 125, 225, 50);
         player2name.setBounds(110, 175, 225, 50);
+        player3name.setBounds(110, 225, 225, 50);
         player1name.setForeground(Color.BLUE);
 		player2name.setForeground(Color.RED);
+		player3name.setForeground(Color.GREEN);
 		player1name.setFont(font);
 		player2name.setFont(font);
+		player3name.setFont(font);
         frame.add(player1name);
 		frame.add(player2name);
+		frame.add(player3name);
 			
 		player1bal = new JLabel(board.getPlayers()[0].getBalance() + "");
 		player2bal = new JLabel(board.getPlayers()[1].getBalance() + "");
+		player3bal = new JLabel(board.getPlayers()[2].getBalance() + "");
 		player1bal.setBounds(350, 125, 100, 50);
         player2bal.setBounds(350, 175, 100, 50);
+        player3bal.setBounds(350, 225, 100, 50);
         player1bal.setFont(font);
 		player2bal.setFont(font);
+		player3bal.setFont(font);
         frame.add(player1bal);
         frame.add(player2bal);
+        frame.add(player3bal);
 		
 		player1properties = new JLabel(board.getPlayers()[0].getPropertiesOwned().size() + "");
 		player2properties = new JLabel(board.getPlayers()[1].getPropertiesOwned().size() + "");
+		player3properties = new JLabel(board.getPlayers()[2].getPropertiesOwned().size() + "");
 		player1properties.setBounds(550, 125, 50, 50);
         player2properties.setBounds(550, 175, 50, 50);
+        player3properties.setBounds(550, 225, 50, 50);
         player1properties.setFont(font);
 		player2properties.setFont(font);
+		player3properties.setFont(font);
         frame.add(player1properties);
         frame.add(player2properties);
+        frame.add(player3properties);
     }
     
     private void pre4Players(String[] playericons, Font font){
@@ -297,7 +299,7 @@ public class ScoreboardGUI extends JFrame {
         player1name.setForeground(Color.BLUE);
 		player2name.setForeground(Color.RED);
 		player3name.setForeground(Color.GREEN);
-		player4name.setForeground(Color.GRAY);
+		player4name.setForeground(Color.ORANGE);
 		player1name.setFont(font);
 		player2name.setFont(font);
 		player3name.setFont(font);
