@@ -30,8 +30,8 @@ public class ChestAndChance {
 		//Fill the deck with all 16 cards
 		//Cards taken from http://monopoly.wikia.com/wiki/Community_Chest
 		//IGNORING BIRTHDAY CARD! This card isn't in original game.
-		while(chestDeck.size() != 17){
-			num = rand.nextInt(17) + 1;
+		while(chestDeck.size() != 16){
+			num = rand.nextInt(16) + 1;
 			if(!chestDeck.contains(num)){
 				chestDeck.add(num);
 			}
@@ -40,28 +40,28 @@ public class ChestAndChance {
 		//Shuffle the chanceDeck
 		//Fill the deck with all 16 cards
 		//Cards taken from http://monopoly.wikia.com/wiki/Chance
-		while(chanceDeck.size() != 17){
-			num = rand.nextInt(17) + 1;
+		while(chanceDeck.size() != 16){
+			num = rand.nextInt(16) + 1;
 			if(!chanceDeck.contains(num)){
 				chanceDeck.add(num);
 			}
 		}
 	}
 
-	public String draw(Player p, int space){
+	public void draw(Player p, int space){
 		if(space == 2 || space == 17 || space == 33){
 			//Community Chest space
-			return getChestCard(p);
+			getChestCard(p);
 		}
 		else{
 			//Chance space
-			return getChanceCard(p);
+			getChanceCard(p);
 		}
 	}
 
 	//These next methods are going to be gross af, I'm sorry
 
-	private String getChestCard(Player p){
+	private void getChestCard(Player p){
 		int card = chestDeck.get(0);
 		int count = 0;
 		//Put the card at the bottom of the deck
@@ -69,83 +69,86 @@ public class ChestAndChance {
 		chestDeck.add(card);
 		switch(card){
 		case 1:
+			System.out.println("Advance to Go and collect $200!");
 			p.increaseBalance(200);
 			p.setCurrentSquare(0);
-			return "Advance to Go and collect $200!";
 		case 2:
+			System.out.println("Bank error in your favor! You receive $200.");
 			p.increaseBalance(200);
-			return "Bank error in your favor! You receive $200.";
 		case 3:
+			System.out.println("Doctor's fees. Pay $50.");
 			p.decreaseBalance(50);
-			return "Doctor's fees. Pay $50.";
 		case 4:
+			System.out.println("From the sale of a stock you get $50!");
 			p.increaseBalance(50);
-			return "From the sale of a stock you get $50!";
 		case 5:
+			System.out.println("Get out of jail free! This card may be kept until needed or sold.");
 			//Implement this
 			p.receiveJCard();
 			//Removes this card from the list
 			chestDeck.remove(chestDeck.size() - 1);
-			return "Get out of jail free! This card may be kept until needed or sold.";
 		case 6:
+			System.out.println("Go to jail.");
 			p.setCurrentSquare(40);
 			jail.addPlayer(p);
-			return "Go to jail.";
 		case 7:
+			System.out.println("Grand Opera night! Collect $50 from every player for opening night seats.");
 			count = 0;
 			//Calculates correct amount to give to the player that drew this card
 			//and removes $50 from every other player.
 			for(int i = 0; i < players.size(); i++){
-				if(players.get(i).getPlayerID() != p.getPlayerID()){
-					count++;
-					players.get(i).decreaseBalance(50);
+				if(players.get(i) != null){
+					if(players.get(i).getPlayerID() != p.getPlayerID()){
+						count++;
+						players.get(i).decreaseBalance(50);
+					}
 				}
 			}
 			p.increaseBalance((count * 50));
-			return "Grand Opera night! Collect $50 from every player for opening night seats.";
 		case 8:
+			System.out.println("Holiday fund matures! Collect $100");
 			p.increaseBalance(100);
-			return "Holiday fund matures! Collect $100";
 		case 9:
+			System.out.println("Income tax refund! Collect $20.");
 			p.increaseBalance(20);
-			return "Income tax refund! Collect $20.";
 		case 10:
+			System.out.println("Life insurance matures! Collect $100.");
 			p.increaseBalance(100);
-			return "Life insurance matures! Collect $100.";
 		case 11:
+			System.out.println("Pay hospital fees of $100.");
 			p.decreaseBalance(100);
-			return "Pay hospital fees of $100.";
 		case 12:
+			System.out.println("Pay school fees of $150.");
 			p.decreaseBalance(150);
-			return "Pay school fees of $150.";
 		case 13:
+			System.out.println("Receive $25 consultancy fee!");
 			p.increaseBalance(25);
-			return "Receive $25 consultancy fee!";
 		case 14:
+			System.out.println("Happy birthday! Collect $10 from each player.");
 			count = 0;
 			//Calculates correct amount to give to the player that drew this card
 			//and removes $10 from every other player.
 			for(int i = 0; i < players.size(); i++){
-				if(players.get(i).getPlayerID() != p.getPlayerID()){
-					count++;
-					players.get(i).decreaseBalance(10);
+				if(players.get(i) != null){
+					if(players.get(i).getPlayerID() != p.getPlayerID()){
+						count++;
+						players.get(i).decreaseBalance(10);
+					}
 				}
 			}
 			p.increaseBalance((count * 10));
-			return "Happy birthday! Collect $10 from each player.";
 		case 15:
+			System.out.println("You have won second prize in a beauty contest and win $10!");
 			p.increaseBalance(10);
-			return "You have won second prize in a beauty contest";
 		case 16:
+			System.out.println("You inherit $100");
 			p.increaseBalance(100);
-			return "You inherit $100";
 		default:
 			System.out.println("You shouldn't have come here.");
 		}
-		return "ERROR! Didn't draw a Chest card correctly?";
 	}
 
-	private String getChanceCard(Player p){
+	private void getChanceCard(Player p){
 		int card = chanceDeck.get(0);
 		int count = 0;
 		int spot = 0;
@@ -155,24 +158,27 @@ public class ChestAndChance {
 		chanceDeck.add(card);
 		switch(card){
 		case 1:
+			System.out.println("Advance to Go and collect $200!");
 			p.increaseBalance(200);
 			p.setCurrentSquare(0);
-			return "Advance to Go and collect $200!";
 		case 2:
+			System.out.println("Advance to Illinois Ave. If you pass Go, collect $200");
 			if(p.getCurrentSquare() > 24){
 				//Passed Go
 				p.increaseBalance(200);
 			}
 			p.setCurrentSquare(24);
-			return "Advance to Illinois Ave. If you pass Go, collect $200";
+			b.resolveSquare(p, 24);
 		case 3:
+			System.out.println("Advance to St. Charles Place. If you pass Go, collect $200");
 			if(p.getCurrentSquare() > 11){
 				//Passed Go
 				p.increaseBalance(200);
 			}
 			p.setCurrentSquare(11);
-			return "Advance to St. Charles Place. If you pass Go, collect $200";
+			b.resolveSquare(p, 11);
 		case 4:
+			System.out.println("Advance token to nearest utility and pay 10 times die roll.");
 			spot = p.getCurrentSquare();
 			if(spot == 22){
 				//Water Works
@@ -182,9 +188,24 @@ public class ChestAndChance {
 				//Electric Company
 				p.setCurrentSquare(12);
 			}	
-			//WE NEED TO HANDLE THIS OUTSIDE THIS CLASS
-			return "Advance token to nearest utility.";
+			int cost = b.dice.getFace1() + b.dice.getFace2();
+			RailroadsAndUtilities u = (RailroadsAndUtilities)b.getSquare(spot);
+			if(u.getOwnerID() == -1){
+				b.resolveSquare(p, spot);
+			}
+			else{
+				p.decreaseBalance(cost);
+				int owner = u.getOwnerID();
+				Player[] array = b.getPlayers();
+				//This finds the correct player to pay
+				for(int i = 0; i < array.length; i++){
+					if(owner == array[i].getPlayerID()){
+						array[i].increaseBalance(cost);
+					}
+				}
+			}
 		case 5:
+			System.out.println("Advance to the nearest railroad. Pay owner twice the rent.");
 			spot = p.getCurrentSquare();
 			if(spot == 7){
 				//Pennsylvania Railroad
@@ -198,25 +219,31 @@ public class ChestAndChance {
 				//Short Line
 				p.setCurrentSquare(5);
 			}
-			//WE NEED TO HANDLE THIS OUTSIDE THIS CLASS W/A UNIQUE METHOD
-			return "Advance to the nearest railroad. Pay owner twice the rent.";
+			b.resolveSquare(p, spot);
+			RailroadsAndUtilities rr = (RailroadsAndUtilities)b.getSquare(spot);
+			//This pays the rent a second time to fulfill the requirements for this card if rent is owed
+			if(rr.getOwnerID() != -1 && rr.getOwnerID() != p.getPlayerID()){
+				b.resolveSquare(p, spot);
+			}
 		case 6:
+			System.out.println("Bank pays you dividend of $50");
 			p.increaseBalance(50);
-			return "Bank pays you dividend of $50";
 		case 7:
+			System.out.println("Get out of jail free! This card may be kept until needed or sold.");
 			//Implement this
 			p.receiveJCard();
 			//Removes this card from the list
 			chestDeck.remove(chestDeck.size() - 1);
-			return "Get out of jail free! This card may be kept until needed or sold.";
 		case 8:
+			System.out.println("Go back 3 spaces.");
 			p.setCurrentSquare(p.getCurrentSquare() - 3);
-			return "Go back 3 spaces.";
+			b.resolveSquare(p, p.getCurrentSquare());
 		case 9:
+			System.out.println("Go to jail.");
 			p.setCurrentSquare(40);
 			jail.addPlayer(p);
-			return "Go to jail.";
 		case 10:
+			System.out.println("Make repairs on all your property. You paid $25/house and $100/hotel for a total of " + amount);
 			ArrayList<Integer> prop = p.getPropertiesOwned();
 			for(int i = 0; i < prop.size(); i++){
 				if(b.getSquare(i) instanceof RealEstate){
@@ -224,7 +251,7 @@ public class ChestAndChance {
 					count = r.getNumBuildings();
 					if(count == 5){
 						//Price of hotel and 4 houses
-						amount += 200;
+						amount += 100;
 					}
 					else{
 						//Price of amount of houses
@@ -233,42 +260,44 @@ public class ChestAndChance {
 				}
 			}
 			p.decreaseBalance(amount);
-			return "Make repairs on all your property. You paid $25/house and $100/hotel for a total of " + amount;
 		case 11:
+			System.out.println("Pay poor tax of $15.");
 			p.decreaseBalance(15);
-			return "Pay poor tax of $15.";
 		case 12:
+			System.out.println("Take a trip to Reading Railroad. If you pass Go, collect $200");
 			if(p.getCurrentSquare() > 5){
 				//Passed Go
 				p.increaseBalance(200);
 			}
 			p.setCurrentSquare(5);
-			return "Take a trip to Reading Railroad. If you pass Go, collect $200";
+			b.resolveSquare(p, 5);
 		case 13:
+			System.out.println("Take a walk on the Boardwalk. Advance token to Boardwalk.");
 			p.setCurrentSquare(39);
-			return "Take a walk on the Boardwalk. Advance token to Boardwalk.";
+			b.resolveSquare(p, 39);
 		case 14:
+			System.out.println("You have been elected Chairman of the Board. Pay each player $50");
 			count = 0;
 			//Calculates correct amount to remove to the player that drew this card
 			//and adds $50 to every other player.
 			for(int i = 0; i < players.size(); i++){
-				if(players.get(i).getPlayerID() != p.getPlayerID()){
-					count++;
-					players.get(i).increaseBalance(50);
+				if(players.get(i) != null){
+					if(players.get(i).getPlayerID() != p.getPlayerID()){
+						count++;
+						players.get(i).increaseBalance(50);
+					}
 				}
 			}
 			p.increaseBalance((count * 50));
-			return "You have been elected Chairman of the Board. Pay each player $50";
 		case 15:
+			System.out.println("Your building loan matures! Collect $150.");
 			p.increaseBalance(150);
-			return "Your building loan matures! Collect $150.";
 		case 16:
+			System.out.println("You have won a crossword competition. Collect $100.");
 			p.increaseBalance(100);
-			return "You have won a crossword competition. Collect $100.";
 		default:
 			System.out.println("You shouldn't have come here.");
 		}
-		return "ERROR! Didn't draw a Chance card correctly?";
 	}
 
 	public void restoreJailCard(){

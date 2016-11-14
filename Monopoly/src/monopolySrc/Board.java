@@ -364,7 +364,7 @@ public class Board {
 
 	//when a player lands on a square this method will resolve all actions.
 	//return false if player goes to jail.
-	private boolean resolveSquare(Player Curr_Player, int squareID) {
+	public boolean resolveSquare(Player Curr_Player, int squareID) {
 		JOptionPane.showMessageDialog(contentPane, Curr_Player.getName() + " just landed on square " + squareID + " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
 //		System.out.println(Curr_Player.getName() + " just landed on square " + squareID + " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
 		Square Curr_Square = getSquare(squareID);
