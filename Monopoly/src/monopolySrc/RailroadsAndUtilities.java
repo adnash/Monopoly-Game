@@ -48,7 +48,10 @@ public class RailroadsAndUtilities extends Square {
 			return 0;
 		//Utilities
 		if(this.ID == 12 || this.ID == 28){
-			return ((5*numOwned) * dieRoll);
+			if(numOwned == 1)
+				return 4 * dieRoll;
+			else
+				return 10 * dieRoll;
 		}else{
 			//Railroads
 			switch(numOwned){

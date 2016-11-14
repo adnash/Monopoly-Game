@@ -5,17 +5,22 @@ package monopolySrc;
 // ScoreboardGIO.java
 
 import java.awt.Color;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
+import java.util.TimerTask;
 
 public class ScoreboardGUI extends JFrame {
 
@@ -135,7 +140,7 @@ public class ScoreboardGUI extends JFrame {
 		label = new JLabel("Time remaining:");
 		label.setBounds(300, 350, 500, 50);
 		label.setFont(new Font("Verdana", Font.BOLD, 20));
-		frame.add(label);
+		frame.add(label);	
 		
 		time = new JLabel(duration + ":");
 		time.setBounds(525, 350, 500, 50);
@@ -168,11 +173,13 @@ public class ScoreboardGUI extends JFrame {
 	Timer mintimer = new Timer(60000, new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-	        if (duration < 0) {
+	        if (duration <= 0) {
 	        	//TODO END GAME HERE
 	            ((Timer)e.getSource()).stop();
+	            JOptionPane.showMessageDialog(frame, "Eggs are not supposed to be green.");
 	        } else {
 	        	updateMinTime();
+	        	System.out.println("Minutes left " + duration);
 	            duration--;
 	        }
 	        
@@ -183,12 +190,18 @@ public class ScoreboardGUI extends JFrame {
 		private int sec = 59;
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-	        if (sec < 0) {
+	        if (sec <= 0) {
+	        	if(duration == 0){
+	        		((Timer)e.getSource()).stop();
+	        	}else{
+	        		sec = 59;
+		            sectimer.start();
+	        	}
 	        	//TODO END GAME HERE
-	            ((Timer)e.getSource()).stop();
-	            sec = 59;
-	            sectimer.start();
+	            
+	            
 	        } else {
+	        	System.out.println("Seconds left: " + sec);
 	        	updateSecTime(sec);
 	            sec--;
 	        }
