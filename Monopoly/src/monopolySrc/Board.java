@@ -16,7 +16,6 @@ public class Board {
 	// Global variables
 	private Square[] squares = new Square[41];
 	private Player[] players;
-	protected Dice dice = new Dice();	
 	private int numPlayers;
 	private JPanel contentPane;
 	
@@ -27,6 +26,7 @@ public class Board {
 	private int duration;
 	private static Timer timer = new Timer();
 	private static boolean timeUp = false;
+	private TurnControler turnCont = new TurnControler(this);
 
 	// Board constructor called once and only once by Monopoly class to initialize certain variables and objects
 	public Board(String[] playerNames, String[] playericons, int duration) {
@@ -152,288 +152,15 @@ public class Board {
 			determineWinner();
 		}
 		if (jail.isPlayerJailed(players[player_turn])) {
-			playerJailTurnProcess(players[player_turn]);
+			turnCont.playerJailTurnProcess(players[player_turn]);
 		} else {
-			playerTurnProcess(players[player_turn]);
+			turnCont.playerTurnProcess(players[player_turn]);
 		}
 	}
 
 	//This turn process will be for non Jailed players. Jailed players have a different process. 
-	private void playerTurnProcess(Player Curr_Play) {
-		//Do once then only repeat for doubles.
-		do {
-			dice.Roll();
-			//Check for 3 doubles. If 3 go to jail and end turn.
-			//TODO We will want to keep track of doubles in Player objects, and reset after every turn
-			//Think this causes to store doubles to much.
-			if (dice.getNumberOfDoublesRolled() == 3) {
-				dice.resetDoubles();
-				Curr_Play.setCurrentSquare(40);
-				return;
-			}
-
-			//TODO We should move this to a helper method called "calculateMove" since we need this logic for rolling doubles in Jail too
-			//Yes Probably as a refactor
-			int oldSquare = Curr_Play.getCurrentSquare();
-			int newSquare = oldSquare + dice.getSum();
-			if (newSquare >= 40) {
-				Curr_Play.increaseBalance(200);
-				newSquare = newSquare%40;
-			}
-
-			Curr_Play.setCurrentSquare(newSquare);
-
-			//Returned false so player goes to jail. need to reset double count.
-			if(!resolveSquare(Curr_Play, newSquare)) {
-				dice.resetDoubles();
-				Curr_Play.setCurrentSquare(40);
-				return;
-			}
-			postTurn(Curr_Play);
-		} while(dice.isDouble());
-	}
-
-	//The turn a player takes if they are in jail
-	private void playerJailTurnProcess(Player Curr_Play) {
-		//Give option to pay 50 dollars
-		//TODO This is currently implemented using the console and system IO. We will need to implement it using the JFrame window later
-		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Play.getName() + ", pay $50 to get out of jail?", "Get out of jail?", JOptionPane.YES_NO_OPTION);
-		switch (answer) {
-		case 0:	// debit player $50 and call player turn process
-			if (Curr_Play.getBalance() >= 50) {
-				Curr_Play.decreaseBalance(50);
-				Jail jail = (Jail) getSquare(40);
-				jail.freePlayer(Curr_Play);
-				playerTurnProcess(Curr_Play);
-				return;
-			}else{
-				if(Curr_Play.getBalance()<50){
-					sellSequence(Curr_Play, 50 - Curr_Play.getBalance());
-					Curr_Play.decreaseBalance(50);
-					Jail jail = (Jail) getSquare(40);
-					jail.freePlayer(Curr_Play);
-					playerTurnProcess(Curr_Play);
-					return;
-				}
-			}
-		case 1:	// let player roll for doubles
-			JOptionPane.showMessageDialog(contentPane, "You will now roll for doubles");
-			dice.Roll();
-			if (dice.getNumberOfDoublesRolled() > 0) {
-				// Move player by dice amount and end turn
-				Jail jail = (Jail) getSquare(40);
-				jail.freePlayer(Curr_Play);
-				int oldSquare = Curr_Play.getCurrentSquare();
-				int newSquare = oldSquare + dice.getSum();
-				if (newSquare >= 40) {
-					Curr_Play.increaseBalance(200);
-					newSquare = (newSquare % 40);
-				}
-				Curr_Play.setCurrentSquare(newSquare);
-				if (!resolveSquare(Curr_Play, newSquare)) {
-					dice.resetDoubles();
-					Curr_Play.setCurrentSquare(40);
-					return;
-				}
-				postTurn(Curr_Play);
-			} else {
-				Jail jail = (Jail) getSquare(40);
-				jail.reduceJailTurns(Curr_Play);
-
-				if (jail.checkTurnsLeft(Curr_Play) == 0){
-					jail.freePlayer(Curr_Play);
-					Curr_Play.decreaseBalance(50);
-
-					int oldSquare = Curr_Play.getCurrentSquare();
-					int newSquare = oldSquare + dice.getSum();
-					if (newSquare >= 40) {
-						Curr_Play.increaseBalance(200);
-						newSquare = (newSquare % 40);
-					}
-
-					Curr_Play.setCurrentSquare(newSquare);
-					if (!resolveSquare(Curr_Play, newSquare)) {
-						dice.resetDoubles();
-						Curr_Play.setCurrentSquare(40);
-						return;
-					}
-					postTurn(Curr_Play);
-				} else {
-					postTurn(Curr_Play);
-				}
-			}
-		default:	
-			
-
-		}
-		//if not third turn end turn.
-	}
 	
-	private void postTurn(Player Curr_Player){
-		
-		String[] array = new String[Curr_Player.getPropertiesOwned().size()];
-		Square sq = new Square(1, "blah");
-
-		
-		for (int i = 0; i < Curr_Player.getPropertiesOwned().size(); i++) {
-			sq = getSquare(Curr_Player.getPropertiesOwned().get(i));
-			array[i] = sq.getID() + "";			
-		}
-		boolean looper = true;
-		
-		while(looper){
-			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy any houses?", "Buy houses?", JOptionPane.YES_NO_OPTION);
-			if(answer == 0){
-				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to buy a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
-				if(answerString != null){
-					answer = Integer.parseInt(answerString.toString());
-					if(answer != -1)
-						buyHouse(answer, Curr_Player);
-					else
-						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
-				}
-			}else{
-				looper = false;
-			}
-		}
-		
-		looper = true;
-		while(looper){
-			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to sell any houses?", "Sell houses?", JOptionPane.YES_NO_OPTION);
-			if(answer == 0){
-				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to sell a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
-				if(answerString != null){
-					answer = Integer.parseInt(answerString.toString());
-					if(answer != -1)
-						sellHouse(answer, Curr_Player);
-					else
-						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
-				}
-			}else{
-				looper = false;
-			}
-		}
-		
-		looper = true;
-		while(looper){
-			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to mortgage any Properties?", "Mortgage properties?", JOptionPane.YES_NO_OPTION);
-			if(answer == 0){
-				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to mortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
-				if(answerString != null){
-					answer = Integer.parseInt(answerString.toString());
-					if(answer != -1)
-						mortgageProperty(answer, Curr_Player);
-					else
-						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
-				}
-			}else{
-				looper = false;
-			}
-		}
-		
-		looper = true;
-		while(looper){
-			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to unmortgage any Properties?", "Unmortgage properties?", JOptionPane.YES_NO_OPTION);
-			if(answer == 0){
-				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to unmortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
-				if(answerString != null){
-					answer = Integer.parseInt(answerString.toString());
-					if(answer != -1)
-						unmortgageProperty(answer, Curr_Player);
-					else
-						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
-				}
-			}else{
-				looper = false;
-			}
-		}
-		
-		looper = true;
-		while(looper){
-			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to Trade/Sell any Properties?", "Trade properties?", JOptionPane.YES_NO_OPTION);
-			if(answer == 0){
-				trade(Curr_Player);
-			}else{
-				looper = false;
-			}
-		}
-		
-	}
-
-	//random change for commit
-
-	//when a player lands on a square this method will resolve all actions.
-	//return false if player goes to jail.
-	public boolean resolveSquare(Player Curr_Player, int squareID) {
-		JOptionPane.showMessageDialog(contentPane, Curr_Player.getName() + " just landed on square " + squareID + " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
-//		System.out.println(Curr_Player.getName() + " just landed on square " + squareID + " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
-		Square Curr_Square = getSquare(squareID);
-		if (Curr_Square instanceof RealEstate) {
-			RealEstate Curr_Estate =(RealEstate) Curr_Square; 
-			if ((Curr_Estate.getOwnerID())!=-1 && (Curr_Estate.getOwnerID()) != Curr_Player.getPlayerID()) {
-				payRent_RealEstate(Curr_Estate, Curr_Player);
-				return true;
-			} else if(Curr_Estate.getOwnerID() == -1){
-				answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy " + Curr_Estate.getName(), "Buy square?", JOptionPane.YES_NO_OPTION);
-				switch (answer) {
-				case 0:	
-					if(purchaseProperty(squareID, Curr_Player)){
-						return true;
-					}else{
-						auction(squareID);
-						return true;
-					}
-				case 1:
-					auction(squareID);
-					return true;
-				default:	
-					JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again");
-					return true;
-				}
-			}else{
-				return true;
-			}
-		} else if (Curr_Square.getID() == 30) {
-			Jail jail =(Jail) getSquare(40);
-			jail.addPlayer(Curr_Player);
-			Curr_Player.setCurrentSquare(40);
-			return false;
-		} else if (Curr_Square instanceof Tax) {
-			Tax tax = (Tax) Curr_Square;
-			tax.payTax(Curr_Player);
-			return true;
-		} else if (Curr_Square instanceof RailroadsAndUtilities) {
-			RailroadsAndUtilities Curr_RU =(RailroadsAndUtilities) Curr_Square; 
-			if ((Curr_RU.getOwnerID())!=-1 && (Curr_RU.getOwnerID()) != Curr_Player.getPlayerID()) {
-				payRent_Utilities_RailRoads(Curr_RU, Curr_Player);
-				return true;
-			} else if(Curr_RU.getOwnerID() == -1){
-				answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy " + Curr_RU.getName(), "Buy?", JOptionPane.YES_NO_OPTION);
-				switch (answer) {
-				case 0:	
-					if(purchaseProperty(squareID, Curr_Player)){
-						return true;
-					}else{
-						auction(squareID);
-						return true;
-					}
-				case 1:
-					auction(squareID);
-					return true;
-				default:	
-					JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again");
-					return true;
-				}
-			}else{
-				return true;
-			}
-		} else {
-			return true;
-		}
-	}
-
-
-	private boolean mortgageProperty(int squareID, Player Curr_Player) {
+	public boolean mortgageProperty(int squareID, Player Curr_Player) {
 		Square Curr_Square = getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
 			RealEstate Curr_Estate =(RealEstate) Curr_Square; 
@@ -460,7 +187,7 @@ public class Board {
 		}
 	}
 
-	private void unmortgageProperty(int squareID, Player Curr_Player) {
+	public void unmortgageProperty(int squareID, Player Curr_Player) {
 		Square Curr_Square = getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
 			RealEstate Curr_Estate =(RealEstate) Curr_Square; 
@@ -548,7 +275,7 @@ public class Board {
 		} else {return 0;}
 	}
 
-	private boolean sellHouse(int squareID, Player Curr_Play) {
+	public boolean sellHouse(int squareID, Player Curr_Play) {
 		Square Curr_Square = getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
 			RealEstate Curr_Prop =(RealEstate) Curr_Square; 
@@ -631,7 +358,7 @@ public class Board {
 		return false;
 	}
 
-	private void buyHouse(int squareID, Player Curr_Play) {
+	public void buyHouse(int squareID, Player Curr_Play) {
 		Square Curr_Square = getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
 			RealEstate Curr_Prop =(RealEstate) Curr_Square; 
@@ -703,7 +430,7 @@ public class Board {
 	}
 
 	//TODO - if player trys to buy but can't afford need to relay information back and go to an auction.
-	private boolean purchaseProperty(int squareID, Player Curr_Player) {
+	public boolean purchaseProperty(int squareID, Player Curr_Player) {
 		Square Curr_Square = getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
 			RealEstate Curr_Estate =(RealEstate) Curr_Square;
@@ -733,7 +460,7 @@ public class Board {
 		}
 	}
 
-	private void payRent_RealEstate(RealEstate Curr_Estate, Player Curr_Player) {
+	public void payRent_RealEstate(RealEstate Curr_Estate, Player Curr_Player) {
 		//TODO check if it makes them go negative
 		int rent = Curr_Estate.calcRent(isMonopoly(Curr_Estate.getID()) == 1);
 		if(Curr_Player.getBalance()<rent){
@@ -743,9 +470,9 @@ public class Board {
 		Curr_Player.decreaseBalance(rent);
 	}
 
-	private void payRent_Utilities_RailRoads(RailroadsAndUtilities Curr_Property, Player Curr_Player) {
+	public void payRent_Utilities_RailRoads(RailroadsAndUtilities Curr_Property, Player Curr_Player, int diceSum) {
 		//TODO check if it makes them go negative
-		int rent = Curr_Property.calculateRent(isMonopoly(Curr_Property.getID()), dice.getSum());
+		int rent = Curr_Property.calculateRent(isMonopoly(Curr_Property.getID()), diceSum);
 		//Makes sure the player gets enough money to pay rent.
 		if(Curr_Player.getBalance()<rent){
 			sellSequence(Curr_Player, rent - Curr_Player.getBalance());
@@ -755,7 +482,7 @@ public class Board {
 	}
 
 	//This is called when a player doesn't have enough money to pay rent or jail escape and is forced to sell then must pay rent or jail fee
-	private void sellSequence(Player Curr_Player, int negativeAmount){
+	public void sellSequence(Player Curr_Player, int negativeAmount){
 		
 		String[] array = new String[Curr_Player.getPropertiesOwned().size()];
 		Square sq = new Square(1, "blah");
@@ -807,7 +534,7 @@ public class Board {
 
 
 
-	private void auction(int squareID) {
+	public void auction(int squareID) {
 		Square Curr_Square = getSquare(squareID);
 		ArrayList<Player> temp = new ArrayList<Player>();
 		ArrayList<Player> loop = new ArrayList<Player>();
