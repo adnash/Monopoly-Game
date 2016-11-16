@@ -148,6 +148,14 @@ public class Board {
 	public Square getSquare(int squareID) {
 		return squares[squareID];
 	}
+	
+	public int dicegetFace1(){
+		return turnCont.dice.getFace1();
+	}
+	
+	public int dicegetFace2(){
+		return turnCont.dice.getFace2();
+	}
 
 	// Iterate through players for turns. After Each Player check timer.
 	public void gamePlay(int player_turn) {
@@ -593,11 +601,11 @@ public class Board {
 			//Affordability is calculated in the auction
 			if (Curr_Square instanceof RealEstate) {
 				RealEstate Final_Square =(RealEstate) Curr_Square;
-				winner.decreaseBalance(Final_Square.getBuyPrice());
+				winner.decreaseBalance(currentBid);
 				Final_Square.setOwnerID(winner.getPlayerID());
 			} else {
 				RailroadsAndUtilities Final_Square = (RailroadsAndUtilities) Curr_Square;
-				winner.decreaseBalance(Final_Square.getPrice());
+				winner.decreaseBalance(currentBid);
 				Final_Square.setOwnerID(winner.getPlayerID());
 			}
 			winner.addProperty(Curr_Square.getID());
@@ -789,18 +797,22 @@ public class Board {
 					trueWinners.remove(winner);
 				}
 			}
+
 		 */
 
-		//Determine the winner
-		//If there is a tie here it picks the player with the lowest player ID
-		JOptionPane.showMessageDialog(contentPane, "The winner is " + winner.getName() + " with a balance of " + winner.getBalance());
-		try {
-			Thread.sleep(5000);
-		} 
-		catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		System.exit(0);
+
+			
+			//Determine the winner
+			//If there is a tie here it picks the player with the lowest player ID
+			JOptionPane.showMessageDialog(contentPane, "The winner is " + winner.getName() + " with a networth of " + playerValue(winner));
+			try {
+			   Thread.sleep(5000);
+			} 
+			catch (InterruptedException e) {
+			   e.printStackTrace();
+			}
+			System.exit(0);
+
 	}
 
 	public int getNumPlayers() {
