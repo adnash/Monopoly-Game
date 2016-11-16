@@ -16,9 +16,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 
 public class BoardGUI extends JFrame{
@@ -126,6 +128,25 @@ public class BoardGUI extends JFrame{
             		});
             		roll.setBounds(400, 750, 200, 100);
             		frame.add(roll);
+            		
+            		Object[] possibilities = {"ham", "spam", "yam"};
+            		
+            		// creates the hidden button on Start that can be used to specify where you want the player to move
+            		JButton hidden = new JButton();
+            		hidden.addActionListener(new ActionListener() {
+            			public void actionPerformed(ActionEvent e) {
+            				String s = (String)JOptionPane.showInputDialog(frame, "Which player do you want to move?", "Customized Dialog", JOptionPane.PLAIN_MESSAGE, null, possibilities, "no");
+            				
+            				
+            			}
+            		});
+            		hidden.setOpaque(false);
+            		hidden.setContentAreaFilled(false);
+            		hidden.setBorderPainted(false);
+            		hidden.setBounds(870, 870, 130, 130);
+            		frame.add(hidden);
+            		
+            		
             		
                   frame.pack();
                   frame.setVisible(true);
