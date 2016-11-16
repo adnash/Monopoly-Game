@@ -158,8 +158,8 @@ public class BoardGUI extends JFrame{
     }
     
     private void updateDice(){
-    	die1.setText("Die 1:    " + board.dice.getFace1());
-        die2.setText("Die 2:    " + board.dice.getFace2());
+    	die1.setText("Die 1:    " + board.dicegetFace1());
+        die2.setText("Die 2:    " + board.dicegetFace2());
 		frame.add(die1);
 		frame.add(die2);
     }
@@ -727,8 +727,8 @@ public class BoardGUI extends JFrame{
     }
     
     private void preDiceSetup(Font font){
-    	die1 = new JLabel("Die 1:    " + board.dice.getFace1());
-        die2 = new JLabel("Die 2:    " + board.dice.getFace2());
+    	die1 = new JLabel("Die 1:    " + board.dicegetFace1());
+        die2 = new JLabel("Die 2:    " + board.dicegetFace2());
         die1.setFont(font);
         die2.setFont(font);
         die1.setBounds(400, 675, 125, 50);
