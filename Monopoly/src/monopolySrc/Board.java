@@ -593,11 +593,11 @@ public class Board {
 			//Affordability is calculated in the auction
 			if (Curr_Square instanceof RealEstate) {
 				RealEstate Final_Square =(RealEstate) Curr_Square;
-				winner.decreaseBalance(Final_Square.getBuyPrice());
+				winner.decreaseBalance(currentBid);
 				Final_Square.setOwnerID(winner.getPlayerID());
 			} else {
 				RailroadsAndUtilities Final_Square = (RailroadsAndUtilities) Curr_Square;
-				winner.decreaseBalance(Final_Square.getPrice());
+				winner.decreaseBalance(currentBid);
 				Final_Square.setOwnerID(winner.getPlayerID());
 			}
 			winner.addProperty(Curr_Square.getID());
@@ -793,7 +793,7 @@ public class Board {
 			
 			//Determine the winner
 			//If there is a tie here it picks the player with the lowest player ID
-			JOptionPane.showMessageDialog(contentPane, "The winner is " + winner.getName() + " with a balance of " + winner.getBalance());
+			JOptionPane.showMessageDialog(contentPane, "The winner is " + winner.getName() + " with a networth of " + playerValue(winner));
 			try {
 			   Thread.sleep(5000);
 			} 
