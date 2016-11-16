@@ -18,11 +18,11 @@ public class Board {
 	private Player[] players;
 	private int numPlayers;
 	private JPanel contentPane;
-	
+
 	private BoardGUI GUI;
-	
+
 	private int answer;
-	
+
 	private int duration;
 	private static Timer timer = new Timer();
 	private static boolean timeUp = false;
@@ -34,9 +34,13 @@ public class Board {
 		numPlayers = playerNames.length;
 		// Initialize each player
 		players = new Player[numPlayers];
+
 		for (int i=0; i<numPlayers; i++) {
 			players[i] = new Player(i, playerNames[i], playericons[i]);
 		}
+
+		//hard-coding the first player to be AI for testing
+		//players[0].setAI(true);
 
 		setupBoard();
 	}
@@ -45,15 +49,15 @@ public class Board {
 	// TODO Do we even need this in its own method? These are hard-coded anyways and could belong in the global space. Just thinking out loud.
 	// Setting up squares
 	private void setupBoard() {
-		
+
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				timeUp = true;
-				
+
 			}
 		}, duration*60*1000);
-		
+
 		Square go = new Square(0, "Go");
 		squares[0] = go;
 		RealEstate Mediterranean_Avenue = new RealEstate(1, "Mediterranean Avenue", 60, 50, new int [] {2,4,10,30,90,160,250}, new int [] {1,3});
@@ -159,7 +163,7 @@ public class Board {
 	}
 
 	//This turn process will be for non Jailed players. Jailed players have a different process. 
-	
+
 	public boolean mortgageProperty(int squareID, Player Curr_Player) {
 		Square Curr_Square = getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
@@ -483,16 +487,16 @@ public class Board {
 
 	//This is called when a player doesn't have enough money to pay rent or jail escape and is forced to sell then must pay rent or jail fee
 	public void sellSequence(Player Curr_Player, int negativeAmount){
-		
+
 		String[] array = new String[Curr_Player.getPropertiesOwned().size()];
 		Square sq = new Square(1, "blah");
 
-		
+
 		for (int i = 0; i < Curr_Player.getPropertiesOwned().size(); i++) {
 			sq = getSquare(Curr_Player.getPropertiesOwned().get(i));
 			array[i] = sq.getID() + "";			
 		}
-		
+
 		int amountSold = 0;
 		RealEstate test = (RealEstate) getSquare(1);
 
@@ -515,7 +519,7 @@ public class Board {
 					}
 				}
 			}
-			
+
 			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to mortgage any Properties?", "Mortgage properties?", JOptionPane.YES_NO_OPTION);
 			if(answer == 0){
 				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to mortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
@@ -549,29 +553,33 @@ public class Board {
 		int tempBid = 0;
 		//When there is only one player left in the list, they are the winner
 		while(loop.size() > 1) {
-			//Ask each player if they want to bid, and for how much
+			//Ask each player if they want to bid, and for how much. AI never bids
 			for(int i = 0; i < loop.size(); i++){
-				answer = JOptionPane.showConfirmDialog(contentPane,loop.get(i).getName() + ", would you like to place a bid on " + Curr_Square.getName() + "?", "Place bid?", JOptionPane.YES_NO_OPTION);
-				switch (answer) {
-				case 0:
-					tempBid = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter an amount to bid. You have $" + loop.get(i).getBalance() + "\n" + "The current bid is $" + currentBid, "amount"));
-					if (tempBid > loop.get(i).getBalance()) {
-						JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", you don't have enough money!You have been removed from the bidding.");
+				if (temp.get(i).getAI()) {
+					System.out.println("Player is AI and will not bid");
+				} else {
+					answer = JOptionPane.showConfirmDialog(contentPane,loop.get(i).getName() + ", would you like to place a bid on " + Curr_Square.getName() + "?", "Place bid?", JOptionPane.YES_NO_OPTION);
+					switch (answer) {
+					case 0:
+						tempBid = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter an amount to bid. You have $" + loop.get(i).getBalance() + "\n" + "The current bid is $" + currentBid, "amount"));
+						if (tempBid > loop.get(i).getBalance()) {
+							JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", you don't have enough money!You have been removed from the bidding.");
+							temp.remove(loop.get(i));
+						}
+						else if (tempBid <= currentBid) {
+							JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", too bad! Your bid is too low.\nYou have been removed from the bidding.");
+							temp.remove(loop.get(i));
+						}
+						else {
+							currentBid = tempBid;
+							winner = loop.get(i);
+						}
+						break;
+					case 1:
+					default:
+						JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", you have been removed from the bidding");
 						temp.remove(loop.get(i));
 					}
-					else if (tempBid <= currentBid) {
-						JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", too bad! Your bid is too low.\nYou have been removed from the bidding.");
-						temp.remove(loop.get(i));
-					}
-					else {
-						currentBid = tempBid;
-						winner = loop.get(i);
-					}
-					break;
-				case 1:
-				default:
-					JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", you have been removed from the bidding");
-					temp.remove(loop.get(i));
 				}
 			}
 			loop = temp;
@@ -606,7 +614,7 @@ public class Board {
 		//Player has properties to sell.
 		System.out.println("You own:");
 		Square sq = new Square(1, "blah");
-		
+
 		String[] array = new String[p.getPropertiesOwned().size()];
 
 		for (int i = 0; i < p.getPropertiesOwned().size(); i++) {
@@ -617,7 +625,7 @@ public class Board {
 		if(answerString == null)
 			return;
 		int property = Integer.parseInt(answerString.toString());
-		
+
 		int sq_ID = sq.getID();
 		if(sq_ID != 5 && sq_ID != 12 && sq_ID != 15 && sq_ID != 25 && sq_ID != 28 && sq_ID != 35){
 			RealEstate re = (RealEstate) getSquare(sq_ID);
@@ -628,7 +636,7 @@ public class Board {
 			}
 		}
 
-				//The player entered a property to sell
+		//The player entered a property to sell
 		if (p.getPropertiesOwned().contains(property)) {
 			sq = getSquare(property);
 
@@ -645,7 +653,7 @@ public class Board {
 			if(answerString == null)
 				return;
 			int otherPlayer = Integer.parseInt(answerString.toString());
-			
+
 			answerString = JOptionPane.showInputDialog(contentPane, p.getName() + ", enter the amount you wish to sell the property for");
 			if(answerString == null)
 				return;
@@ -682,7 +690,7 @@ public class Board {
 						case 0:
 							rnu.unmortgage(target);
 							break;
-						//1 is no
+							//1 is no
 						case 1:
 							target.decreaseBalance((int)(rnu.getPrice()*.1));
 						default:
@@ -719,7 +727,7 @@ public class Board {
 	private boolean checkTime() {
 		return getTimeUp();
 	}
-	
+
 	private int playerValue(Player p){
 		int total = p.getBalance();
 		for (int temp : p.getPropertiesOwned()) {
@@ -734,18 +742,18 @@ public class Board {
 		}
 		return total;
 	}
-	
+
 	private void determineWinner(){
 		Player winner = players[0];
 		//ArrayList<Player> candidates = new ArrayList<Player>();
-		
+
 		//Checks for ties
 		for(int i = 1; i < players.length; i++){
 			if(playerValue(players[i]) >= playerValue(winner)){
 				winner = players[i];
 			}
 		}
-		
+
 		/*
 		if(candidates.size() == 0){
 			JOptionPane.showMessageDialog(contentPane, "The winner is " + winner.getName() + " with a balance of " + winner.getBalance() + "!");
@@ -781,32 +789,32 @@ public class Board {
 					trueWinners.remove(winner);
 				}
 			}
-			*/
-			
-			//Determine the winner
-			//If there is a tie here it picks the player with the lowest player ID
-			JOptionPane.showMessageDialog(contentPane, "The winner is " + winner.getName() + " with a balance of " + winner.getBalance());
-			try {
-			   Thread.sleep(5000);
-			} 
-			catch (InterruptedException e) {
-			   e.printStackTrace();
-			}
-			System.exit(0);
+		 */
+
+		//Determine the winner
+		//If there is a tie here it picks the player with the lowest player ID
+		JOptionPane.showMessageDialog(contentPane, "The winner is " + winner.getName() + " with a balance of " + winner.getBalance());
+		try {
+			Thread.sleep(5000);
+		} 
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.exit(0);
 	}
 
 	public int getNumPlayers() {
 		return numPlayers;
 	}
-	
+
 	public Player[] getPlayers() {
 		return players;
 	}
-	
+
 	public static boolean getTimeUp() {
 		return timeUp;
 	}
-	
+
 	public void setGUI(BoardGUI GUI){
 		this.GUI = GUI;
 	}
