@@ -144,6 +144,14 @@ public class Board {
 	public Square getSquare(int squareID) {
 		return squares[squareID];
 	}
+	
+	public int dicegetFace1(){
+		return turnCont.dice.getFace1();
+	}
+	
+	public int dicegetFace2(){
+		return turnCont.dice.getFace2();
+	}
 
 	// Iterate through players for turns. After Each Player check timer.
 	public void gamePlay(int player_turn) {

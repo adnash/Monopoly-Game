@@ -43,7 +43,6 @@ public class PlayerEntryGUI extends JFrame {
 	private String[] playericons;
 	
 	private Board board;
-	private TurnControler TC;
 	private BoardGUI boardGUI;
 	private ScoreboardGUI scoreboard;
 
@@ -202,8 +201,7 @@ public class PlayerEntryGUI extends JFrame {
 						duration = Integer.parseInt(temp);
 						if(duration > 0){
 							board = new Board(playernames, playericons, duration);
-							TC = new TurnControler(board);
-							boardGUI = new BoardGUI(scoreboard, numPlayers, board, playericons, TC);
+							boardGUI = new BoardGUI(scoreboard, numPlayers, board, playericons);
 							scoreboard = new ScoreboardGUI(boardGUI, board, playericons, duration);
 							
 							boardGUI.setGUI(scoreboard);
@@ -227,8 +225,7 @@ public class PlayerEntryGUI extends JFrame {
 						duration = Integer.parseInt(temp);
 						if(duration > 0){
 							board = new Board(playernames, playericons, duration);
-							TC = new TurnControler(board);
-							boardGUI = new BoardGUI(scoreboard, numPlayers, board, playericons, TC);
+							boardGUI = new BoardGUI(scoreboard, numPlayers, board, playericons);
 							scoreboard = new ScoreboardGUI(boardGUI, board, playericons, duration);
 							
 							boardGUI.setGUI(scoreboard);
@@ -254,8 +251,7 @@ public class PlayerEntryGUI extends JFrame {
 						duration = Integer.parseInt(temp);
 						if(duration > 0){
 							board = new Board(playernames, playericons, duration);
-							TC = new TurnControler(board);
-							boardGUI = new BoardGUI(scoreboard, numPlayers, board, playericons, TC);
+							boardGUI = new BoardGUI(scoreboard, numPlayers, board, playericons);
 							scoreboard = new ScoreboardGUI(boardGUI, board, playericons, duration);
 							
 							boardGUI.setGUI(scoreboard);
