@@ -24,6 +24,7 @@ import javax.swing.JToggleButton;
 public class BoardGUI extends JFrame{
 	
 	private Board board;
+	private TurnControler TC;
 	private JFrame frame;
 	
 	// movable player icon
@@ -51,7 +52,8 @@ public class BoardGUI extends JFrame{
 	
 	public static void main(String[] args) {
 		Board temp = new Board(new String[]{"bob","joe","shannon","beth"},new String[]{"Cat","Shoe","Battleship","Thimble"}, tempduration);
-        BoardGUI tempGUI = new BoardGUI(null, 4, temp, new String[]{"Cat","Shoe","Battleship","Thimble"});
+		TurnControler tempTC = new TurnControler(temp);
+        BoardGUI tempGUI = new BoardGUI(null, 4, temp, new String[]{"Cat","Shoe","Battleship","Thimble"}, tempTC);
         temp.setGUI(tempGUI);
     }
 	
@@ -63,7 +65,7 @@ public class BoardGUI extends JFrame{
 		return board;
 	}
 
-    public BoardGUI(ScoreboardGUI scoreboard, int numPlayers, Board board, String[] playericons) {
+    public BoardGUI(ScoreboardGUI scoreboard, int numPlayers, Board board, String[] playericons, TurnControler TC) {
     	JFrame.setDefaultLookAndFeelDecorated(true);
     	
     	//temp scoreboard
@@ -71,6 +73,7 @@ public class BoardGUI extends JFrame{
     	this.scoreboard = scoreboard;
     	    	    	
     	this.board = board;
+    	this.TC = TC;
     	    	
         EventQueue.invokeLater(new Runnable() {
             @Override
@@ -137,8 +140,8 @@ public class BoardGUI extends JFrame{
     }
     
     private void updateDice(){
-    	die1.setText("Die 1:    " + board.dice.getFace1());
-        die2.setText("Die 2:    " + board.dice.getFace2());
+    	die1.setText("Die 1:    " + TC.dice.getFace1());
+        die2.setText("Die 2:    " + TC.dice.getFace2());
 		frame.add(die1);
 		frame.add(die2);
     }
@@ -706,8 +709,8 @@ public class BoardGUI extends JFrame{
     }
     
     private void preDiceSetup(Font font){
-    	die1 = new JLabel("Die 1:    " + board.dice.getFace1());
-        die2 = new JLabel("Die 2:    " + board.dice.getFace2());
+    	die1 = new JLabel("Die 1:    " + TC.dice.getFace1());
+        die2 = new JLabel("Die 2:    " + TC.dice.getFace2());
         die1.setFont(font);
         die2.setFont(font);
         die1.setBounds(400, 675, 125, 50);

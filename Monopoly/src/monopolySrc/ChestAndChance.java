@@ -10,8 +10,9 @@ public class ChestAndChance {
 	private ArrayList<Player> players;
 	private Jail jail;
 	private Board b;
+	private TurnControler TC;
 
-	public ChestAndChance(Jail j, ArrayList<Player> pl, Board b) {
+	public ChestAndChance(Jail j, ArrayList<Player> pl, Board b, TurnControler TC) {
 		chestDeck = new ArrayList<Integer>();
 		chanceDeck = new ArrayList<Integer>();
 		players = pl;
@@ -21,6 +22,7 @@ public class ChestAndChance {
 		//When passing the Board in the constructor use the "this" keyword
 		//ex: ChestAndChance(jail, players, this);
 		this.b = b;
+		this.TC = TC;
 	}
 
 	private void shuffle(){
@@ -168,7 +170,7 @@ public class ChestAndChance {
 				p.increaseBalance(200);
 			}
 			p.setCurrentSquare(24);
-			b.resolveSquare(p, 24);
+			TC.resolveSquare(p, 24);
 		case 3:
 			System.out.println("Advance to St. Charles Place. If you pass Go, collect $200");
 			if(p.getCurrentSquare() > 11){
@@ -176,7 +178,7 @@ public class ChestAndChance {
 				p.increaseBalance(200);
 			}
 			p.setCurrentSquare(11);
-			b.resolveSquare(p, 11);
+			TC.resolveSquare(p, 11);
 		case 4:
 			System.out.println("Advance token to nearest utility and pay 10 times die roll.");
 			spot = p.getCurrentSquare();
@@ -188,10 +190,10 @@ public class ChestAndChance {
 				//Electric Company
 				p.setCurrentSquare(12);
 			}	
-			int cost = b.dice.getFace1() + b.dice.getFace2();
+			int cost = TC.dice.getFace1() + TC.dice.getFace2();
 			RailroadsAndUtilities u = (RailroadsAndUtilities)b.getSquare(spot);
 			if(u.getOwnerID() == -1){
-				b.resolveSquare(p, spot);
+				TC.resolveSquare(p, spot);
 			}
 			else{
 				p.decreaseBalance(cost);
@@ -219,11 +221,11 @@ public class ChestAndChance {
 				//Short Line
 				p.setCurrentSquare(5);
 			}
-			b.resolveSquare(p, spot);
+			TC.resolveSquare(p, spot);
 			RailroadsAndUtilities rr = (RailroadsAndUtilities)b.getSquare(spot);
 			//This pays the rent a second time to fulfill the requirements for this card if rent is owed
 			if(rr.getOwnerID() != -1 && rr.getOwnerID() != p.getPlayerID()){
-				b.resolveSquare(p, spot);
+				TC.resolveSquare(p, spot);
 			}
 		case 6:
 			System.out.println("Bank pays you dividend of $50");
@@ -237,7 +239,7 @@ public class ChestAndChance {
 		case 8:
 			System.out.println("Go back 3 spaces.");
 			p.setCurrentSquare(p.getCurrentSquare() - 3);
-			b.resolveSquare(p, p.getCurrentSquare());
+			TC.resolveSquare(p, p.getCurrentSquare());
 		case 9:
 			System.out.println("Go to jail.");
 			p.setCurrentSquare(40);
@@ -270,11 +272,11 @@ public class ChestAndChance {
 				p.increaseBalance(200);
 			}
 			p.setCurrentSquare(5);
-			b.resolveSquare(p, 5);
+			TC.resolveSquare(p, 5);
 		case 13:
 			System.out.println("Take a walk on the Boardwalk. Advance token to Boardwalk.");
 			p.setCurrentSquare(39);
-			b.resolveSquare(p, 39);
+			TC.resolveSquare(p, 39);
 		case 14:
 			System.out.println("You have been elected Chairman of the Board. Pay each player $50");
 			count = 0;
