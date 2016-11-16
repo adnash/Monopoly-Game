@@ -12,9 +12,11 @@ public class TurnControler {
 	private int answer;
 	
 	private Board brd;
+	private ChestAndChance CandC;
 	
-	public TurnControler(Board brd){
+	public TurnControler(Board brd, ChestAndChance CandC){
 		this.brd = brd;
+		this.CandC = CandC;
 	}
 	
 	
@@ -286,6 +288,9 @@ public class TurnControler {
 			}else{
 				return true;
 			}
+		}else if(squareID == 2 || squareID == 17 || squareID == 33 || squareID == 7 || squareID == 22 || squareID == 36 ){
+			CandC.draw(Curr_Player, squareID); 
+			return true;
 		} else {
 			return true;
 		}

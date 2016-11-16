@@ -7,12 +7,11 @@ public class ChestAndChance {
 
 	private ArrayList<Integer> chestDeck;
 	private ArrayList<Integer> chanceDeck;
-	private ArrayList<Player> players;
+	private Player[] players;
 	private Jail jail;
 	private Board b;
-	private TurnControler TC;
 
-	public ChestAndChance(Jail j, ArrayList<Player> pl, Board b, TurnControler TC) {
+	public ChestAndChance(Jail j, Player[] pl, Board b) {
 		chestDeck = new ArrayList<Integer>();
 		chanceDeck = new ArrayList<Integer>();
 		players = pl;
@@ -22,7 +21,6 @@ public class ChestAndChance {
 		//When passing the Board in the constructor use the "this" keyword
 		//ex: ChestAndChance(jail, players, this);
 		this.b = b;
-		this.TC = TC;
 	}
 
 	private void shuffle(){
@@ -98,11 +96,11 @@ public class ChestAndChance {
 			count = 0;
 			//Calculates correct amount to give to the player that drew this card
 			//and removes $50 from every other player.
-			for(int i = 0; i < players.size(); i++){
-				if(players.get(i) != null){
-					if(players.get(i).getPlayerID() != p.getPlayerID()){
+			for(int i = 0; i < players.length; i++){
+				if(players[i] != null){
+					if(players[i].getPlayerID() != p.getPlayerID()){
 						count++;
-						players.get(i).decreaseBalance(50);
+						players[i].decreaseBalance(50);
 					}
 				}
 			}
@@ -130,11 +128,11 @@ public class ChestAndChance {
 			count = 0;
 			//Calculates correct amount to give to the player that drew this card
 			//and removes $10 from every other player.
-			for(int i = 0; i < players.size(); i++){
-				if(players.get(i) != null){
-					if(players.get(i).getPlayerID() != p.getPlayerID()){
+			for(int i = 0; i < players.length; i++){
+				if(players[i] != null){
+					if(players[i].getPlayerID() != p.getPlayerID()){
 						count++;
-						players.get(i).decreaseBalance(10);
+						players[i].decreaseBalance(10);
 					}
 				}
 			}
@@ -170,7 +168,7 @@ public class ChestAndChance {
 				p.increaseBalance(200);
 			}
 			p.setCurrentSquare(24);
-			TC.resolveSquare(p, 24);
+			b.resolveSquare(p, 24);
 		case 3:
 			System.out.println("Advance to St. Charles Place. If you pass Go, collect $200");
 			if(p.getCurrentSquare() > 11){
@@ -178,7 +176,7 @@ public class ChestAndChance {
 				p.increaseBalance(200);
 			}
 			p.setCurrentSquare(11);
-			TC.resolveSquare(p, 11);
+			b.resolveSquare(p, 11);
 		case 4:
 			System.out.println("Advance token to nearest utility and pay 10 times die roll.");
 			spot = p.getCurrentSquare();
@@ -190,10 +188,10 @@ public class ChestAndChance {
 				//Electric Company
 				p.setCurrentSquare(12);
 			}	
-			int cost = TC.dice.getFace1() + TC.dice.getFace2();
+			int cost = b.dicegetFace1() + b.dicegetFace2();
 			RailroadsAndUtilities u = (RailroadsAndUtilities)b.getSquare(spot);
 			if(u.getOwnerID() == -1){
-				TC.resolveSquare(p, spot);
+				b.resolveSquare(p, spot);
 			}
 			else{
 				p.decreaseBalance(cost);
@@ -221,11 +219,11 @@ public class ChestAndChance {
 				//Short Line
 				p.setCurrentSquare(5);
 			}
-			TC.resolveSquare(p, spot);
+			b.resolveSquare(p, spot);
 			RailroadsAndUtilities rr = (RailroadsAndUtilities)b.getSquare(spot);
 			//This pays the rent a second time to fulfill the requirements for this card if rent is owed
 			if(rr.getOwnerID() != -1 && rr.getOwnerID() != p.getPlayerID()){
-				TC.resolveSquare(p, spot);
+				b.resolveSquare(p, spot);
 			}
 		case 6:
 			System.out.println("Bank pays you dividend of $50");
@@ -239,7 +237,7 @@ public class ChestAndChance {
 		case 8:
 			System.out.println("Go back 3 spaces.");
 			p.setCurrentSquare(p.getCurrentSquare() - 3);
-			TC.resolveSquare(p, p.getCurrentSquare());
+			b.resolveSquare(p, p.getCurrentSquare());
 		case 9:
 			System.out.println("Go to jail.");
 			p.setCurrentSquare(40);
@@ -272,21 +270,21 @@ public class ChestAndChance {
 				p.increaseBalance(200);
 			}
 			p.setCurrentSquare(5);
-			TC.resolveSquare(p, 5);
+			b.resolveSquare(p, 5);
 		case 13:
 			System.out.println("Take a walk on the Boardwalk. Advance token to Boardwalk.");
 			p.setCurrentSquare(39);
-			TC.resolveSquare(p, 39);
+			b.resolveSquare(p, 39);
 		case 14:
 			System.out.println("You have been elected Chairman of the Board. Pay each player $50");
 			count = 0;
 			//Calculates correct amount to remove to the player that drew this card
 			//and adds $50 to every other player.
-			for(int i = 0; i < players.size(); i++){
-				if(players.get(i) != null){
-					if(players.get(i).getPlayerID() != p.getPlayerID()){
+			for(int i = 0; i < players.length; i++){
+				if(players[i] != null){
+					if(players[i].getPlayerID() != p.getPlayerID()){
 						count++;
-						players.get(i).increaseBalance(50);
+						players[i].increaseBalance(50);
 					}
 				}
 			}

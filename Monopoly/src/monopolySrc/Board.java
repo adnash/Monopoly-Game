@@ -26,7 +26,8 @@ public class Board {
 	private int duration;
 	private static Timer timer = new Timer();
 	private static boolean timeUp = false;
-	private TurnControler turnCont = new TurnControler(this);
+	private TurnControler turnCont;
+	private ChestAndChance CandC;
 
 	// Board constructor called once and only once by Monopoly class to initialize certain variables and objects
 	public Board(String[] playerNames, String[] playericons, int duration) {
@@ -37,6 +38,9 @@ public class Board {
 		for (int i=0; i<numPlayers; i++) {
 			players[i] = new Player(i, playerNames[i], playericons[i]);
 		}
+		
+		CandC = new ChestAndChance((Jail) getSquare(40),players,this);
+		turnCont  = new TurnControler(this, CandC);
 
 		setupBoard();
 	}
@@ -151,6 +155,10 @@ public class Board {
 	
 	public int dicegetFace2(){
 		return turnCont.dice.getFace2();
+	}
+	
+	public boolean resolveSquare(Player Curr_Player, int squareID) {
+		return turnCont.resolveSquare(Curr_Player, squareID);
 	}
 
 	// Iterate through players for turns. After Each Player check timer.
