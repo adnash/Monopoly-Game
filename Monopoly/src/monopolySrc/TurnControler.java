@@ -1,16 +1,20 @@
 package monopolySrc;
 
+import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class TurnControler {
-	
+
+
+
 	private JPanel contentPane;
-	
+
 	protected Dice dice = new Dice();	
-	
+
 	private int answer;
-	
+
 	private Board brd;
 	private ChestAndChance CandC;
 	
@@ -18,8 +22,8 @@ public class TurnControler {
 		this.brd = brd;
 		this.CandC = CandC;
 	}
-	
-	
+
+
 	public void playerTurnProcess(Player Curr_Play) {
 		//Do once then only repeat for doubles.
 		do {
@@ -124,101 +128,135 @@ public class TurnControler {
 				}
 			}
 		default:	
-			
+
 
 		}
 		//if not third turn end turn.
 	}
-	
+
 	public void postTurn(Player Curr_Player){
-		
+
 		String[] array = new String[Curr_Player.getPropertiesOwned().size()];
 		Square sq = new Square(1, "blah");
 
-		
+		// Get the names of the squares that the player owns and store them in array for displaying
 		for (int i = 0; i < Curr_Player.getPropertiesOwned().size(); i++) {
 			sq = brd.getSquare(Curr_Player.getPropertiesOwned().get(i));
 			array[i] = sq.getID() + "";			
 		}
-		boolean looper = true;
-		
-		while(looper){
-			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy any houses?", "Buy houses?", JOptionPane.YES_NO_OPTION);
-			if(answer == 0){
-				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to buy a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
-				if(answerString != null){
-					answer = Integer.parseInt(answerString.toString());
-					if(answer != -1)
-						brd.buyHouse(answer, Curr_Player);
-					else
-						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+
+		if (Curr_Player.getAI()) {
+			System.out.println("Player is AI, therefore an algorithm will determine their move");
+
+			ArrayList<Integer> properties = Curr_Player.getPropertiesOwned();
+
+			//if AI has property, it will always try to buy a house
+			//TODO make property choice random
+			if (array.length > 0) {				
+				brd.buyHouse(properties.get(0), Curr_Player);
+				System.out.println("AI player has attempted to buy a house");
+			}
+
+			// Currently AI will never sell a house
+			//if (array.length > 0) {				
+			//
+			//}
+
+			// Currently AI will never mortgage a property
+			//if (array.length > 0) {				
+			//
+			//}
+
+			// Currently AI will never un-mortgage a property
+			//if (array.length > 0) {				
+			//
+			//}
+
+			// Currently AI will never trade/sell a property
+			//if (array.length > 0) {				
+			//
+			//}
+
+		} else {
+
+			boolean looper = true;
+			while(looper){
+				answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy any houses?", "Buy houses?", JOptionPane.YES_NO_OPTION);
+				if(answer == 0){
+					Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to buy a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
+					if(answerString != null){
+						answer = Integer.parseInt(answerString.toString());
+						if(answer != -1)
+							brd.buyHouse(answer, Curr_Player);
+						else
+							JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+					}
+				}else{
+					looper = false;
 				}
-			}else{
-				looper = false;
 			}
-		}
-		
-		looper = true;
-		while(looper){
-			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to sell any houses?", "Sell houses?", JOptionPane.YES_NO_OPTION);
-			if(answer == 0){
-				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to sell a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
-				if(answerString != null){
-					answer = Integer.parseInt(answerString.toString());
-					if(answer != -1)
-						brd.sellHouse(answer, Curr_Player);
-					else
-						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+
+			looper = true;
+			while(looper){
+				answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to sell any houses?", "Sell houses?", JOptionPane.YES_NO_OPTION);
+				if(answer == 0){
+					Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to sell a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
+					if(answerString != null){
+						answer = Integer.parseInt(answerString.toString());
+						if(answer != -1)
+							brd.sellHouse(answer, Curr_Player);
+						else
+							JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+					}
+				}else{
+					looper = false;
 				}
-			}else{
-				looper = false;
 			}
-		}
-		
-		looper = true;
-		while(looper){
-			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to mortgage any Properties?", "Mortgage properties?", JOptionPane.YES_NO_OPTION);
-			if(answer == 0){
-				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to mortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
-				if(answerString != null){
-					answer = Integer.parseInt(answerString.toString());
-					if(answer != -1)
-						brd.mortgageProperty(answer, Curr_Player);
-					else
-						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+
+			looper = true;
+			while(looper){
+				answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to mortgage any Properties?", "Mortgage properties?", JOptionPane.YES_NO_OPTION);
+				if(answer == 0){
+					Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to mortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
+					if(answerString != null){
+						answer = Integer.parseInt(answerString.toString());
+						if(answer != -1)
+							brd.mortgageProperty(answer, Curr_Player);
+						else
+							JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+					}
+				}else{
+					looper = false;
 				}
-			}else{
-				looper = false;
 			}
-		}
-		
-		looper = true;
-		while(looper){
-			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to unmortgage any Properties?", "Unmortgage properties?", JOptionPane.YES_NO_OPTION);
-			if(answer == 0){
-				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to unmortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
-				if(answerString != null){
-					answer = Integer.parseInt(answerString.toString());
-					if(answer != -1)
-						brd.unmortgageProperty(answer, Curr_Player);
-					else
-						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+
+			looper = true;
+			while(looper){
+				answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to unmortgage any Properties?", "Unmortgage properties?", JOptionPane.YES_NO_OPTION);
+				if(answer == 0){
+					Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to unmortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
+					if(answerString != null){
+						answer = Integer.parseInt(answerString.toString());
+						if(answer != -1)
+							brd.unmortgageProperty(answer, Curr_Player);
+						else
+							JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again next turn.");
+					}
+				}else{
+					looper = false;
 				}
-			}else{
-				looper = false;
+			}
+
+			looper = true;
+			while(looper){
+				answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to Trade/Sell any Properties?", "Trade properties?", JOptionPane.YES_NO_OPTION);
+				if(answer == 0){
+					brd.trade(Curr_Player);
+				}else{
+					looper = false;
+				}
 			}
 		}
-		
-		looper = true;
-		while(looper){
-			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to Trade/Sell any Properties?", "Trade properties?", JOptionPane.YES_NO_OPTION);
-			if(answer == 0){
-				brd.trade(Curr_Player);
-			}else{
-				looper = false;
-			}
-		}
-		
 	}
 
 	//random change for commit
@@ -227,7 +265,7 @@ public class TurnControler {
 	//return false if player goes to jail.
 	public boolean resolveSquare(Player Curr_Player, int squareID) {
 		JOptionPane.showMessageDialog(contentPane, Curr_Player.getName() + " just landed on square " + squareID + " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
-//		System.out.println(Curr_Player.getName() + " just landed on square " + squareID + " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
+		//		System.out.println(Curr_Player.getName() + " just landed on square " + squareID + " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
 		Square Curr_Square = brd.getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
 			RealEstate Curr_Estate =(RealEstate) Curr_Square; 
@@ -235,21 +273,34 @@ public class TurnControler {
 				brd.payRent_RealEstate(Curr_Estate, Curr_Player);
 				return true;
 			} else if(Curr_Estate.getOwnerID() == -1){
-				answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy " + Curr_Estate.getName(), "Buy square?", JOptionPane.YES_NO_OPTION);
-				switch (answer) {
-				case 0:	
+
+				//AI Logic will always attempt to buy a property
+				if (Curr_Player.getAI()) {
+					System.out.println("Player is AI and will try to buy property");
 					if(brd.purchaseProperty(squareID, Curr_Player)){
 						return true;
 					}else{
 						brd.auction(squareID);
 						return true;
 					}
-				case 1:
-					brd.auction(squareID);
-					return true;
-				default:	
-					JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again");
-					return true;
+
+				} else {
+					answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy " + Curr_Estate.getName(), "Buy square?", JOptionPane.YES_NO_OPTION);
+					switch (answer) {
+					case 0:	
+						if(brd.purchaseProperty(squareID, Curr_Player)){
+							return true;
+						}else{
+							brd.auction(squareID);
+							return true;
+						}
+					case 1:
+						brd.auction(squareID);
+						return true;
+					default:	
+						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again");
+						return true;
+					}
 				}
 			}else{
 				return true;

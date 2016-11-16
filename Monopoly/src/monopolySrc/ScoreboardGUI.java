@@ -201,7 +201,7 @@ public class ScoreboardGUI extends JFrame {
 	            
 	            
 	        } else {
-	        	System.out.println("Seconds left: " + sec);
+	        	//System.out.println("Seconds left: " + sec);
 	        	updateSecTime(sec);
 	            sec--;
 	        }
