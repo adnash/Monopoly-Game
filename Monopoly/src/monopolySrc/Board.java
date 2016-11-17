@@ -43,7 +43,6 @@ public class Board {
 			}
 		}
 		
-		turnCont  = new TurnControler(this, CandC);
 
 		//hard-coding the first player to be AI for testing
 		//players[0].setAI(true);
@@ -146,10 +145,12 @@ public class Board {
 		squares[39] = Boardwalk;
 		Jail jail = new Jail(40, "Jail");
 		squares[40] = jail;
+		
 		CandC = new ChestAndChance(jail,players,this);
-
+		turnCont  = new TurnControler(this, CandC);
 		// TODO Start game timer here?
 	}
+	
 
 
 	public Square getSquare(int squareID) {
