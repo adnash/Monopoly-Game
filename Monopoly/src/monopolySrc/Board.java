@@ -565,8 +565,9 @@ public class Board {
 		for (int i = 0; i < players.length; i++) {
 			temp.add(players[i]);
 		}
-
+		
 		loop = temp;
+
 		Player winner = null;
 		int currentBid = 0;
 		int tempBid = 0;
@@ -574,6 +575,7 @@ public class Board {
 		while(loop.size() > 1) {
 			//Ask each player if they want to bid, and for how much. AI never bids
 			for(int i = 0; i < loop.size(); i++){
+				System.out.println("i = "+i);
 				if (temp.get(i).getAI()) {
 					System.out.println("Player is AI and will not bid");
 				} else {
@@ -584,10 +586,14 @@ public class Board {
 						if (tempBid > loop.get(i).getBalance()) {
 							JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", you don't have enough money!You have been removed from the bidding.");
 							temp.remove(loop.get(i));
+							i--;
+							
 						}
 						else if (tempBid <= currentBid) {
 							JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", too bad! Your bid is too low.\nYou have been removed from the bidding.");
 							temp.remove(loop.get(i));
+							i--;
+							
 						}
 						else {
 							currentBid = tempBid;
@@ -598,10 +604,37 @@ public class Board {
 					default:
 						JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", you have been removed from the bidding");
 						temp.remove(loop.get(i));
+						i--;
+						
 					}
 				}
 			}
 			loop = temp;
+		}
+		
+		if(currentBid==0){
+			answer = JOptionPane.showConfirmDialog(contentPane,loop.get(0).getName() + ", would you like to place a bid on " + Curr_Square.getName() + "?", "Place bid?", JOptionPane.YES_NO_OPTION);
+			switch (answer) {
+			case 0:
+				tempBid = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter an amount to bid. You have $" + loop.get(0).getBalance() + "\n" + "The current bid is $" + currentBid, "amount"));
+				if (tempBid > loop.get(0).getBalance()) {
+					JOptionPane.showMessageDialog(contentPane,loop.get(0).getName() + ", you don't have enough money!You have been removed from the bidding.");
+					temp.remove(loop.get(0));
+				}
+				else if (tempBid <= currentBid) {
+					JOptionPane.showMessageDialog(contentPane,loop.get(0).getName() + ", too bad! Your bid is too low.\nYou have been removed from the bidding.");
+					temp.remove(loop.get(0));
+				}
+				else {
+					currentBid = tempBid;
+					winner = loop.get(0);
+				}
+				break;
+			case 1:
+			default:
+				JOptionPane.showMessageDialog(contentPane,loop.get(0).getName() + ", you have been removed from the bidding");
+				temp.remove(loop.get(0));
+			}
 		}
 		//Auction ends
 		if (winner == null) {
