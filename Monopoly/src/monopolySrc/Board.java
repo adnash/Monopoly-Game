@@ -30,7 +30,7 @@ public class Board {
 	private ChestAndChance CandC;
 
 	// Board constructor called once and only once by Monopoly class to initialize certain variables and objects
-	public Board(String[] playerNames, String[] playericons, int duration) {
+	public Board(String[] playerNames, String[] playericons, Object[] AI,int duration) {
 		this.duration = duration;
 		numPlayers = playerNames.length;
 		// Initialize each player
@@ -38,6 +38,9 @@ public class Board {
 
 		for (int i=0; i<numPlayers; i++) {
 			players[i] = new Player(i, playerNames[i], playericons[i]);
+			if(AI[i] != null){
+				players[i].setAI(true);
+			}
 		}
 		
 		CandC = new ChestAndChance((Jail) getSquare(40),players,this);

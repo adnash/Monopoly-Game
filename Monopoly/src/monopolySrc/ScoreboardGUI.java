@@ -222,9 +222,17 @@ public class ScoreboardGUI extends JFrame {
         frame.add(player1icon);
 		frame.add(player2icon);
     	
-    	player1name = new JLabel(board.getPlayers()[0].getName());
-    	player2name = new JLabel(board.getPlayers()[1].getName());
-    	player1name.setBounds(110, 125, 225, 50);
+		if(board.getPlayers()[0].getAI())
+			player1name = new JLabel("AI " + board.getPlayers()[0].getName());
+		else
+			player1name = new JLabel(board.getPlayers()[0].getName());
+		
+		if(board.getPlayers()[1].getAI())
+			player2name = new JLabel("AI " + board.getPlayers()[1].getName());
+		else 
+			player2name = new JLabel(board.getPlayers()[1].getName());
+		
+		player1name.setBounds(110, 125, 225, 50);
         player2name.setBounds(110, 175, 225, 50);
         player1name.setForeground(Color.BLUE);
 		player2name.setForeground(Color.RED);
@@ -267,10 +275,22 @@ public class ScoreboardGUI extends JFrame {
         frame.add(player1icon);
 		frame.add(player2icon);
 		frame.add(player3icon);
-    	
-    	player1name = new JLabel(board.getPlayers()[0].getName());
-    	player2name = new JLabel(board.getPlayers()[1].getName());
-    	player3name = new JLabel(board.getPlayers()[2].getName());
+		
+		if(board.getPlayers()[0].getAI())
+			player1name = new JLabel("AI " + board.getPlayers()[0].getName());
+		else
+			player1name = new JLabel(board.getPlayers()[0].getName());
+		
+		if(board.getPlayers()[1].getAI())
+			player2name = new JLabel("AI " + board.getPlayers()[1].getName());
+		else 
+			player2name = new JLabel(board.getPlayers()[1].getName());
+		
+		if(board.getPlayers()[2].getAI())
+			player3name = new JLabel("AI " + board.getPlayers()[2].getName());
+		else
+			player3name = new JLabel(board.getPlayers()[2].getName());
+		
     	player1name.setBounds(110, 125, 225, 50);
         player2name.setBounds(110, 175, 225, 50);
         player3name.setBounds(110, 225, 225, 50);
@@ -329,12 +349,28 @@ public class ScoreboardGUI extends JFrame {
 		frame.add(player2icon);
 		frame.add(player3icon);
 		frame.add(player4icon);
+		
+		if(board.getPlayers()[0].getAI())
+			player1name = new JLabel("AI " + board.getPlayers()[0].getName());
+		else
+			player1name = new JLabel(board.getPlayers()[0].getName());
+		
+		if(board.getPlayers()[1].getAI())
+			player2name = new JLabel("AI " + board.getPlayers()[1].getName());
+		else 
+			player2name = new JLabel(board.getPlayers()[1].getName());
+		
+		if(board.getPlayers()[2].getAI())
+			player3name = new JLabel("AI " + board.getPlayers()[2].getName());
+		else
+			player3name = new JLabel(board.getPlayers()[2].getName());
+		
+		if(board.getPlayers()[3].getAI())
+			player4name = new JLabel("AI " + board.getPlayers()[3].getName());
+		else
+			player4name = new JLabel(board.getPlayers()[3].getName());
     	
-    	player1name = new JLabel(board.getPlayers()[0].getName());
-    	player2name = new JLabel(board.getPlayers()[1].getName());
-    	player3name = new JLabel(board.getPlayers()[2].getName());
-    	player4name = new JLabel(board.getPlayers()[3].getName());
-    	player1name.setBounds(110, 125, 225, 50);
+		player1name.setBounds(110, 125, 225, 50);
         player2name.setBounds(110, 175, 225, 50);
         player3name.setBounds(110, 225, 225, 50);
         player4name.setBounds(110, 275, 225, 50);

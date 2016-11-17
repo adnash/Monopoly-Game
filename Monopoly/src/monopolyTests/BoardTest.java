@@ -21,7 +21,7 @@ public class BoardTest {
 		int [] costs = new int[] {14,28,70,200,550,750,950};
 		Player p1 = new Player(0, "Dan", "Cat");
 		Player p2 = new Player(1, "Conor", "Dog");
-		Board b = new Board(players, icons, 21);
+		Board b = new Board(players, icons, null, 21);
 		RealEstate r = (RealEstate)b.getSquare(16);
 		RailroadsAndUtilities u = (RailroadsAndUtilities)b.getSquare(25);
 		Jail j = (Jail)b.getSquare(40);
@@ -74,7 +74,7 @@ public class BoardTest {
 	public void getSquareOnSquare(){
 		String [] players = new String[] {"Dan", "Conor"};
 		String [] icons = new  String[] {"Cat", "Dog"};
-		Board b = new Board(players, icons, 1);
+		Board b = new Board(players, icons, null, 1);
 		
 		Square s = b.getSquare(0);
 		
@@ -86,7 +86,7 @@ public class BoardTest {
 	public void getSquareOnJail(){
 		String [] players = new String[] {"Dan", "Conor"};
 		String [] icons = new  String[] {"Cat", "Dog"};
-		Board b = new Board(players, icons, 1);
+		Board b = new Board(players, icons, null, 1);
 		
 		Jail j = (Jail)b.getSquare(40);
 		
@@ -107,7 +107,7 @@ public class BoardTest {
 		String [] players = new String[] {"Dan", "Conor"};
 		String [] icons = new  String[] {"Cat", "Dog"};
 		int [] costs = new int[] {14,28,70,200,550,750,950};
-		Board b = new Board(players, icons, 1);
+		Board b = new Board(players, icons, null, 1);
 		
 		RealEstate r = (RealEstate)b.getSquare(16);
 		
@@ -131,7 +131,7 @@ public class BoardTest {
 	public void getSquareOnRailroadsAndUtilities(){
 		String [] players = new String[] {"Dan", "Conor"};
 		String [] icons = new  String[] {"Cat", "Dog"};
-		Board b = new Board(players, icons, 1);
+		Board b = new Board(players, icons, null, 1);
 		
 		RailroadsAndUtilities u = (RailroadsAndUtilities)b.getSquare(25);
 		
@@ -144,7 +144,7 @@ public class BoardTest {
 	public void getNumPlayersTest(){
 		String [] players = new String[] {"Dan", "Conor"};
 		String [] icons = new  String[] {"Cat", "Dog"};
-		Board b = new Board(players, icons, 1);
+		Board b = new Board(players, icons, null, 1);
 		
 		assertEquals(b.getNumPlayers(), 2);
 	}
@@ -153,7 +153,7 @@ public class BoardTest {
 	public void getPlayersTest(){
 		String [] players = new String[] {"Dan", "Conor"};
 		String [] icons = new  String[] {"Cat", "Dog"};
-		Board b = new Board(players, icons, 1);
+		Board b = new Board(players, icons, null, 1);
 		
 		assertEquals(b.getPlayers()[0].getName(), "Dan");
 		assertEquals(b.getPlayers()[0].getPlayerID(), 0);

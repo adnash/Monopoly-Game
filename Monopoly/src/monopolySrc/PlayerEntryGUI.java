@@ -8,6 +8,7 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -30,6 +31,8 @@ public class PlayerEntryGUI extends JFrame {
 	private JComboBox time;
 	
 	private int duration;
+	
+	private JCheckBox check1, check2, check3, check4;
 		
 	private JComboBox<String> player1icon;
 	private JComboBox<String> player2icon;
@@ -41,6 +44,7 @@ public class PlayerEntryGUI extends JFrame {
 	
 	private String[] playernames;
 	private String[] playericons;
+	private Object[] AI;
 	
 	private Board board;
 	private BoardGUI boardGUI;
@@ -140,15 +144,36 @@ public class PlayerEntryGUI extends JFrame {
 		c.gridy = 3;
 		GridBagLayout.setConstraints(player4icon, c);
 		
+		// Creates the AI checkboxes
+		check1 = new JCheckBox();
+		c.gridx = 2;
+		c.gridy = 0;
+		GridBagLayout.setConstraints(check1, c);
+		
+		check2 = new JCheckBox();
+		c.gridx = 2;
+		c.gridy = 1;
+		GridBagLayout.setConstraints(check2, c);
+		
+		check3 = new JCheckBox();
+		c.gridx = 2;
+		c.gridy = 2;
+		GridBagLayout.setConstraints(check3, c);
+		
+		check4 = new JCheckBox();
+		c.gridx = 2;
+		c.gridy = 3;
+		GridBagLayout.setConstraints(check4, c);
+		
 		String[] timeList = new String[]{"5","10","15","20","30","45","60","120"};
 		
 	    JLabel label1 = new JLabel("Select game duration(minutes):");
-	    c.gridx = 2;
+	    c.gridx = 3;
 	    c.gridy = 3;
 	    GridBagLayout.setConstraints(label1, c);
 	    
 		time = new JComboBox(timeList);
-		c.gridx = 3;
+		c.gridx = 4;
 		c.gridy = 3;
 		GridBagLayout.setConstraints(time, c);
 	    
@@ -162,6 +187,8 @@ public class PlayerEntryGUI extends JFrame {
 			contentPane.add(text2);
 			contentPane.add(player1icon);
 			contentPane.add(player2icon);
+			contentPane.add(check1);
+			contentPane.add(check2);
 			break;
 		case 3:
 			contentPane.add(text1);
@@ -170,6 +197,9 @@ public class PlayerEntryGUI extends JFrame {
 			contentPane.add(player1icon);
 			contentPane.add(player2icon);
 			contentPane.add(player3icon);
+			contentPane.add(check1);
+			contentPane.add(check2);
+			contentPane.add(check3);
 			break;
 		case 4:
 			contentPane.add(text1);
@@ -180,11 +210,16 @@ public class PlayerEntryGUI extends JFrame {
 			contentPane.add(player2icon);
 			contentPane.add(player3icon);
 			contentPane.add(player4icon);
+			contentPane.add(check1);
+			contentPane.add(check2);
+			contentPane.add(check3);
+			contentPane.add(check4);
 			break;
 		}
 		
 		playernames = new String[numPlayers];
 		playericons = new String[numPlayers];
+		AI = new Object[numPlayers];
 
 		// creates the go button
 		start = new JButton("Start Game!");
@@ -197,10 +232,12 @@ public class PlayerEntryGUI extends JFrame {
 						playernames[1] = text2.getText();
 						playericons[0] = player1icon.getSelectedItem().toString();
 						playericons[1] = player2icon.getSelectedItem().toString();
+						AI[0] = check1.getSelectedObjects();
+						AI[1] = check2.getSelectedObjects();
 						String temp = time.getSelectedItem().toString();
 						duration = Integer.parseInt(temp);
 						if(duration > 0){
-							board = new Board(playernames, playericons, duration);
+							board = new Board(playernames, playericons, AI, duration);
 							boardGUI = new BoardGUI(scoreboard, numPlayers, board, playericons);
 							scoreboard = new ScoreboardGUI(boardGUI, board, playericons, duration);
 							
@@ -221,10 +258,13 @@ public class PlayerEntryGUI extends JFrame {
 						playericons[0] = player1icon.getSelectedItem().toString();
 						playericons[1] = player2icon.getSelectedItem().toString();
 						playericons[2] = player3icon.getSelectedItem().toString();
+						AI[0] = check1.getSelectedObjects();
+						AI[1] = check2.getSelectedObjects();
+						AI[2] = check3.getSelectedObjects();
 						String temp = time.getSelectedItem().toString();
 						duration = Integer.parseInt(temp);
 						if(duration > 0){
-							board = new Board(playernames, playericons, duration);
+							board = new Board(playernames, playericons, AI, duration);
 							boardGUI = new BoardGUI(scoreboard, numPlayers, board, playericons);
 							scoreboard = new ScoreboardGUI(boardGUI, board, playericons, duration);
 							
@@ -247,10 +287,14 @@ public class PlayerEntryGUI extends JFrame {
 						playericons[1] = player2icon.getSelectedItem().toString();
 						playericons[2] = player3icon.getSelectedItem().toString();
 						playericons[3] = player4icon.getSelectedItem().toString();
+						AI[0] = check1.getSelectedObjects();
+						AI[1] = check2.getSelectedObjects();
+						AI[2] = check3.getSelectedObjects();
+						AI[3] = check4.getSelectedObjects();
 						String temp = time.getSelectedItem().toString();
 						duration = Integer.parseInt(temp);
 						if(duration > 0){
-							board = new Board(playernames, playericons, duration);
+							board = new Board(playernames, playericons, AI, duration);
 							boardGUI = new BoardGUI(scoreboard, numPlayers, board, playericons);
 							scoreboard = new ScoreboardGUI(boardGUI, board, playericons, duration);
 							

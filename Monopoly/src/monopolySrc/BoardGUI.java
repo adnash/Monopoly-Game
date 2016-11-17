@@ -12,16 +12,15 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JToggleButton;
 
 public class BoardGUI extends JFrame{
 	
@@ -43,6 +42,8 @@ public class BoardGUI extends JFrame{
 	
 	private int newSpace;
 	
+	private int numplayers;
+	
 	private int player_turn = 0;
 		
 	private ScoreboardGUI scoreboard;
@@ -52,7 +53,7 @@ public class BoardGUI extends JFrame{
 	Font font = new Font("Verdana", Font.BOLD, 20);
 	
 	public static void main(String[] args) {
-		Board temp = new Board(new String[]{"bob","joe","shannon","beth"},new String[]{"Cat","Shoe","Battleship","Thimble"}, tempduration);
+		Board temp = new Board(new String[]{"bob","joe","shannon","beth"},new String[]{"Cat","Shoe","Battleship","Thimble"}, new Object[]{null, null, null, null}, tempduration);
         BoardGUI tempGUI = new BoardGUI(null, 4, temp, new String[]{"Cat","Shoe","Battleship","Thimble"});
         temp.setGUI(tempGUI);
     }
@@ -71,7 +72,7 @@ public class BoardGUI extends JFrame{
     	//temp scoreboard
     	scoreboard = new ScoreboardGUI(this, board, playericons, tempduration);
     	this.scoreboard = scoreboard;
-    	    	    	
+    	this.numplayers = numPlayers;	
     	this.board = board;
     	    	
         EventQueue.invokeLater(new Runnable() {
@@ -98,7 +99,7 @@ public class BoardGUI extends JFrame{
                     
                     // Sets up the board and all of the initial values
                     // Very important method
-                    preBoardSetup(numPlayers, playericons, font);
+                    preBoardSetup(numplayers, playericons, font);
                     
                     
                     JButton roll = new JButton("ROLL");
@@ -120,7 +121,7 @@ public class BoardGUI extends JFrame{
             				
             				
             				// update the players turn
-            				player_turn = (player_turn+1)%numPlayers;
+            				updatePlayerTurn();
             				
             				frame.revalidate();
             				frame.repaint();
@@ -129,15 +130,24 @@ public class BoardGUI extends JFrame{
             		roll.setBounds(400, 750, 200, 100);
             		frame.add(roll);
             		
-            		Object[] possibilities = {"ham", "spam", "yam"};
+            		ArrayList<Integer> spaces = new ArrayList<Integer>();
+            		for (int i = 0; i <= 40; i++) {
+						spaces.add(i);
+					}
             		
             		// creates the hidden button on Start that can be used to specify where you want the player to move
             		JButton hidden = new JButton();
             		hidden.addActionListener(new ActionListener() {
             			public void actionPerformed(ActionEvent e) {
-            				String s = (String)JOptionPane.showInputDialog(frame, "Which player do you want to move?", "Customized Dialog", JOptionPane.PLAIN_MESSAGE, null, possibilities, "no");
+            				Object s = JOptionPane.showInputDialog(frame, "Hello " + board.getPlayers()[player_turn].getName() + ", where would you like to move?", "SECRET MOVE", JOptionPane.PLAIN_MESSAGE, null, spaces.toArray(), "no");
+            				int tempSpace = Integer.parseInt(s.toString());
             				
+            				board.getPlayers()[player_turn].setCurrentSquare(tempSpace);
+            				board.resolveSquare(board.getPlayers()[player_turn], tempSpace);
             				
+            				newSpace = board.getPlayers()[player_turn].getCurrentSquare();
+            				
+            				update();
             			}
             		});
             		hidden.setOpaque(false);
@@ -155,6 +165,10 @@ public class BoardGUI extends JFrame{
               }
             }
         });
+    }
+    
+    private void updatePlayerTurn(){
+    	player_turn = (player_turn+1)%numplayers;
     }
     
     private void updateDice(){
@@ -616,6 +630,7 @@ public class BoardGUI extends JFrame{
     }
     
     private void updatePlayer1Location(){
+    	System.out.println("in here");
     	if(newSpace == 0){
     		player1.setBounds(870, 870, 50, 50);            
     	}else if(newSpace >= 1 && newSpace <= 9){
@@ -687,7 +702,6 @@ public class BoardGUI extends JFrame{
     private void updatePlayer4Location(){
     	if(newSpace == 0){
     		player4.setBounds(950, 950, 50, 50);;
-
     	}else if(newSpace >= 1 && newSpace <= 9){
     		player4.setBounds(810 - x(), 950, 50, 50);;
     	}else if(newSpace == 10){
