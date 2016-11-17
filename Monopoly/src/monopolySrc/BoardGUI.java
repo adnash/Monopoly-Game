@@ -131,7 +131,7 @@ public class BoardGUI extends JFrame{
             		frame.add(roll);
             		
             		ArrayList<Integer> spaces = new ArrayList<Integer>();
-            		for (int i = 0; i <= 40; i++) {
+            		for (int i = 0; i < 40; i++) {
 						spaces.add(i);
 					}
             		
@@ -765,6 +765,7 @@ public class BoardGUI extends JFrame{
     			dialog.setVisible(true);
     		}
     	});
+    	houses1.setBorder(null);
     	houses1.setBounds(815, 870, 30, 30);
     	frame.add(houses1);
 
@@ -780,6 +781,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses3.setBorder(null);
     	houses3.setBounds(655, 870, 30, 30);
     	frame.add(houses3);
 
@@ -795,6 +797,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	RR1.setBorder(null);
     	RR1.setBounds(500, 870, 30, 30);
     	frame.add(RR1);
 
@@ -810,6 +813,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses6.setBorder(null);
     	houses6.setBounds(415, 870, 30, 30);
     	frame.add(houses6);
 
@@ -825,6 +829,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses8.setBorder(null);
     	houses8.setBounds(255, 870, 30, 30);
     	frame.add(houses8);
 
@@ -840,6 +845,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses9.setBorder(null);
     	houses9.setBounds(175, 870, 30, 30);
     	frame.add(houses9);
 
@@ -855,6 +861,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses11.setBorder(null);
     	houses11.setBounds(100, 800, 30, 30);
     	frame.add(houses11);
 
@@ -870,6 +877,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	util1.setBorder(null);
     	util1.setBounds(100, 725, 30, 30);
     	frame.add(util1);        
 
@@ -885,6 +893,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses13.setBorder(null);
     	houses13.setBounds(100, 640, 30, 30);
     	frame.add(houses13);
 
@@ -900,6 +909,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses14.setBorder(null);
     	houses14.setBounds(100, 560, 30, 30);
     	frame.add(houses14);
 
@@ -915,6 +925,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	RR2.setBorder(null);
     	RR2.setBounds(100, 475, 30, 30);
     	frame.add(RR2);
 
@@ -930,6 +941,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses16.setBorder(null);
     	houses16.setBounds(100, 400, 30, 30);
     	frame.add(houses16);
 
@@ -945,6 +957,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses18.setBorder(null);
     	houses18.setBounds(100, 240, 30, 30);
     	frame.add(houses18);
 
@@ -960,6 +973,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses19.setBorder(null);
     	houses19.setBounds(100, 160, 30, 30);
     	frame.add(houses19);
 
@@ -975,6 +989,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses21.setBorder(null);
     	houses21.setBounds(160, 100, 30, 30);
     	frame.add(houses21);
 
@@ -990,6 +1005,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses23.setBorder(null);
     	houses23.setBounds(320, 100, 30, 30);
     	frame.add(houses23);
 
@@ -1005,6 +1021,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses24.setBorder(null);
     	houses24.setBounds(400, 100, 30, 30);
     	frame.add(houses24);
 
@@ -1020,6 +1037,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	RR3.setBorder(null);
     	RR3.setBounds(475, 100, 30, 30);
     	frame.add(RR3);
 
@@ -1035,6 +1053,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses26.setBorder(null);
     	houses26.setBounds(560, 100, 30, 30);
     	frame.add(houses26);
 
@@ -1050,6 +1069,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses27.setBorder(null);
     	houses27.setBounds(640, 100, 30, 30);
     	frame.add(houses27);
 
@@ -1065,6 +1085,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	util2.setBorder(null);
     	util2.setBounds(725, 100, 30, 30);
     	frame.add(util2);
 
@@ -1080,6 +1101,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses29.setBorder(null);
     	houses29.setBounds(800, 100, 30, 30);
     	frame.add(houses29);
 
@@ -1095,6 +1117,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses31.setBorder(null);
     	houses31.setBounds(870, 160, 30, 30);
     	frame.add(houses31);
 
@@ -1110,6 +1133,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses32.setBorder(null);
     	houses32.setBounds(870, 240, 30, 30);
     	frame.add(houses32);
 
@@ -1125,6 +1149,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses34.setBorder(null);
     	houses34.setBounds(870, 400, 30, 30);
     	frame.add(houses34);
 
@@ -1140,6 +1165,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	RR4.setBorder(null);
     	RR4.setBounds(870, 475, 30, 30);
     	frame.add(RR4);
 
@@ -1155,7 +1181,8 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
-    	houses37.setBounds(880870, 640, 30, 30);
+    	houses37.setBorder(null);
+    	houses37.setBounds(870, 640, 30, 30);
     	frame.add(houses37);
 
     	houses39 = new JButton("0");
@@ -1170,6 +1197,7 @@ public class BoardGUI extends JFrame{
     	        dialog.setVisible(true);
     	    }
     	});
+    	houses39.setBorder(null);
     	houses39.setBounds(870, 800, 30, 30);
     	frame.add(houses39);
 
@@ -1184,9 +1212,9 @@ public class BoardGUI extends JFrame{
 			e.printStackTrace();
 		}
 			
-		player1.setBounds(870, 870, 50, 50);;
+		player1.setBounds(870, 870, 50, 50);
         frame.add(player1);
-        player2.setBounds(950, 870, 50, 50);;
+        player2.setBounds(950, 870, 50, 50);
         frame.add(player2);
     }
     
