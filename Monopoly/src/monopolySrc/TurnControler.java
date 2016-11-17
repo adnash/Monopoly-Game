@@ -17,7 +17,7 @@ public class TurnControler {
 
 	private Board brd;
 	private ChestAndChance CandC;
-	
+
 	public TurnControler(Board brd, ChestAndChance CandC){
 		this.brd = brd;
 		this.CandC = CandC;
@@ -61,7 +61,19 @@ public class TurnControler {
 	//The turn a player takes if they are in jail
 	public void playerJailTurnProcess(Player Curr_Play) {
 		//Give option to pay 50 dollars
-		//TODO This is currently implemented using the console and system IO. We will need to implement it using the JFrame window later
+		if(Curr_Play.getJCard() >0){
+			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Play.getName() + ", use 'Get out of jail free' card to get out of jail?", "Get out of jail?", JOptionPane.YES_NO_OPTION);
+			switch (answer) {
+			case 0:	// debit player $50 and call player turn process
+				Curr_Play.removeJCard();	
+				Jail jail = (Jail) brd.getSquare(40);
+				jail.freePlayer(Curr_Play);
+				playerTurnProcess(Curr_Play);
+				return;
+			default:	
+
+			}
+		}
 		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Play.getName() + ", pay $50 to get out of jail?", "Get out of jail?", JOptionPane.YES_NO_OPTION);
 		switch (answer) {
 		case 0:	// debit player $50 and call player turn process
@@ -128,7 +140,6 @@ public class TurnControler {
 				}
 			}
 		default:	
-
 
 		}
 		//if not third turn end turn.
