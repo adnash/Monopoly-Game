@@ -202,10 +202,12 @@ public class ChestAndChance {
 			if(spot == 22){
 				//Water Works
 				p.setCurrentSquare(28);
+				spot = 28;
 			}
 			else{
 				//Electric Company
 				p.setCurrentSquare(12);
+				spot = 12;
 			}	
 			int cost = b.dicegetFace1() + b.dicegetFace2();
 			RailroadsAndUtilities u = (RailroadsAndUtilities)b.getSquare(spot);
@@ -230,14 +232,17 @@ public class ChestAndChance {
 			if(spot == 7){
 				//Pennsylvania Railroad
 				p.setCurrentSquare(15);
+				spot = 15;
 			}
 			else if(spot == 22){
 				//B & O Railroad
 				p.setCurrentSquare(25);
+				spot = 25;
 			}
 			else{
 				//Short Line
 				p.setCurrentSquare(5);
+				spot = 5;
 			}
 			b.resolveSquare(p, spot);
 			RailroadsAndUtilities rr = (RailroadsAndUtilities)b.getSquare(spot);
