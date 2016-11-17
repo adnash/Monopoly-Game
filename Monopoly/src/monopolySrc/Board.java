@@ -606,6 +606,8 @@ public class Board {
 				System.out.println("i = "+i);
 				if (temp.get(i).getAI()) {
 					System.out.println("Player is AI and will not bid");
+					temp.remove(loop.get(i));
+					i--;
 				} else {
 					answer = JOptionPane.showConfirmDialog(contentPane,loop.get(i).getName() + ", would you like to place a bid on " + Curr_Square.getName() + "?", "Place bid?", JOptionPane.YES_NO_OPTION);
 					switch (answer) {
