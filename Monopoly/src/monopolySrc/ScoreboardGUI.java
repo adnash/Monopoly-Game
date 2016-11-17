@@ -142,18 +142,12 @@ public class ScoreboardGUI extends JFrame {
 		label.setFont(new Font("Verdana", Font.BOLD, 20));
 		frame.add(label);	
 		
-		time = new JLabel(duration + ":");
+		time = new JLabel(duration + "");
 		time.setBounds(525, 350, 500, 50);
         time.setFont(new Font("Verdana", Font.BOLD, 20));
         frame.add(time);
-        
-        timesec = new JLabel(59 + "");
-		timesec.setBounds(545, 350, 500, 50);
-        timesec.setFont(new Font("Verdana", Font.BOLD, 20));
-        frame.add(timesec);
 		
 		mintimer.start();
-		sectimer.start();
 	}
 	
 	private void updateMinTime(){
@@ -163,12 +157,7 @@ public class ScoreboardGUI extends JFrame {
         frame.add(time);
 	}
 	
-	private void updateSecTime(int sec){
-        timesec.setText(sec + "");
-        timesec.setBounds(545, 350, 500, 50);
-        timesec.setFont(new Font("Verdana", Font.BOLD, 20));
-        frame.add(timesec);
-	}
+
 	
 	Timer mintimer = new Timer(60000, new ActionListener() {
 	    @Override
@@ -185,29 +174,7 @@ public class ScoreboardGUI extends JFrame {
 	        
 	    }
 	});
-	
-	Timer sectimer = new Timer(1000, new ActionListener() {
-		private int sec = 59;
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-	        if (sec <= 0) {
-	        	if(duration == 0){
-	        		((Timer)e.getSource()).stop();
-	        	}else{
-	        		sec = 59;
-		            sectimer.start();
-	        	}
-	        	//TODO END GAME HERE
-	            
-	            
-	        } else {
-	        	//System.out.println("Seconds left: " + sec);
-	        	updateSecTime(sec);
-	            sec--;
-	        }
-	        
-	    }
-	});
+
 	
 	private void pre2Players(String[] playericons, Font font){
     	try {			

@@ -48,12 +48,12 @@ public class BoardGUI extends JFrame{
 		
 	private ScoreboardGUI scoreboard;
 	
-	private static int tempduration = 2;
+	private static int tempduration = 1;
 	
 	Font font = new Font("Verdana", Font.BOLD, 20);
 	
 	public static void main(String[] args) {
-		Board temp = new Board(new String[]{"bob","joe","shannon","beth"},new String[]{"Cat","Shoe","Battleship","Thimble"}, new Object[]{null, null, null, null}, tempduration);
+		Board temp = new Board(new String[]{"bob","joe","shannon","beth"},new String[]{"Cat","Shoe","Battleship","Thimble"}, new Object[]{"", null, "", null}, tempduration);
         BoardGUI tempGUI = new BoardGUI(null, 4, temp, new String[]{"Cat","Shoe","Battleship","Thimble"});
         temp.setGUI(tempGUI);
     }
