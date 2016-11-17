@@ -28,12 +28,14 @@ public class TurnControler {
 		//Do once then only repeat for doubles.
 		do {
 			dice.Roll();
+			brd.update();
 			//Check for 3 doubles. If 3 go to jail and end turn.
 			//TODO We will want to keep track of doubles in Player objects, and reset after every turn
 			//Think this causes to store doubles to much.
 			if (dice.getNumberOfDoublesRolled() == 3) {
 				dice.resetDoubles();
 				Curr_Play.setCurrentSquare(40);
+				brd.update();
 				return;
 			}
 
@@ -47,11 +49,13 @@ public class TurnControler {
 			}
 
 			Curr_Play.setCurrentSquare(newSquare);
+			brd.update();
 
 			//Returned false so player goes to jail. need to reset double count.
 			if(!resolveSquare(Curr_Play, newSquare)) {
 				dice.resetDoubles();
 				Curr_Play.setCurrentSquare(40);
+				brd.update();
 				return;
 			}
 			postTurn(Curr_Play);
@@ -69,6 +73,7 @@ public class TurnControler {
 				Jail jail = (Jail) brd.getSquare(40);
 				jail.freePlayer(Curr_Play);
 				playerTurnProcess(Curr_Play);
+				brd.update();
 				return;
 			default:	
 
@@ -82,6 +87,7 @@ public class TurnControler {
 				Jail jail = (Jail) brd.getSquare(40);
 				jail.freePlayer(Curr_Play);
 				playerTurnProcess(Curr_Play);
+				brd.update();
 				return;
 			}else{
 				if(Curr_Play.getBalance()<50){
@@ -90,26 +96,31 @@ public class TurnControler {
 					Jail jail = (Jail) brd.getSquare(40);
 					jail.freePlayer(Curr_Play);
 					playerTurnProcess(Curr_Play);
+					brd.update();
 					return;
 				}
 			}
 		case 1:	// let player roll for doubles
 			JOptionPane.showMessageDialog(contentPane, "You will now roll for doubles");
 			dice.Roll();
+			brd.update();
 			if (dice.getNumberOfDoublesRolled() > 0) {
 				// Move player by dice amount and end turn
 				Jail jail = (Jail) brd.getSquare(40);
 				jail.freePlayer(Curr_Play);
+				brd.update();
 				int oldSquare = Curr_Play.getCurrentSquare();
 				int newSquare = oldSquare + dice.getSum();
 				if (newSquare >= 40) {
 					Curr_Play.increaseBalance(200);
 					newSquare = (newSquare % 40);
 				}
+				brd.update();
 				Curr_Play.setCurrentSquare(newSquare);
 				if (!resolveSquare(Curr_Play, newSquare)) {
 					dice.resetDoubles();
 					Curr_Play.setCurrentSquare(40);
+					brd.update();
 					return;
 				}
 				postTurn(Curr_Play);
@@ -120,18 +131,21 @@ public class TurnControler {
 				if (jail.checkTurnsLeft(Curr_Play) == 0){
 					jail.freePlayer(Curr_Play);
 					Curr_Play.decreaseBalance(50);
+					brd.update();
 
 					int oldSquare = Curr_Play.getCurrentSquare();
 					int newSquare = oldSquare + dice.getSum();
 					if (newSquare >= 40) {
 						Curr_Play.increaseBalance(200);
 						newSquare = (newSquare % 40);
+						brd.update();
 					}
 
 					Curr_Play.setCurrentSquare(newSquare);
 					if (!resolveSquare(Curr_Play, newSquare)) {
 						dice.resetDoubles();
 						Curr_Play.setCurrentSquare(40);
+						brd.update();
 						return;
 					}
 					postTurn(Curr_Play);
@@ -282,6 +296,7 @@ public class TurnControler {
 			RealEstate Curr_Estate =(RealEstate) Curr_Square; 
 			if ((Curr_Estate.getOwnerID())!=-1 && (Curr_Estate.getOwnerID()) != Curr_Player.getPlayerID()) {
 				brd.payRent_RealEstate(Curr_Estate, Curr_Player);
+				brd.update();
 				return true;
 			} else if(Curr_Estate.getOwnerID() == -1){
 
@@ -289,9 +304,11 @@ public class TurnControler {
 				if (Curr_Player.getAI()) {
 					System.out.println("Player is AI and will try to buy property");
 					if(brd.purchaseProperty(squareID, Curr_Player)){
+						brd.update();
 						return true;
 					}else{
 						brd.auction(squareID);
+						brd.update();
 						return true;
 					}
 
@@ -300,13 +317,16 @@ public class TurnControler {
 					switch (answer) {
 					case 0:	
 						if(brd.purchaseProperty(squareID, Curr_Player)){
+							brd.update();
 							return true;
 						}else{
 							brd.auction(squareID);
+							brd.update();
 							return true;
 						}
 					case 1:
 						brd.auction(squareID);
+						brd.update();
 						return true;
 					default:	
 						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again");
@@ -320,28 +340,35 @@ public class TurnControler {
 			Jail jail =(Jail) brd.getSquare(40);
 			jail.addPlayer(Curr_Player);
 			Curr_Player.setCurrentSquare(40);
+			brd.update();
 			return false;
 		} else if (Curr_Square instanceof Tax) {
 			Tax tax = (Tax) Curr_Square;
 			tax.payTax(Curr_Player);
+			brd.update();
 			return true;
 		} else if (Curr_Square instanceof RailroadsAndUtilities) {
 			RailroadsAndUtilities Curr_RU =(RailroadsAndUtilities) Curr_Square; 
 			if ((Curr_RU.getOwnerID())!=-1 && (Curr_RU.getOwnerID()) != Curr_Player.getPlayerID()) {
 				brd.payRent_Utilities_RailRoads(Curr_RU, Curr_Player, dice.getSum());
+				brd.update();
 				return true;
 			} else if(Curr_RU.getOwnerID() == -1){
 				answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy " + Curr_RU.getName(), "Buy?", JOptionPane.YES_NO_OPTION);
+				brd.update();
 				switch (answer) {
 				case 0:	
 					if(brd.purchaseProperty(squareID, Curr_Player)){
+						brd.update();
 						return true;
 					}else{
 						brd.auction(squareID);
+						brd.update();
 						return true;
 					}
 				case 1:
 					brd.auction(squareID);
+					brd.update();
 					return true;
 				default:	
 					JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again");
@@ -351,7 +378,8 @@ public class TurnControler {
 				return true;
 			}
 		}else if(squareID == 2 || squareID == 17 || squareID == 33 || squareID == 7 || squareID == 22 || squareID == 36 ){
-			CandC.draw(Curr_Player, squareID); 
+			CandC.draw(Curr_Player, squareID);
+			brd.update();
 			return true;
 		} else {
 			return true;

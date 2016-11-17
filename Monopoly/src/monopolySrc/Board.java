@@ -151,7 +151,9 @@ public class Board {
 		// TODO Start game timer here?
 	}
 	
-
+	public void update(){
+		GUI.update();
+	}
 
 	public Square getSquare(int squareID) {
 		return squares[squareID];
