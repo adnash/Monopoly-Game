@@ -179,6 +179,7 @@ public class Board {
 		} else {
 			turnCont.playerTurnProcess(players[player_turn]);
 		}
+		GUI.update();
 	}
 
 	//This turn process will be for non Jailed players. Jailed players have a different process. 
@@ -189,9 +190,11 @@ public class Board {
 			RealEstate Curr_Estate =(RealEstate) Curr_Square; 
 			if(Curr_Estate.mortgage(Curr_Player)){
 				JOptionPane.showMessageDialog(contentPane, "Mortgage succesful on "+ Curr_Estate.getName());
+				GUI.update();
 				return true;
 			}else{
 				JOptionPane.showMessageDialog(contentPane, "Mortgage unsuccesful on "+ Curr_Estate.getName());
+				GUI.update();
 				return false;
 			}
 
@@ -199,13 +202,16 @@ public class Board {
 			RailroadsAndUtilities Curr_RU =(RailroadsAndUtilities) Curr_Square;
 			if(Curr_RU.mortgage(Curr_Player)){
 				JOptionPane.showMessageDialog(contentPane, "Mortgage succesful on "+ Curr_RU.getName());
+				GUI.update();
 				return true;
 			}else{
 				JOptionPane.showMessageDialog(contentPane, "Mortgage unsuccesful on "+ Curr_RU.getName());
+				GUI.update();
 				return false;
 			}
 		}else{
 			JOptionPane.showMessageDialog(contentPane, "Not a mortgageable property");
+			GUI.update();
 			return false;
 		}
 	}
@@ -230,6 +236,7 @@ public class Board {
 		}else{
 			JOptionPane.showMessageDialog(contentPane, "Not a mortgageable property");
 		}
+		GUI.update();
 	}
 
 	private int findMatchingOwners(int original, int owner2, int owner3, int owner4){
@@ -311,22 +318,27 @@ public class Board {
 					if (prop1.getID() == Curr_Prop.getID()) {
 						if (prop2.getNumBuildings()<=Curr_Prop.getNumBuildings() && Curr_Prop.getNumBuildings()>0) {
 							Curr_Prop.sell(Curr_Play);
+							GUI.update();
 							return true;
 						} else {
 							JOptionPane.showMessageDialog(contentPane, "Must sell from " + prop2.getName() + " first");
+							GUI.update();
 							return false;
 						}
 					} else {
 						if (prop1.getNumBuildings()<=Curr_Prop.getNumBuildings()) {
 							if (Curr_Prop.getNumBuildings()>0) {
 								Curr_Prop.sell(Curr_Play);
+								GUI.update();
 								return true;
 							} else {
 								JOptionPane.showMessageDialog(contentPane, "Can't sell");
+								GUI.update();
 								return false;
 							}
 						} else {
 							JOptionPane.showMessageDialog(contentPane, "Must sell on " + prop1.getName() + " first");
+							GUI.update();
 							return false;
 						}
 					}
@@ -338,6 +350,7 @@ public class Board {
 						if (prop2.getNumBuildings()<=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
 							if (Curr_Prop.getNumBuildings()>0){
 								Curr_Prop.sell(Curr_Play);
+								GUI.update();
 								return true;
 							} else {
 								JOptionPane.showMessageDialog(contentPane, "Can't sell");
@@ -351,6 +364,7 @@ public class Board {
 						if (prop1.getNumBuildings()<=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
 							if (Curr_Prop.getNumBuildings()>0) {
 								Curr_Prop.sell(Curr_Play);
+								GUI.update();
 								return true;
 							} else {
 								JOptionPane.showMessageDialog(contentPane, "Can't sell");
@@ -364,6 +378,7 @@ public class Board {
 						if (prop1.getNumBuildings()<=Curr_Prop.getNumBuildings() && prop2.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
 							if (Curr_Prop.getNumBuildings()>0) {
 								Curr_Prop.sell(Curr_Play);
+								GUI.update();
 								return true;
 							} else {
 								JOptionPane.showMessageDialog(contentPane, "Can't sell");
@@ -395,6 +410,7 @@ public class Board {
 						if (prop2.getNumBuildings()>=Curr_Prop.getNumBuildings()){
 							if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5){
 								Curr_Prop.build(Curr_Play);
+								GUI.update();
 							} else {
 								JOptionPane.showMessageDialog(contentPane, "Can't build");
 							}
@@ -405,6 +421,7 @@ public class Board {
 						if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings()){
 							if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
 								Curr_Prop.build(Curr_Play);
+								GUI.update();
 							} else {
 								JOptionPane.showMessageDialog(contentPane, "Can't build");
 							}
@@ -420,6 +437,7 @@ public class Board {
 						if (prop2.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
 							if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
 								Curr_Prop.build(Curr_Play);
+								GUI.update();
 							} else {
 								JOptionPane.showMessageDialog(contentPane, "Can't build");
 							}
@@ -430,6 +448,7 @@ public class Board {
 						if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
 							if (Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
 								Curr_Prop.build(Curr_Play);
+								GUI.update();
 							} else {
 								JOptionPane.showMessageDialog(contentPane, "Can't build");
 							}
@@ -440,6 +459,7 @@ public class Board {
 						if (prop1.getNumBuildings()>=Curr_Prop.getNumBuildings() && prop2.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
 							if(Curr_Prop.getBuildingPrice() <= Curr_Play.getBalance() && Curr_Prop.getNumBuildings()<5) {
 								Curr_Prop.build(Curr_Play);
+								GUI.update();
 							} else {
 								JOptionPane.showMessageDialog(contentPane, "Can't build");
 							}
@@ -461,6 +481,7 @@ public class Board {
 				Curr_Player.decreaseBalance(Curr_Estate.getBuyPrice());
 				Curr_Estate.setOwnerID(Curr_Player.getPlayerID());
 				Curr_Player.addProperty(squareID);
+				GUI.update();
 				return true;
 			} else {
 				JOptionPane.showMessageDialog(contentPane, "Can't afford " + Curr_Estate.getName());
@@ -472,6 +493,7 @@ public class Board {
 				Curr_Player.decreaseBalance(Curr_Rail_Utility.getPrice());
 				Curr_Rail_Utility.setOwnerID(Curr_Player.getPlayerID());
 				Curr_Player.addProperty(squareID);
+				GUI.update();
 				return true;
 			} else {
 				JOptionPane.showMessageDialog(contentPane, "Can't afford " + Curr_Rail_Utility.getName());
@@ -479,6 +501,7 @@ public class Board {
 			}
 		} else {
 			JOptionPane.showMessageDialog(contentPane, "Not an ownable Square");
+			GUI.update();
 			return true;
 		}
 	}
@@ -491,6 +514,7 @@ public class Board {
 		}
 		players[(Curr_Estate.getOwnerID())].increaseBalance(rent);
 		Curr_Player.decreaseBalance(rent);
+		GUI.update();
 	}
 
 	public void payRent_Utilities_RailRoads(RailroadsAndUtilities Curr_Property, Player Curr_Player, int diceSum) {
@@ -502,6 +526,7 @@ public class Board {
 		}
 		players[(Curr_Property.getOwnerID())].increaseBalance(rent);
 		Curr_Player.decreaseBalance(rent);
+		GUI.update();
 	}
 
 	//This is called when a player doesn't have enough money to pay rent or jail escape and is forced to sell then must pay rent or jail fee
@@ -654,6 +679,7 @@ public class Board {
 			}
 			winner.addProperty(Curr_Square.getID());
 		}
+		GUI.update();
 	}
 
 	public void trade(Player p){
@@ -773,6 +799,7 @@ public class Board {
 		else {
 			JOptionPane.showMessageDialog(contentPane, "Trade cancelled");
 		}
+		GUI.update();
 	}
 
 	//TODO Need to implement by interacting with timer in Monopoly class, (or we may want to move timer into this class)
