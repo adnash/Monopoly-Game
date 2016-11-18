@@ -642,7 +642,7 @@ public class Board {
 			loop = temp;
 		}
 		
-		if(currentBid==0){
+		if(loop.size() > 0 && currentBid == 0){
 			answer = JOptionPane.showConfirmDialog(contentPane,loop.get(0).getName() + ", would you like to place a bid on " + Curr_Square.getName() + "?", "Place bid?", JOptionPane.YES_NO_OPTION);
 			switch (answer) {
 			case 0:

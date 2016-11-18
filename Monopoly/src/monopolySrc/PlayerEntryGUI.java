@@ -145,22 +145,22 @@ public class PlayerEntryGUI extends JFrame {
 		GridBagLayout.setConstraints(player4icon, c);
 		
 		// Creates the AI checkboxes
-		check1 = new JCheckBox();
+		check1 = new JCheckBox("AI");
 		c.gridx = 2;
 		c.gridy = 0;
 		GridBagLayout.setConstraints(check1, c);
 		
-		check2 = new JCheckBox();
+		check2 = new JCheckBox("AI");
 		c.gridx = 2;
 		c.gridy = 1;
 		GridBagLayout.setConstraints(check2, c);
 		
-		check3 = new JCheckBox();
+		check3 = new JCheckBox("AI");
 		c.gridx = 2;
 		c.gridy = 2;
 		GridBagLayout.setConstraints(check3, c);
 		
-		check4 = new JCheckBox();
+		check4 = new JCheckBox("AI");
 		c.gridx = 2;
 		c.gridy = 3;
 		GridBagLayout.setConstraints(check4, c);
