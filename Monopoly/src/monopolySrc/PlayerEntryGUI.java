@@ -93,28 +93,28 @@ public class PlayerEntryGUI extends JFrame {
 		
 		// Creates the username fields
 		text1 = new JTextField();
-		text1.setText("Player 1 Name");
+		text1.setText("Bob");
 		text1.setColumns(10);
 		c.gridx = 0;
 		c.gridy = 0;
 		GridBagLayout.setConstraints(text1, c);
 		
 		text2 = new JTextField();
-		text2.setText("Player 2 Name");
+		text2.setText("Joe");
 		text2.setColumns(10);
 		c.gridx = 0;
 		c.gridy = 1;
 		GridBagLayout.setConstraints(text2, c);
 		
 		text3 = new JTextField();
-		text3.setText("Player 3 Name");
+		text3.setText("Beth");
 		text3.setColumns(10);
 		c.gridx = 0;
 		c.gridy = 2;
 		GridBagLayout.setConstraints(text3, c);
 		
 		text4 = new JTextField();
-		text4.setText("Player 4 Name");
+		text4.setText("Shannon");
 		text4.setColumns(10);
 		c.gridx = 0;
 		c.gridy = 3;

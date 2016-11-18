@@ -59,7 +59,7 @@ public class ScoreboardGUI extends JFrame {
 		
 		this.numplayers = board.getNumPlayers();
 		this.board = board;
-		this.duration = duration - 1;
+		this.duration = duration;
 		System.out.println(this.duration);
 		
 		BufferedImage image = null;
@@ -137,7 +137,7 @@ public class ScoreboardGUI extends JFrame {
 		label.setFont(new Font("Verdana", Font.BOLD, 20));
 		frame.add(label);
 		
-		label = new JLabel("Time remaining:");
+		label = new JLabel("Minutes remaining:");
 		label.setBounds(300, 350, 500, 50);
 		label.setFont(new Font("Verdana", Font.BOLD, 20));
 		frame.add(label);	
@@ -151,7 +151,7 @@ public class ScoreboardGUI extends JFrame {
 	}
 	
 	private void updateMinTime(){
-        time.setText(duration + ":");
+        time.setText(duration + "");
         time.setBounds(525, 350, 500, 50);
         time.setFont(new Font("Verdana", Font.BOLD, 20));
         frame.add(time);
@@ -159,16 +159,16 @@ public class ScoreboardGUI extends JFrame {
 	
 
 	
-	Timer mintimer = new Timer(60000, new ActionListener() {
+	Timer mintimer = new Timer(1000, new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 	        if (duration <= 0) {
 	        	//TODO END GAME HERE
+	        	System.out.println("if");
 	            ((Timer)e.getSource()).stop();
-	            JOptionPane.showMessageDialog(frame, "Eggs are not supposed to be green.");
 	        } else {
+	        	System.out.println("else");
 	        	updateMinTime();
-	        	System.out.println("Minutes left " + duration);
 	            duration--;
 	        }
 	        
