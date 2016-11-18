@@ -60,7 +60,7 @@ public class ScoreboardGUI extends JFrame {
 		this.numplayers = board.getNumPlayers();
 		this.board = board;
 		this.duration = duration;
-		System.out.println(this.duration);
+//		System.out.println(this.duration);
 		
 		BufferedImage image = null;
 		try {
@@ -166,11 +166,10 @@ public class ScoreboardGUI extends JFrame {
 	    public void actionPerformed(ActionEvent e) {
 	        if (duration <= 0) {
 	        	//TODO END GAME HERE
-	        	System.out.println("if");
 	        	updateMinTime();
+	        	board.determineWinner();
 	            ((Timer)e.getSource()).stop();
 	        } else {
-	        	System.out.println("else");
 	        	updateMinTime();
 	            duration--;
 	        }

@@ -49,20 +49,18 @@ public class Board {
 
 		setupBoard();
 	}
-
-
-	// TODO Do we even need this in its own method? These are hard-coded anyways and could belong in the global space. Just thinking out loud.
+	
 	// Setting up squares
 	private void setupBoard() {
 
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				timeUp = true;
-				System.out.println("Time up");
-
-			}
-		}, duration*60*1000);
+//		timer.schedule(new TimerTask() {
+//			@Override
+//			public void run() {
+//				timeUp = true;
+////				System.out.println("Time up");
+//
+//			}
+//		}, duration*60*1000);
 
 		Square go = new Square(0, "Go");
 		squares[0] = go;
@@ -149,10 +147,10 @@ public class Board {
 		
 		CandC = new ChestAndChance(jail,players,this);
 		turnCont  = new TurnControler(this, CandC);
-		// TODO Start game timer here?
 	}
 	
 	public void update(){
+		GUI.update();
 		
 	}
 
@@ -478,7 +476,6 @@ public class Board {
 		 
 	}
 
-	//TODO - if player trys to buy but can't afford need to relay information back and go to an auction.
 	public boolean purchaseProperty(int squareID, Player Curr_Player) {
 		Square Curr_Square = getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
@@ -513,7 +510,6 @@ public class Board {
 	}
 
 	public void payRent_RealEstate(RealEstate Curr_Estate, Player Curr_Player) {
-		//TODO check if it makes them go negative
 		int rent = Curr_Estate.calcRent(isMonopoly(Curr_Estate.getID()) == 1);
 		if(Curr_Player.getBalance()<rent){
 			sellSequence(Curr_Player, rent - Curr_Player.getBalance());
@@ -524,7 +520,6 @@ public class Board {
 	}
 
 	public void payRent_Utilities_RailRoads(RailroadsAndUtilities Curr_Property, Player Curr_Player, int diceSum) {
-		//TODO check if it makes them go negative
 		int rent = Curr_Property.calculateRent(isMonopoly(Curr_Property.getID()), diceSum);
 		//Makes sure the player gets enough money to pay rent.
 		if(Curr_Player.getBalance()<rent){
@@ -560,7 +555,6 @@ public class Board {
 				}
 			}
 		}
-		//TODO Need to determine what property the player is talking about. Just using test prop for now.
 		while(amountSold<negativeAmount){
 			if(count > 10)
 				return;
@@ -616,9 +610,9 @@ public class Board {
 		while(loop.size() > 1) {
 			//Ask each player if they want to bid, and for how much. AI never bids
 			for(int i = 0; i < loop.size(); i++){
-				System.out.println("i = "+i);
+//				System.out.println("i = "+i);
 				if (temp.get(i).getAI()) {
-					System.out.println("Player is AI and will not bid");
+//					System.out.println("Player is AI and will not bid");
 					temp.remove(loop.get(i));
 					i--;
 				} else {
@@ -847,7 +841,7 @@ public class Board {
 		return total;
 	}
 
-	private void determineWinner(){
+	public void determineWinner(){
 		Player winner = players[0];
 		//ArrayList<Player> candidates = new ArrayList<Player>();
 

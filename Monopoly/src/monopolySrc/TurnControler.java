@@ -29,7 +29,6 @@ public class TurnControler {
 		do {
 			dice.Roll();
 			//Check for 3 doubles. If 3 go to jail and end turn.
-			//TODO We will want to keep track of doubles in Player objects, and reset after every turn
 			//Think this causes to store doubles to much.
 			if (dice.getNumberOfDoublesRolled() == 3) {
 				dice.resetDoubles();
@@ -37,7 +36,6 @@ public class TurnControler {
 				return;
 			}
 
-			//TODO We should move this to a helper method called "calculateMove" since we need this logic for rolling doubles in Jail too
 			//Yes Probably as a refactor
 			int oldSquare = Curr_Play.getCurrentSquare();
 			int newSquare = oldSquare + dice.getSum();
@@ -64,7 +62,8 @@ public class TurnControler {
 		if(Curr_Play.getJCard() >0){
 			
 			if (Curr_Play.getAI()) {
-				System.out.println("AI used Get Out of Jail Free Card");
+				JOptionPane.showMessageDialog(contentPane, "AI used Get Out of Jail Free Card");
+//				System.out.println("AI used Get Out of Jail Free Card");
 				Curr_Play.removeJCard();
 				Jail jail = (Jail) brd.getSquare(40);
 				jail.freePlayer(Curr_Play);
@@ -90,7 +89,8 @@ public class TurnControler {
 		
 		if (Curr_Play.getAI()) {
 			if (Curr_Play.getBalance() >= 50) {
-				System.out.println("AI will pay $50 to get out of jail");
+				JOptionPane.showMessageDialog(contentPane, "AI will pay $50 to get out of jail");
+//				System.out.println("AI will pay $50 to get out of jail");
 				Curr_Play.decreaseBalance(50);
 				Jail jail = (Jail) brd.getSquare(40);
 				jail.freePlayer(Curr_Play);
@@ -98,7 +98,8 @@ public class TurnControler {
 				return;
 			}else{
 				if(Curr_Play.getBalance()<50){
-					System.out.println("AI will sell houses and property in order to pay $50 to get out of jail");
+					JOptionPane.showMessageDialog(contentPane, "AI will sell houses and property in order to pay $50 to get out of jail");
+//					System.out.println("AI will sell houses and property in order to pay $50 to get out of jail");
 					brd.sellSequence(Curr_Play, 50 - Curr_Play.getBalance());
 					Curr_Play.decreaseBalance(50);
 					Jail jail = (Jail) brd.getSquare(40);
@@ -190,39 +191,7 @@ public class TurnControler {
 			array[i] = sq.getID() + "";			
 		}
 
-		if (Curr_Player.getAI()) {
-			System.out.println("Player is AI, therefore an algorithm will determine their move");
-
-			ArrayList<Integer> properties = Curr_Player.getPropertiesOwned();
-
-			//if AI has property, it will always try to buy a house
-			//TODO make property choice random
-			/*if (array.length > 0) {				
-				brd.buyHouse(properties.get(0), Curr_Player);
-				System.out.println("AI player has attempted to buy a house");
-			}*/
-
-			// Currently AI will never sell a house
-			//if (array.length > 0) {				
-			//
-			//}
-
-			// Currently AI will never mortgage a property
-			//if (array.length > 0) {				
-			//
-			//}
-
-			// Currently AI will never un-mortgage a property
-			//if (array.length > 0) {				
-			//
-			//}
-
-			// Currently AI will never trade/sell a property
-			//if (array.length > 0) {				
-			//
-			//}
-
-		} else {
+		if (!Curr_Player.getAI()) {
 			PostTurn post = new PostTurn(brd, Curr_Player);
 			post.setVisible(true);
 		}
@@ -233,7 +202,7 @@ public class TurnControler {
 	//when a player lands on a square this method will resolve all actions.
 	//return false if player goes to jail.
 	public boolean resolveSquare(Player Curr_Player, int squareID) {
-//		JOptionPane.showMessageDialog(contentPane, Curr_Player.getName() + " just landed on square " + squareID + " " + brd.getSquare(squareID)+ " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
+		JOptionPane.showMessageDialog(contentPane, Curr_Player.getName() + " just landed on square \"" + squareID + " " + brd.getSquare(squareID).getName() + "\" by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
 		//		System.out.println(Curr_Player.getName() + " just landed on square " + squareID + " by rolling a " + dice.getFace1() + " and a " + dice.getFace2() + " for a total of " + dice.getSum());
 		Square Curr_Square = brd.getSquare(squareID);
 		if (Curr_Square instanceof RealEstate) {
@@ -245,7 +214,7 @@ public class TurnControler {
 
 				//AI Logic will always attempt to buy a property
 				if (Curr_Player.getAI()) {
-					System.out.println("Player is AI and will try to buy property");
+//					System.out.println("Player is AI and will try to buy property");
 					if(brd.purchaseProperty(squareID, Curr_Player)){
 						return true;
 					}else{
@@ -292,7 +261,7 @@ public class TurnControler {
 
 				//AI logic will always attempt to buy a utility
 				if (Curr_Player.getAI()) {
-					System.out.println("Player is AI and will try to buy utility");
+//					System.out.println("Player is AI and will try to buy utility");
 					if(brd.purchaseProperty(squareID, Curr_Player)){
 						brd.update();
 						return true;
