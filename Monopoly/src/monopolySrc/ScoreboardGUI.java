@@ -146,6 +146,8 @@ public class ScoreboardGUI extends JFrame {
 		time.setBounds(525, 350, 500, 50);
         time.setFont(new Font("Verdana", Font.BOLD, 20));
         frame.add(time);
+        
+        duration--;
 		
 		mintimer.start();
 	}
@@ -159,12 +161,13 @@ public class ScoreboardGUI extends JFrame {
 	
 
 	
-	Timer mintimer = new Timer(1000, new ActionListener() {
+	Timer mintimer = new Timer(60000, new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 	        if (duration <= 0) {
 	        	//TODO END GAME HERE
 	        	System.out.println("if");
+	        	updateMinTime();
 	            ((Timer)e.getSource()).stop();
 	        } else {
 	        	System.out.println("else");

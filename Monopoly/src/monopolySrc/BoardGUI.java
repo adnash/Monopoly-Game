@@ -48,12 +48,12 @@ public class BoardGUI extends JFrame{
 		
 	private ScoreboardGUI scoreboard;
 	
-	private static int tempduration = 5;
+	private static int tempduration = 2;
 	
 	Font font = new Font("Verdana", Font.BOLD, 20);
 	
 	public static void main(String[] args) {
-		Board temp = new Board(new String[]{"Bob","Joe","Shannon","Beth"},new String[]{"Cat","Shoe","Battleship","Thimble"}, new Object[]{"", null, "", null}, tempduration);
+		Board temp = new Board(new String[]{"Bob","Joe","Shannon","Beth"},new String[]{"Cat","Shoe","Battleship","Thimble"}, new Object[]{"", "", "", ""}, tempduration);
         BoardGUI tempGUI = new BoardGUI(null, 4, temp, new String[]{"Cat","Shoe","Battleship","Thimble"});
         temp.setGUI(tempGUI);
     }
@@ -130,9 +130,9 @@ public class BoardGUI extends JFrame{
             		roll.setBounds(400, 750, 200, 100);
             		frame.add(roll);
             		
-            		ArrayList<Integer> spaces = new ArrayList<Integer>();
+            		ArrayList<String> spaces = new ArrayList<String>();
             		for (int i = 0; i < 40; i++) {
-						spaces.add(i);
+						spaces.add(i + " " + board.getSquare(i).getName());
 					}
             		
             		// creates the hidden button on Start that can be used to specify where you want the player to move
@@ -140,14 +140,19 @@ public class BoardGUI extends JFrame{
             		hidden.addActionListener(new ActionListener() {
             			public void actionPerformed(ActionEvent e) {
             				Object s = JOptionPane.showInputDialog(frame, "Hello " + board.getPlayers()[player_turn].getName() + ", where would you like to move?", "SECRET MOVE", JOptionPane.PLAIN_MESSAGE, null, spaces.toArray(), "no");
-            				int tempSpace = Integer.parseInt(s.toString());
+            				int tempSpace;
+            				if(s != null){
+            					tempSpace = Integer.parseInt(s.toString().replaceAll("[\\D]", ""));
+								board.getPlayers()[player_turn].setCurrentSquare(tempSpace);
+								board.resolveSquare(board.getPlayers()[player_turn], tempSpace);
+								
+								newSpace = board.getPlayers()[player_turn].getCurrentSquare();
+								
+								update();
+            				}
             				
-            				board.getPlayers()[player_turn].setCurrentSquare(tempSpace);
-            				board.resolveSquare(board.getPlayers()[player_turn], tempSpace);
             				
-            				newSpace = board.getPlayers()[player_turn].getCurrentSquare();
             				
-            				update();
             			}
             		});
             		hidden.setOpaque(false);
