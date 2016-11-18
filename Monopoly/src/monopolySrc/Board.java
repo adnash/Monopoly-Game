@@ -193,7 +193,7 @@ public class Board {
 			RealEstate Curr_Estate =(RealEstate) Curr_Square; 
 			if(Curr_Estate.mortgage(Curr_Player)){
 				JOptionPane.showMessageDialog(contentPane, "Mortgage succesful on "+ Curr_Estate.getName());
-				
+				 
 				return true;
 			}else{
 				JOptionPane.showMessageDialog(contentPane, "Mortgage unsuccesful on "+ Curr_Estate.getName());
@@ -205,7 +205,7 @@ public class Board {
 			RailroadsAndUtilities Curr_RU =(RailroadsAndUtilities) Curr_Square;
 			if(Curr_RU.mortgage(Curr_Player)){
 				JOptionPane.showMessageDialog(contentPane, "Mortgage succesful on "+ Curr_RU.getName());
-				
+				 
 				return true;
 			}else{
 				JOptionPane.showMessageDialog(contentPane, "Mortgage unsuccesful on "+ Curr_RU.getName());
@@ -217,6 +217,7 @@ public class Board {
 			
 			return false;
 		}
+		
 	}
 
 	public void unmortgageProperty(int squareID, Player Curr_Player) {
@@ -239,6 +240,7 @@ public class Board {
 		}else{
 			JOptionPane.showMessageDialog(contentPane, "Not a mortgageable property");
 		}
+		 
 		
 	}
 
@@ -321,7 +323,7 @@ public class Board {
 					if (prop1.getID() == Curr_Prop.getID()) {
 						if (prop2.getNumBuildings()<=Curr_Prop.getNumBuildings() && Curr_Prop.getNumBuildings()>0) {
 							Curr_Prop.sell(Curr_Play);
-							
+							 
 							return true;
 						} else {
 							JOptionPane.showMessageDialog(contentPane, "Must sell from " + prop2.getName() + " first");
@@ -332,7 +334,7 @@ public class Board {
 						if (prop1.getNumBuildings()<=Curr_Prop.getNumBuildings()) {
 							if (Curr_Prop.getNumBuildings()>0) {
 								Curr_Prop.sell(Curr_Play);
-								
+								 
 								return true;
 							} else {
 								JOptionPane.showMessageDialog(contentPane, "Can't sell");
@@ -353,7 +355,7 @@ public class Board {
 						if (prop2.getNumBuildings()<=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
 							if (Curr_Prop.getNumBuildings()>0){
 								Curr_Prop.sell(Curr_Play);
-								
+								 
 								return true;
 							} else {
 								JOptionPane.showMessageDialog(contentPane, "Can't sell");
@@ -367,7 +369,7 @@ public class Board {
 						if (prop1.getNumBuildings()<=Curr_Prop.getNumBuildings() && prop3.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
 							if (Curr_Prop.getNumBuildings()>0) {
 								Curr_Prop.sell(Curr_Play);
-								
+								 
 								return true;
 							} else {
 								JOptionPane.showMessageDialog(contentPane, "Can't sell");
@@ -381,7 +383,7 @@ public class Board {
 						if (prop1.getNumBuildings()<=Curr_Prop.getNumBuildings() && prop2.getNumBuildings()>=Curr_Prop.getNumBuildings()) {
 							if (Curr_Prop.getNumBuildings()>0) {
 								Curr_Prop.sell(Curr_Play);
-								
+								 
 								return true;
 							} else {
 								JOptionPane.showMessageDialog(contentPane, "Can't sell");
@@ -473,6 +475,7 @@ public class Board {
 				}
 			}
 		}
+		 
 	}
 
 	//TODO - if player trys to buy but can't afford need to relay information back and go to an auction.
@@ -484,7 +487,7 @@ public class Board {
 				Curr_Player.decreaseBalance(Curr_Estate.getBuyPrice());
 				Curr_Estate.setOwnerID(Curr_Player.getPlayerID());
 				Curr_Player.addProperty(squareID);
-				
+				 
 				return true;
 			} else {
 				JOptionPane.showMessageDialog(contentPane, "Can't afford " + Curr_Estate.getName());
@@ -496,7 +499,7 @@ public class Board {
 				Curr_Player.decreaseBalance(Curr_Rail_Utility.getPrice());
 				Curr_Rail_Utility.setOwnerID(Curr_Player.getPlayerID());
 				Curr_Player.addProperty(squareID);
-				
+				 
 				return true;
 			} else {
 				JOptionPane.showMessageDialog(contentPane, "Can't afford " + Curr_Rail_Utility.getName());
@@ -504,7 +507,7 @@ public class Board {
 			}
 		} else {
 			JOptionPane.showMessageDialog(contentPane, "Not an ownable Square");
-			
+			 
 			return true;
 		}
 	}
@@ -543,12 +546,21 @@ public class Board {
 			sq = getSquare(Curr_Player.getPropertiesOwned().get(i));
 			array[i] = sq.getID() + " " + sq.getName();			
 		}
+		
 
 		int amountSold = 0;
 		RealEstate test = (RealEstate) getSquare(1);
-
-		//TODO Need to determine what property the player is talking about. Just using test prop for now.
 		int count = 0;
+		if(Curr_Player.getAI()){
+			while(amountSold<negativeAmount){
+				if(array.length == 0){
+					return;
+				}else{
+					mortgageProperty(Curr_Player.getPropertiesOwned().get(count), Curr_Player);
+				}
+			}
+		}
+		//TODO Need to determine what property the player is talking about. Just using test prop for now.
 		while(amountSold<negativeAmount){
 			if(count > 10)
 				return;
@@ -691,6 +703,7 @@ public class Board {
 			}
 			winner.addProperty(Curr_Square.getID());
 		}
+		 
 		
 	}
 
@@ -738,6 +751,7 @@ public class Board {
 				}
 			}
 			answerString = JOptionPane.showInputDialog(contentPane, p.getName() + ", Select the other player number you would like to sell it to:", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, playErs.toArray(), null);
+	
 			if(answerString == null)
 				return;
 			int otherPlayer = Integer.parseInt(answerString.toString().replaceAll("[\\D]", ""));
@@ -750,7 +764,7 @@ public class Board {
 			//Get the other player
 			for (int i = 0; i < players.length; i++) {
 				temp = players[i];
-				if (otherPlayer == temp.getPlayerID()) {
+				if (otherPlayer-1 == temp.getPlayerID()) {
 					target = temp;
 				}
 			}
@@ -809,6 +823,7 @@ public class Board {
 		else {
 			JOptionPane.showMessageDialog(contentPane, "Trade cancelled");
 		}
+		 
 		
 	}
 

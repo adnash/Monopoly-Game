@@ -213,7 +213,7 @@ public class ChestAndChance {
 				p.setCurrentSquare(12);
 				spot = 12;
 			}	
-			int cost = b.dicegetFace1() + b.dicegetFace2();
+			int cost = (b.dicegetFace1() + b.dicegetFace2()) * 10;
 			RailroadsAndUtilities u = (RailroadsAndUtilities)b.getSquare(spot);
 			if(u.getOwnerID() == -1){
 				b.resolveSquare(p, spot);
@@ -326,7 +326,7 @@ public class ChestAndChance {
 					}
 				}
 			}
-			p.increaseBalance((count * 50));
+			p.decreaseBalance((count * 50));
 			break;
 		case 15:
 			JOptionPane.showMessageDialog(contentPane, "Your building loan matures! Collect $150.");
