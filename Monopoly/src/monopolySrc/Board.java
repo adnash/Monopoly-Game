@@ -545,12 +545,21 @@ public class Board {
 			sq = getSquare(Curr_Player.getPropertiesOwned().get(i));
 			array[i] = sq.getID() + " " + sq.getName();			
 		}
+		
 
 		int amountSold = 0;
 		RealEstate test = (RealEstate) getSquare(1);
-
-		//TODO Need to determine what property the player is talking about. Just using test prop for now.
 		int count = 0;
+		if(Curr_Player.getAI()){
+			while(amountSold<negativeAmount){
+				if(array.length == 0){
+					return;
+				}else{
+					mortgageProperty(Curr_Player.getPropertiesOwned().get(count), Curr_Player);
+				}
+			}
+		}
+		//TODO Need to determine what property the player is talking about. Just using test prop for now.
 		while(amountSold<negativeAmount){
 			if(count > 10)
 				return;
