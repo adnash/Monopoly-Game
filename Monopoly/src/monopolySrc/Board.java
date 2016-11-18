@@ -59,6 +59,7 @@ public class Board {
 			@Override
 			public void run() {
 				timeUp = true;
+				System.out.println("Time up");
 
 			}
 		}, duration*60*1000);
@@ -597,6 +598,7 @@ public class Board {
 
 		Player winner = null;
 		int currentBid = 0;
+		Object tempObj;
 		int tempBid = 0;
 		//When there is only one player left in the list, they are the winner
 		while(loop.size() > 1) {
@@ -611,22 +613,25 @@ public class Board {
 					answer = JOptionPane.showConfirmDialog(contentPane,loop.get(i).getName() + ", would you like to place a bid on " + Curr_Square.getName() + "?", "Place bid?", JOptionPane.YES_NO_OPTION);
 					switch (answer) {
 					case 0:
-						tempBid = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter an amount to bid. You have $" + loop.get(i).getBalance() + "\n" + "The current bid is $" + currentBid, "amount"));
-						if (tempBid > loop.get(i).getBalance()) {
-							JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", you don't have enough money!You have been removed from the bidding.");
-							temp.remove(loop.get(i));
-							i--;
-							
-						}
-						else if (tempBid <= currentBid) {
-							JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", too bad! Your bid is too low.\nYou have been removed from the bidding.");
-							temp.remove(loop.get(i));
-							i--;
-							
-						}
-						else {
-							currentBid = tempBid;
-							winner = loop.get(i);
+						tempObj = JOptionPane.showInputDialog(contentPane, "Enter an amount to bid. You have $" + loop.get(i).getBalance() + "\n" + "The current bid is $" + currentBid, "amount");
+						if(tempObj != null){
+							tempBid = Integer.parseInt(tempObj.toString().replaceAll("[\\D]", ""));
+							if (tempBid > loop.get(i).getBalance()) {
+								JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", you don't have enough money!You have been removed from the bidding.");
+								temp.remove(loop.get(i));
+								i--;
+								
+							}
+							else if (tempBid <= currentBid) {
+								JOptionPane.showMessageDialog(contentPane,loop.get(i).getName() + ", too bad! Your bid is too low.\nYou have been removed from the bidding.");
+								temp.remove(loop.get(i));
+								i--;
+								
+							}
+							else {
+								currentBid = tempBid;
+								winner = loop.get(i);
+							}
 						}
 						break;
 					case 1:
@@ -645,18 +650,21 @@ public class Board {
 			answer = JOptionPane.showConfirmDialog(contentPane,loop.get(0).getName() + ", would you like to place a bid on " + Curr_Square.getName() + "?", "Place bid?", JOptionPane.YES_NO_OPTION);
 			switch (answer) {
 			case 0:
-				tempBid = Integer.parseInt(JOptionPane.showInputDialog(contentPane, "Enter an amount to bid. You have $" + loop.get(0).getBalance() + "\n" + "The current bid is $" + currentBid, "amount"));
-				if (tempBid > loop.get(0).getBalance()) {
-					JOptionPane.showMessageDialog(contentPane,loop.get(0).getName() + ", you don't have enough money!You have been removed from the bidding.");
-					temp.remove(loop.get(0));
-				}
-				else if (tempBid <= currentBid) {
-					JOptionPane.showMessageDialog(contentPane,loop.get(0).getName() + ", too bad! Your bid is too low.\nYou have been removed from the bidding.");
-					temp.remove(loop.get(0));
-				}
-				else {
-					currentBid = tempBid;
-					winner = loop.get(0);
+				tempObj = JOptionPane.showInputDialog(contentPane, "Enter an amount to bid. You have $" + loop.get(0).getBalance() + "\n" + "The current bid is $" + currentBid, "amount");
+				if(tempObj != null){
+					tempBid = Integer.parseInt(tempObj.toString().replaceAll("[\\D]", ""));
+					if (tempBid > loop.get(0).getBalance()) {
+						JOptionPane.showMessageDialog(contentPane,loop.get(0).getName() + ", you don't have enough money!You have been removed from the bidding.");
+						temp.remove(loop.get(0));
+					}
+					else if (tempBid <= currentBid) {
+						JOptionPane.showMessageDialog(contentPane,loop.get(0).getName() + ", too bad! Your bid is too low.\nYou have been removed from the bidding.");
+						temp.remove(loop.get(0));
+					}
+					else {
+						currentBid = tempBid;
+						winner = loop.get(0);
+					}
 				}
 				break;
 			case 1:
@@ -694,7 +702,6 @@ public class Board {
 		}
 
 		//Player has properties to sell.
-		System.out.println("You own:");
 		Square sq = new Square(1, "blah");
 
 		String[] array = new String[p.getPropertiesOwned().size()];
@@ -712,9 +719,8 @@ public class Board {
 		if(sq_ID != 5 && sq_ID != 12 && sq_ID != 15 && sq_ID != 25 && sq_ID != 28 && sq_ID != 35){
 			RealEstate re = (RealEstate) getSquare(sq_ID);
 			if(re.getNumBuildings() != 0){
-				answerString = JOptionPane.showInputDialog(contentPane, "You suck and can't sell this.");
+				JOptionPane.showInputDialog(contentPane, "You suck and can't sell this.");
 
-				System.out.println("You suck and can't sell this.");
 			}
 		}
 
@@ -766,7 +772,7 @@ public class Board {
 					RailroadsAndUtilities rnu = (RailroadsAndUtilities)getSquare(sq_ID);
 					rnu.setOwnerID(target.getPlayerID());
 					if(rnu.isMortgaged()){
-						System.out.println("Would you like to unmortgage");
+						answer = JOptionPane.showConfirmDialog(contentPane,target.getName() + ", would you like to unmortgage?", "Mortgage?", JOptionPane.YES_NO_OPTION);
 						switch (answer){
 						//0 is yes
 						case 0:
@@ -783,7 +789,7 @@ public class Board {
 					RealEstate re = (RealEstate) getSquare(sq_ID);
 					re.setOwnerID(target.getPlayerID());
 					if(re.getIsMortgaged()){
-						System.out.println("Would you like to unmortgage");
+						answer = JOptionPane.showConfirmDialog(contentPane,target.getName() + ", would you like to unmortgage?", "Mortgage?", JOptionPane.YES_NO_OPTION);
 						switch (answer){
 						//0 is yes
 						case 0:
