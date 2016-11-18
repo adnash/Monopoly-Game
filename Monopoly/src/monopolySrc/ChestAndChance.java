@@ -322,7 +322,7 @@ public class ChestAndChance {
 					}
 				}
 			}
-			p.increaseBalance((count * 50));
+			p.decreaseBalance((count * 50));
 			break;
 		case 15:
 			System.out.println("Your building loan matures! Collect $150.");
