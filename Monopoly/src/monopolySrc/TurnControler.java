@@ -255,21 +255,37 @@ public class TurnControler {
 				brd.payRent_Utilities_RailRoads(Curr_RU, Curr_Player, dice.getSum());
 				return true;
 			} else if(Curr_RU.getOwnerID() == -1){
-				answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy " + Curr_RU.getName(), "Buy?", JOptionPane.YES_NO_OPTION);
-				switch (answer) {
-				case 0:	
+
+				//AI logic will always attempt to buy a utility
+				if (Curr_Player.getAI()) {
+					System.out.println("Player is AI and will try to buy utility");
 					if(brd.purchaseProperty(squareID, Curr_Player)){
+						brd.update();
 						return true;
 					}else{
 						brd.auction(squareID);
+						brd.update();
 						return true;
 					}
-				case 1:
-					brd.auction(squareID);
-					return true;
-				default:	
-					JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again");
-					return true;
+
+				} else {
+
+					answer = JOptionPane.showConfirmDialog(contentPane,Curr_Player.getName() + ", would you like to buy " + Curr_RU.getName(), "Buy?", JOptionPane.YES_NO_OPTION);
+					switch (answer) {
+					case 0:	
+						if(brd.purchaseProperty(squareID, Curr_Player)){
+							return true;
+						}else{
+							brd.auction(squareID);
+							return true;
+						}
+					case 1:
+						brd.auction(squareID);
+						return true;
+					default:	
+						JOptionPane.showMessageDialog(contentPane, "Invalid answer. Try again");
+						return true;
+					}
 				}
 			}else{
 				return true;
