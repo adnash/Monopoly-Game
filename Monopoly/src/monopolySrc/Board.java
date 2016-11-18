@@ -541,7 +541,7 @@ public class Board {
 
 		for (int i = 0; i < Curr_Player.getPropertiesOwned().size(); i++) {
 			sq = getSquare(Curr_Player.getPropertiesOwned().get(i));
-			array[i] = sq.getID() + "";			
+			array[i] = sq.getID() + " " + sq.getName();			
 		}
 
 		int amountSold = 0;
@@ -557,7 +557,7 @@ public class Board {
 			if(answer == 0){
 				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to sell a house.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
 				if(answerString != null){
-					answer = Integer.parseInt(answerString.toString());
+					answer = Integer.parseInt(answerString.toString().replaceAll("[\\D]", ""));
 					if(answer != -1){
 						sellHouse(answer, Curr_Player);
 						amountSold += test.getBuildingPrice()/2;
@@ -571,7 +571,7 @@ public class Board {
 			if(answer == 0){
 				Object answerString = JOptionPane.showInputDialog(contentPane, Curr_Player.getName() + ", you own these properties.\nSelect a property to mortgage.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
 				if(answerString != null){
-					answer = Integer.parseInt(answerString.toString());
+					answer = Integer.parseInt(answerString.toString().replaceAll("[\\D]", ""));
 					if(answer != -1){
 						mortgageProperty(answer, Curr_Player);
 						amountSold += test.getMortgagePrice();
@@ -702,12 +702,12 @@ public class Board {
 
 		for (int i = 0; i < p.getPropertiesOwned().size(); i++) {
 			sq = getSquare(p.getPropertiesOwned().get(i));
-			array[i] = sq.getID() + "";			
+			array[i] = sq.getID() + " " + sq.getName();			
 		}
 		Object answerString = JOptionPane.showInputDialog(contentPane, p.getName() + ", you own these properties.\nSelect a property to trade.", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, array, null);
 		if(answerString == null)
 			return;
-		int property = Integer.parseInt(answerString.toString());
+		int property = Integer.parseInt(answerString.toString().replaceAll("[\\D]", ""));
 
 		int sq_ID = sq.getID();
 		if(sq_ID != 5 && sq_ID != 12 && sq_ID != 15 && sq_ID != 25 && sq_ID != 28 && sq_ID != 35){
@@ -729,18 +729,18 @@ public class Board {
 				target = players[i];
 				//Make sure you're only selling to other players
 				if (target.getPlayerID() != p.getPlayerID()) {
-					playErs.add(target.getPlayerID() + "");
+					playErs.add((target.getPlayerID() + 1) + " " + target.getName());
 				}
 			}
 			answerString = JOptionPane.showInputDialog(contentPane, p.getName() + ", Select the other player number you would like to sell it to:", "Owned properties", JOptionPane.PLAIN_MESSAGE, null, playErs.toArray(), null);
 			if(answerString == null)
 				return;
-			int otherPlayer = Integer.parseInt(answerString.toString());
+			int otherPlayer = Integer.parseInt(answerString.toString().replaceAll("[\\D]", ""));
 
 			answerString = JOptionPane.showInputDialog(contentPane, p.getName() + ", enter the amount you wish to sell the property for");
 			if(answerString == null)
 				return;
-			int price = Integer.parseInt(answerString.toString());
+			int price = Integer.parseInt(answerString.toString().replaceAll("[\\D]", ""));
 			Player temp;
 			//Get the other player
 			for (int i = 0; i < players.length; i++) {
