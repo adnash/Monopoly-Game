@@ -62,9 +62,19 @@ public class TurnControler {
 	public void playerJailTurnProcess(Player Curr_Play) {
 		//Give option to pay 50 dollars
 		if(Curr_Play.getJCard() >0){
+			
+			if (Curr_Play.getAI()) {
+				System.out.println("AI used Get Out of Jail Free Card");
+				Curr_Play.removeJCard();
+				Jail jail = (Jail) brd.getSquare(40);
+				jail.freePlayer(Curr_Play);
+				playerTurnProcess(Curr_Play);
+				return;
+			}
+			
 			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Play.getName() + ", use 'Get out of jail free' card to get out of jail?", "Get out of jail?", JOptionPane.YES_NO_OPTION);
 			switch (answer) {
-			case 0:	// debit player $50 and call player turn process
+			case 0:
 				Curr_Play.removeJCard();	
 				Jail jail = (Jail) brd.getSquare(40);
 				jail.freePlayer(Curr_Play);
@@ -74,7 +84,31 @@ public class TurnControler {
 
 			}
 		}
-		answer = JOptionPane.showConfirmDialog(contentPane,Curr_Play.getName() + ", pay $50 to get out of jail?", "Get out of jail?", JOptionPane.YES_NO_OPTION);
+		if (!Curr_Play.getAI()) {
+			answer = JOptionPane.showConfirmDialog(contentPane,Curr_Play.getName() + ", pay $50 to get out of jail?", "Get out of jail?", JOptionPane.YES_NO_OPTION);
+		}
+		
+		if (Curr_Play.getAI()) {
+			if (Curr_Play.getBalance() >= 50) {
+				System.out.println("AI will pay $50 to get out of jail");
+				Curr_Play.decreaseBalance(50);
+				Jail jail = (Jail) brd.getSquare(40);
+				jail.freePlayer(Curr_Play);
+				playerTurnProcess(Curr_Play);
+				return;
+			}else{
+				if(Curr_Play.getBalance()<50){
+					System.out.println("AI will sell houses and property in order to pay $50 to get out of jail");
+					brd.sellSequence(Curr_Play, 50 - Curr_Play.getBalance());
+					Curr_Play.decreaseBalance(50);
+					Jail jail = (Jail) brd.getSquare(40);
+					jail.freePlayer(Curr_Play);
+					playerTurnProcess(Curr_Play);
+					return;
+				}
+			}
+		}
+		
 		switch (answer) {
 		case 0:	// debit player $50 and call player turn process
 			if (Curr_Play.getBalance() >= 50) {
@@ -163,10 +197,10 @@ public class TurnControler {
 
 			//if AI has property, it will always try to buy a house
 			//TODO make property choice random
-			if (array.length > 0) {				
+			/*if (array.length > 0) {				
 				brd.buyHouse(properties.get(0), Curr_Player);
 				System.out.println("AI player has attempted to buy a house");
-			}
+			}*/
 
 			// Currently AI will never sell a house
 			//if (array.length > 0) {				
