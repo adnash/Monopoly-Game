@@ -1,0 +1,150 @@
+commit 45cf382f5744b0bd62514a8d7b45582e16f8ed51
+Merge: 5bdafa8 bfcebdc
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Fri Nov 18 14:51:11 2016 -0700
+
+    Merge branch 'master' of https://github.com/conbrocox/CS414e
+
+commit 5bdafa8a25b0dca6fbde167da2b797a8224e0eae
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Fri Nov 18 14:50:58 2016 -0700
+
+    Added AI logic for handling Jail
+
+commit 77d26eace125edfd435c0d774b64ad0a9a9dfdbf
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Fri Nov 18 13:30:43 2016 -0700
+
+    AI now handles railroads and utilties appropriately
+
+commit 86df68323fb5b619a8c5c989f04f45f71584b422
+Author: alxndrCSU <Frost@Frosts-iMac.hsd1.co.comcast.net>
+Date:   Fri Nov 18 11:39:33 2016 -0700
+
+    Added checkbox labels for AI. Fixed auction crash when no player and no AI choose to bid.
+
+commit 41447dd238f3b002b35a1185a7f0906d4dab6747
+Merge: 1f59601 eee9741
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Tue Nov 15 22:24:21 2016 -0700
+
+    fixed whitespace merge conflict
+
+commit 1f59601270f771134d0c0337819b73e66ef927cf
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Tue Nov 15 22:17:50 2016 -0700
+
+    Basic working AI.
+
+commit 09441684699ffba578d105a037163b2c4cbee2c6
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Tue Nov 15 20:50:32 2016 -0700
+
+    Stuff for Alan
+
+commit 8da4326e0a20c83a1b3ea30132c24254a54071c7
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Thu Nov 10 15:01:38 2016 -0700
+
+    Started adding AI to player and tracking of Get Out of Jail Free cards
+
+commit 7ef84f9b97ac102b49801378ec01cc7fc8827bcf
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Thu Oct 27 23:48:34 2016 -0600
+
+    finished
+
+commit 649c16f136d6584da27fd79eb1951f1eae24c002
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Thu Oct 27 22:58:46 2016 -0600
+
+    Added README.pdf file
+
+commit 89a18c3df330bcf2501597bfae6c6c9526df0761
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Thu Oct 27 21:13:19 2016 -0600
+
+    Added "Sytem Test Cases.pdf"
+
+commit 48868d9289c2d7723f97ad8e7b26c7999ec40a81
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Thu Oct 27 20:30:53 2016 -0600
+
+    added call to determineWinner()
+
+commit 83c44cda14029b86e6b5fb269fa121529112cad7
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Tue Oct 25 22:50:06 2016 -0600
+
+    Finished RealEstateTest
+
+commit b1c8ebf6dc7ea307e7153d74bc793b26ce7551b6
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Tue Oct 25 22:24:14 2016 -0600
+
+    Wrote TestAll and most of RealEstateTest. Uploaded official rules.
+    
+    There's more to be done, obviously, but I wanted to push my progress.
+
+commit 12d83a779cd8937d951b8221660855d2ad13b947
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Sun Oct 23 16:26:29 2016 -0600
+
+    Fixed global name change of "getPrice()" method to "getBuyPrice()"
+
+commit 1a3a09ab975792b36a68df999ddf443b5c7064d0
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Sun Oct 23 16:24:04 2016 -0600
+
+    Finished reformatting, checking game functionality and making notes
+
+commit bd71813d1341205f20c19ffc887a149551e1f866
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Sun Oct 23 00:21:27 2016 -0600
+
+    Minor reformatting
+
+commit 8976aa9d0582ed728d7f601ac2d730226a45e4d3
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Sat Oct 22 23:54:18 2016 -0600
+
+    Player initialization, minor reformatting
+
+commit f0bbeab2d6845b8f46c1907f35660fc3c66c766f
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Thu Oct 20 23:19:53 2016 -0600
+
+    Implemented timer; adjusted how players are passed and created
+    
+    We may need to move most of the Monopoly class into Board, looking at how Board is the controller class. Monopoly should just serve as what opens up the UI, and passes the number of players, the names of the players and the duration of the game to the Board class.
+
+commit 798440321eb32d4a36b219e476dcff711521621f
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Wed Oct 19 21:29:05 2016 -0600
+
+    Started implementing timer in Monopoly
+
+commit db69f35cde6af99b7c44c0ceba1942d9d1cf034c
+Merge: 75827ba 4983a32
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Wed Oct 19 21:27:13 2016 -0600
+
+    Merge branch 'master' of https://github.com/conbrocox/CS414e
+
+commit 75827ba8f6501c21332f33640a2c73a50ed37a54
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Wed Oct 19 21:09:42 2016 -0600
+
+    Implemented most of playerJailTurnProcess
+
+commit a7e1e03260e58628f3d9194bd7a72a9be979d433
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Wed Oct 19 20:39:37 2016 -0600
+
+    Added Jail square
+
+commit 03491aae2ee0e340b5b678748541c169e1ab9a07
+Author: alxndrCSU <alxndr@rams.colostate.edu>
+Date:   Wed Oct 19 20:17:55 2016 -0600
+
+    Changed 'Marvin Avenue' to 'Marvin Gardens'
