@@ -1,81 +1,85 @@
+// Conor Cox
+// CS414
+// A6
+
 package visitor;
 
-import java.util.Enumeration;
+import syntaxtree.*;
 
-import syntaxtree.NodeToken;
-
-public class Commenter extends TreeDumper {	private int curLine = 1;
-	private int curColumn = 1;
-	private boolean startAtNextToken = false;
-	private boolean printSpecials = true;
-	
+public class Commenter extends TreeDumper {	
+	private int stupidLine = 0;
 	
 	@Override
-	public void visit(NodeToken n) {
-		if ( n.beginLine == -1 || n.beginColumn == -1 ) {
-			printToken(n.tokenImage);
-			return;
-		}
-
-		if ( startAtNextToken ) {
-			curLine = n.beginLine;
-			curColumn = 1;
-			startAtNextToken = false;
-
-			if ( n.beginColumn < curColumn )
-				out.println();
-		}
-
-		//
-		// Check for invalid token position relative to current position.
-		//
-		if ( n.beginLine < curLine )
-			throw new IllegalStateException("at token \"" + n.tokenImage +
-					"\", n.beginLine = " + Integer.toString(n.beginLine) +
-					", curLine = " + Integer.toString(curLine));
-		else if ( n.beginLine == curLine && n.beginColumn < curColumn )
-			throw new IllegalStateException("at token \"" + n.tokenImage +
-					"\", n.beginColumn = " +
-					Integer.toString(n.beginColumn) + ", curColumn = " +
-					Integer.toString(curColumn));
-
-		//
-		// Handle special tokens
-		//
-		if ( printSpecials && n.numSpecials() > 0 )
-			for ( Enumeration e = n.specialTokens.elements(); e.hasMoreElements(); )
-				visit((NodeToken)e.nextElement());
-
-		//
-		// Move output "cursor" to proper location, then print the token
-		//
-		if ( curLine < n.beginLine ) {
-			curColumn = 1;
-			for ( ; curLine < n.beginLine; ++curLine )
-				out.println();
-		}
-
-		for ( ; curColumn < n.beginColumn; ++curColumn )
-			out.print(" ");
-		
-		
-
-		System.out.println(">" + n.tokenImage + "<");
-//		printToken(n.tokenImage);
+	public void visit(MethodDeclaration n) {
+		System.out.println("/*************");
+		System.out.println("New method " + n.f2.f0);
+		System.out.println("*************/");
+		this.startAtNextToken();
+        n.f0.accept(this);
+        n.f1.accept(this);
+        n.f2.accept(this);
+        n.f3.accept(this);  
+        n.f4.accept(this);
+        System.out.println();
 	}
+	
+	@Override
+	public void visit(ClassDeclaration n) {
+		System.out.println("/*************");
+		System.out.println("New class " + n.f1.f1);
+		System.out.println("*************/");
+		this.startAtNextToken();
+        n.f0.accept(this);
+        n.f1.accept(this);
 
-	private void printToken(String s) {
-		for ( int i = 0; i < s.length(); ++i ) { 
-			if ( s.charAt(i) == '\n' ) {
-				++curLine;
-				curColumn = 1;
-			}
-			else
-				curColumn++;
-
-			out.print(s.charAt(i));
-		}
-
-		out.flush();
+        System.out.println();
 	}
+	
+	@Override
+	public void visit(ConstructorDeclaration n) {
+		System.out.println("/*************");
+		System.out.println("New constructor " + n.f1);
+		System.out.println("*************/");
+		this.startAtNextToken();
+        n.f0.accept(this);
+        n.f1.accept(this);
+        n.f2.accept(this);
+        n.f3.accept(this);  
+        n.f4.accept(this);
+        n.f5.accept(this);
+        n.f6.accept(this);  
+        n.f7.accept(this);
+        System.out.println();
+	}
+	
+	@Override
+	public void visit(NestedClassDeclaration n) {
+		System.out.println("/*************");
+		System.out.println("New nested class " + n.f1.f1);
+		System.out.println("*************/");
+		this.startAtNextToken();
+        n.f0.accept(this);
+        n.f1.accept(this);
+        System.out.println();
+	}
+	
+	@Override
+	public void visit(FieldDeclaration n) {
+		// This is needed  for if the variable is the very first thing within a method
+		// I realize that this is needed for every visit method... Will ask if spacing matters all the much in class
+		
+		if(stupidLine == 0){
+			System.out.println();
+			stupidLine++;
+		}
+		System.out.println("// Class variable definition begins");
+		this.startAtNextToken();
+		n.f0.accept(this);
+        n.f1.accept(this);
+        n.f2.accept(this);
+        n.f3.accept(this);  
+        n.f4.accept(this);
+        System.out.println("\n// Class variable definition ends");
+	}
+	
 }

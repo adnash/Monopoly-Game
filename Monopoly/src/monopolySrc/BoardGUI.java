@@ -70,7 +70,7 @@ public class BoardGUI extends JFrame{
     	JFrame.setDefaultLookAndFeelDecorated(true);
     	
     	//temp scoreboard
-    	scoreboard = new ScoreboardGUI(this, board, playericons, tempduration);
+//    	scoreboard = new ScoreboardGUI(this, board, playericons, tempduration);
     	this.scoreboard = scoreboard;
     	this.numplayers = numPlayers;	
     	this.board = board;
