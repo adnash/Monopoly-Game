@@ -1,0 +1,253 @@
+commit 2670b22a9d354092e372f38d1185999023791aee
+Author: adnash <adnash@rams.colostate.edu>
+Date:   Fri Nov 18 14:24:32 2016 -0700
+
+    added so AI can sell if broke
+
+commit c614326eb244448543fbe932b920abd596d6a7d2
+Merge: 75f2eec b4e3213
+Author: adnash <adnash@rams.colostate.edu>
+Date:   Fri Nov 18 13:50:52 2016 -0700
+
+    Merge branch 'master' of https://github.com/conbrocox/CS414e
+    
+    g Please enter a commit message to explain why this merge is necessary,
+
+commit 75f2eec8e34b0746d52fb154458d8f63461cf070
+Author: adnash <adnash@rams.colostate.edu>
+Date:   Fri Nov 18 13:50:25 2016 -0700
+
+    player number subtract 1 for trade so correct player purchases.
+
+commit 0d1ed78153581ff2d760f810db8810ae33bcf25f
+Merge: 7eb0054 79290aa
+Author: adnash <adnash@rams.colostate.edu>
+Date:   Thu Nov 17 15:38:21 2016 -0700
+
+    Merge branch 'master' of https://github.com/conbrocox/CS414e
+
+commit 7eb0054c230e8bc4973de43512e5479c3199a53a
+Author: adnash <adnash@rams.colostate.edu>
+Date:   Thu Nov 17 15:37:55 2016 -0700
+
+    Made so turn contorller can update GUI.
+
+commit c186caf9eceee4ea54cad31b9eafddcbde1a9f5c
+Author: adnash <adnash@rams.colostate.edu>
+Date:   Thu Nov 17 15:24:50 2016 -0700
+
+    Fixed the way turn contorler is created.
+
+commit 92616ee301c09121e9c701bf53d6bee49e3b26cc
+Author: adnash <adnash@rams.colostate.edu>
+Date:   Thu Nov 17 15:18:34 2016 -0700
+
+    Made UI update all the time
+
+commit 1456cf0f47a0cda98b20f20e48c8b429af00597d
+Author: adnash <adnash@rams.colostate.edu>
+Date:   Thu Nov 17 11:03:58 2016 -0700
+
+    Auction was skipping players. Fixed so all players can bid.
+
+commit a6ef2dac5c2a4e12c2621695f5078406ec6887f8
+Author: adnash <adnash@rams.colostate.edu>
+Date:   Thu Nov 17 10:07:28 2016 -0700
+
+    Added breaks for Chance and Chest. Fixed to show total score for winner.
+
+commit 4fc9be089a38a35e8343cdce920d9b0b572f80fd
+Merge: d95f778 41447dd
+Author: adnash <adnash@rams.colostate.edu>
+Date:   Tue Nov 15 22:50:21 2016 -0700
+
+    Fixed merge conflicts.
+
+commit d95f778056b35187fb31d4e8c44f9d02b8fd42a6
+Author: adnash <adnash@rams.colostate.edu>
+Date:   Tue Nov 15 22:46:58 2016 -0700
+
+    Forgot what I did. Stuff!
+
+commit eee9741df680268523f3591a98a65c5b1ee6264a
+Author: adnash <adnash@rams.colostate.edu>
+Date:   Tue Nov 15 22:05:06 2016 -0700
+
+    Fixed Auction to decrease by bid price and not property price.
+
+commit 9f58861e480258fca9631e5a876c57e0eafdbc8e
+Author: adnash <adnash@rams.colostate.edu>
+Date:   Tue Nov 15 21:40:23 2016 -0700
+
+    Fixed the fact that dice roll was not appearing in GUI since dice was no longer stored in roll.
+
+commit 89273fe31c6e5b8def709e16cc304ac7a690257b
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Tue Nov 15 20:39:33 2016 -0700
+
+    Moved turn process into another controller. Hope it worked correctly!
+
+commit d271c728f7dbd787e592435bceda43f7fc7df71d
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Thu Nov 10 15:39:02 2016 -0700
+
+    Forget default on switch statement
+
+commit d6088f16c4f4162adef969c8061381ef8cbc27b3
+Merge: ddc4a34 8da4326
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Thu Nov 10 15:37:44 2016 -0700
+
+    Merge branch 'master' of https://github.com/conbrocox/CS414e.git
+
+commit ddc4a34e220474bd86d21a515efd54da8e16d2ed
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Thu Nov 10 15:37:26 2016 -0700
+
+    Fixed Jail, and Determine winner.
+    
+    Also made it so when a morgate property is traded it either get
+    unmorgagted or pay the %10 fee.
+
+commit d3253e96815709218e5dbccb516d88b060525e15
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Tue Oct 25 15:35:31 2016 -0600
+
+    Added post turn sequence
+    which all turns call when the player can now build houses and sell.
+    Mortgage/trade.
+    
+    Fixed buy and sell to take squareID instead.
+
+commit e32ee93a887bc12f5218908d8b90aec337320e91
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Tue Oct 25 13:27:37 2016 -0600
+
+    # WARNING: head commit changed in the meantime
+    
+    Initialization for all squares. Need to update pricing still.
+
+commit 1c81640a0c4ae5973e33fa9c4c3f0ca7894333c3
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Tue Oct 25 03:09:30 2016 -0600
+
+    Finished putting in all System.out Statements
+    
+    finished pay rent on rail roads
+    
+    finished isMonopoly.
+    
+    Dealt with case if player can't afford rent.
+
+commit 32a68ecd334318bee84361bff7cb1206d3eeaa6e
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Sat Oct 22 19:23:07 2016 -0600
+
+    isMonopoly check done
+    
+    Buy/sell houses is done.
+    
+    Just need to implement how the player requests to buy or sell a house on
+    a given property
+
+commit 57df0282e14d8c996cfb49a4d1e3ad79f66e2392
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Sat Oct 22 12:02:44 2016 -0600
+
+    Working on Monopoly. Still have some more to do this evening.
+
+commit 9f90cf83194ac1aa18e03d98871c5edb61f0797d
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Sat Oct 22 10:10:22 2016 -0600
+
+    Stuff. I didn't Know I had.
+
+commit 465cecc2850346fd309d2fbd465d7a06136b9458
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Fri Oct 21 14:49:23 2016 -0600
+
+    # WARNING: head commit changed in the meantime
+    
+    Initialization for all squares. Need to update pricing still.
+
+commit c29de1e4ffacbbfadf500338fe176e52a18af562
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Fri Oct 21 10:47:15 2016 -0600
+
+    # WARNING: head commit changed in the meantime
+    
+    Initialization for all squares. Need to update pricing still.
+    
+    Player can now remove and owned property.
+
+commit ddf62927c0d445e8e56251776f3846669267ade8
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Fri Oct 21 00:01:15 2016 -0600
+
+    Progress on player turn process. Still need buy and sell houses and
+    trade properties.
+    
+    Completed squares resolve except for auctioning of a property.
+
+commit 083cd68fc89315a887d6877ddcc20789b16bb406
+Merge: 35c26a4 f0bbeab
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Thu Oct 20 23:40:59 2016 -0600
+
+    Merge branch 'master' of https://github.com/conbrocox/CS414e.git
+
+commit 35c26a441d0718d71db6c4eb02d55c3835f135ef
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Thu Oct 20 23:40:30 2016 -0600
+
+    Added methods to jail to help track jailed players.
+
+commit 052b6bafd2ac59cd88eedbb48392aa3c3054ea2f
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Thu Oct 20 14:19:14 2016 -0600
+
+    Progress made on resolve square for a players turn. Implemented the
+    process for if a player lands on a real estate.
+    
+    Also added purchase property method, pay rents method.
+    
+    Added some todos so we can track progress.
+
+commit a35ed278bddd8d46a18a9616523e46b59492df56
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Wed Oct 19 15:57:01 2016 -0600
+
+    Board - Notes
+
+commit dea03a0d612ce55b2976d5dd5ce9aedc9b0f915d
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Tue Oct 18 23:29:59 2016 -0600
+
+    Board - Stores players, Create Dice object, Created method to rotate
+    between players for turns, created a turn method. Still need to add jail
+    square, put squares in array, place players in array, start game timer.
+    Also still working on turn method.
+    
+    Dice - made an object intantiation method which sets double count to 0
+    when a dice object is made.
+    
+    Player - added two methods to increase and decrease player budget.
+
+commit fc1634370083167ec2757c1b1d251f4cfd53622e
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Tue Oct 18 22:23:23 2016 -0600
+
+    Board.java - Finished update of prices to include arrays.
+
+commit 42b9148ff01a790cad7531dbfd1e92fda7ed5ec2
+Merge: 3542b4f fefb042
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Tue Oct 18 17:00:14 2016 -0600
+
+    Merge branch 'master' of https://github.com/conbrocox/CS414e
+
+commit fefb042c7d2ed3a8c8c5203077329c92ff2e3633
+Author: Alan Nash <adnash@rams.colostate.edu>
+Date:   Tue Oct 18 16:59:18 2016 -0600
+
+    Initialization for all squares. Need to update pricing still.
