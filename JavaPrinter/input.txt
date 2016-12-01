@@ -1,28 +1,21 @@
 public class Test
 {
 	private static final double var1;
-	private static final ClassName instanceVar;
-	int var;
-	public int var;
-	public Classname instance;
+	private static final double var2;
 	public Test()
 	{
-		
-	}
-	class NestedTest
-	{
-		class NestedTest4
-		{
-			
-		}
+		method1(4);
 	}
 	public static boolean method1(int arg)
 	{
 		int var2;
 		return false;
 	}
-	class NestedTest1
+	class NestedTest
 	{
-		
+		class NestedTest2
+		{
+			int x;
+		}
 	}
 }
